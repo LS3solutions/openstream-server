@@ -4,9 +4,9 @@
 
 #include <codecvt>
 
-#include "sunshine/config.h"
-#include "sunshine/main.h"
-#include "sunshine/platform/common.h"
+#include "openstreamhost/config.h"
+#include "openstreamhost/main.h"
+#include "openstreamhost/platform/common.h"
 
 #include "display.h"
 

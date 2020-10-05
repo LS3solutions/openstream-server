@@ -9,8 +9,8 @@ set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR})
 # On MSYS2, building a stand-alone binary that links with ffmpeg is not possible,
 # Therefore, ffmpeg, libx264 and libx265 must be build from source
 if(WIN32)
-	option(SUNSHINE_STANDALONE "Compile stand-alone binary of Sunshine" OFF)
-	if(SUNSHINE_STANDALONE)
+        option(OPENSTREAM_STANDALONE "Compile stand-alone binary of Sunshine" ON)
+        if(OPENSTREAM_STANDALONE)
 		set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -static")
 	
 		if(NOT DEFINED SUNSHINE_PREPARED_BINARIES)
@@ -37,7 +37,7 @@ if(WIN32)
 			z lzma bcrypt C:/msys64/mingw64/lib/libiconv.a)
 	endif()
 else()
-	set(SUNSHINE_STANDALONE OFF)
+        set(OPENSTREAM_STANDALONE OFF)
 endif()
 
 add_subdirectory(Simple-Web-Server)
@@ -46,7 +46,7 @@ add_subdirectory(moonlight-common-c/enet)
 find_package(Threads REQUIRED)
 find_package(OpenSSL REQUIRED)
 
-if(NOT SUNSHINE_STANDALONE)
+if(NOT OPENSTREAM_STANDALONE)
 	find_package(FFmpeg REQUIRED)
 endif()
 
@@ -59,12 +59,12 @@ if(WIN32)
 	include_directories(
 		ViGEmClient/include)
 	set(PLATFORM_TARGET_FILES
-		sunshine/platform/windows/input.cpp
-		sunshine/platform/windows/display.h
-		sunshine/platform/windows/display_base.cpp
-		sunshine/platform/windows/display_vram.cpp
-		sunshine/platform/windows/display_ram.cpp
-		sunshine/platform/windows/audio.cpp
+                openstreamhost/platform/windows/input.cpp
+                openstreamhost/platform/windows/display.h
+                openstreamhost/platform/windows/display_base.cpp
+                openstreamhost/platform/windows/display_vram.cpp
+                openstreamhost/platform/windows/display_ram.cpp
+                openstreamhost/platform/windows/audio.cpp
 		ViGEmClient/src/ViGEmClient.cpp
 		ViGEmClient/include/ViGEm/Client.h
 		ViGEmClient/include/ViGEm/Common.h
@@ -88,8 +88,8 @@ else()
 
 	find_package(X11 REQUIRED)
 	set(PLATFORM_TARGET_FILES
-		sunshine/platform/linux/display.cpp
-		sunshine/platform/linux/input.cpp)
+                openstreamhost/platform/linux/display.cpp
+                openstreamhost/platform/linux/input.cpp)
 	
 	set(PLATFORM_LIBRARIES
 		Xfixes
@@ -108,7 +108,7 @@ else()
 		/usr/include/libevdev-1.0)
 
 	if(NOT DEFINED SUNSHINE_EXECUTABLE_PATH)
-		set(SUNSHINE_EXECUTABLE_PATH "${CMAKE_CURRENT_BINARY_DIR}/sunshine")
+                set(SUNSHINE_EXECUTABLE_PATH "${CMAKE_CURRENT_BINARY_DIR}/openstreamhost")
 	endif()
 	configure_file(gen-deb.in gen-deb @ONLY)
 	configure_file(sunshine.service.in sunshine.service @ONLY)
@@ -124,37 +124,37 @@ set(SUNSHINE_TARGET_FILES
 	moonlight-common-c/src/Rtsp.h
 	moonlight-common-c/src/RtspParser.c
 	moonlight-common-c/src/Video.h
-	sunshine/utility.h
-	sunshine/uuid.h
-	sunshine/config.h
-	sunshine/config.cpp
-        sunshine/main.cpp
-        sunshine/main.h
-	sunshine/crypto.cpp
-	sunshine/crypto.h
-	sunshine/nvhttp.cpp
-	sunshine/nvhttp.h
-	sunshine/rtsp.cpp
-	sunshine/rtsp.h
-	sunshine/stream.cpp
-	sunshine/stream.h
-	sunshine/video.cpp
-	sunshine/video.h
-	sunshine/input.cpp
-	sunshine/input.h
-	sunshine/audio.cpp
-	sunshine/audio.h
-	sunshine/platform/common.h
-	sunshine/process.cpp
-	sunshine/process.h
-	sunshine/network.cpp
-	sunshine/network.h
-	sunshine/move_by_copy.h
-	sunshine/task_pool.h
-	sunshine/thread_pool.h
-	sunshine/thread_safe.h
-	sunshine/sync.h
-	sunshine/round_robin.h
+        openstreamhost/utility.h
+        openstreamhost/uuid.h
+        openstreamhost/config.h
+        openstreamhost/config.cpp
+        openstreamhost/main.cpp
+        openstreamhost/main.h
+        openstreamhost/crypto.cpp
+        openstreamhost/crypto.h
+        openstreamhost/nvhttp.cpp
+        openstreamhost/nvhttp.h
+        openstreamhost/rtsp.cpp
+        openstreamhost/rtsp.h
+        openstreamhost/stream.cpp
+        openstreamhost/stream.h
+        openstreamhost/video.cpp
+        openstreamhost/video.h
+        openstreamhost/input.cpp
+        openstreamhost/input.h
+        openstreamhost/audio.cpp
+        openstreamhost/audio.h
+        openstreamhost/platform/common.h
+        openstreamhost/process.cpp
+        openstreamhost/process.h
+        openstreamhost/network.cpp
+        openstreamhost/network.h
+        openstreamhost/move_by_copy.h
+        openstreamhost/task_pool.h
+        openstreamhost/thread_pool.h
+        openstreamhost/thread_safe.h
+        openstreamhost/sync.h
+        openstreamhost/round_robin.h
 	${PLATFORM_TARGET_FILES})
 
 include_directories(
@@ -170,7 +170,7 @@ string(TOUPPER "x${CMAKE_BUILD_TYPE}" BUILD_TYPE)
 if("${BUILD_TYPE}" STREQUAL "XDEBUG")
 	list(APPEND SUNSHINE_COMPILE_OPTIONS -O0 -pedantic -ggdb3)
 	if(WIN32)
-		set_source_files_properties(sunshine/nvhttp.cpp PROPERTIES COMPILE_FLAGS -O2)
+                set_source_files_properties(openstreamhost/nvhttp.cpp PROPERTIES COMPILE_FLAGS -O2)
 	endif()
 else()
 	add_definitions(-DNDEBUG)
@@ -181,7 +181,7 @@ if(NOT SUNSHINE_ASSETS_DIR)
 	set(SUNSHINE_ASSETS_DIR "${CMAKE_CURRENT_SOURCE_DIR}/assets")
 endif()
 
-if(SUNSHINE_STANDALONE)
+if(OPENSTREAM_STANDALONE)
 	set(OPENSSL_LIBRARIES
 		C:/msys64/mingw64/lib/libssl.a
 		C:/msys64/mingw64/lib/libcrypto.a)

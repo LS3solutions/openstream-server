@@ -9,8 +9,8 @@
 
 #include <ViGEm/Client.h>
 
-#include "sunshine/main.h"
-#include "sunshine/platform/common.h"
+#include "openstreamhost/main.h"
+#include "openstreamhost/platform/common.h"
 
 namespace platf {
 using namespace std::literals;

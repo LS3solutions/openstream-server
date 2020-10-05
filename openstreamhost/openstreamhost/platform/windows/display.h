@@ -11,8 +11,8 @@
 #include <d3dcommon.h>
 #include <dxgi1_2.h>
 
-#include "sunshine/utility.h"
-#include "sunshine/platform/common.h"
+#include "openstreamhost/utility.h"
+#include "openstreamhost/platform/common.h"
 
 namespace platf::dxgi {
 extern const char *format_str[];

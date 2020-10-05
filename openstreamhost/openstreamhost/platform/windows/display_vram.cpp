@@ -1,4 +1,4 @@
-#include "sunshine/main.h"
+#include "openstreamhost/main.h"
 #include "display.h"
 
 namespace platf {

@@ -7,7 +7,7 @@
 
 #include <string>
 #include <mutex>
-#include "sunshine/utility.h"
+#include "openstreamhost/utility.h"
 
 struct sockaddr;
 namespace platf {

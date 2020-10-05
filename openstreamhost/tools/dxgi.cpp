@@ -7,7 +7,7 @@
 
 #include <iostream>
 
-#include "openstreamhost/sunshine/utility.h"
+#include "openstreamhost/openstreamhost/utility.h"
 
 using namespace std::literals;
 namespace dxgi {

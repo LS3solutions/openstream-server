@@ -10,9 +10,9 @@
 
 #include <synchapi.h>
 
-#include "sunshine/config.h"
-#include "sunshine/main.h"
-#include "sunshine/platform/common.h"
+#include "openstreamhost/config.h"
+#include "openstreamhost/main.h"
+#include "openstreamhost/platform/common.h"
 
 const CLSID CLSID_MMDeviceEnumerator = __uuidof(MMDeviceEnumerator);
 const IID IID_IMMDeviceEnumerator    = __uuidof(IMMDeviceEnumerator);
