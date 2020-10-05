@@ -1,0 +1,12 @@
+[submodule "openstreamhost/moonlight-common-c"]
+	path = openstreamhost/moonlight-common-c
+	url = https://github.com/moonlight-stream/moonlight-common-c.git
+[submodule "openstreamhost/Simple-Web-Server"]
+	path = openstreamhost/Simple-Web-Server
+	url = https://github.com/loki-47-6F-64/Simple-Web-Server.git
+[submodule "openstreamhost/ViGEmClient"]
+	path = openstreamhost/ViGEmClient
+	url = https://github.com/ViGEm/ViGEmClient
+[submodule "openstreamhost/pre-compiled"]
+	path = openstreamhost/pre-compiled
+	url = https://bitbucket.org/Loki-47-6F-64/pre-compiled.git
