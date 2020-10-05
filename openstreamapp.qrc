@@ -1,0 +1,10 @@
+<RCC>
+    <qresource prefix="/">
+        <file>images/joystick.png</file>
+        <file>assets/apps_linux.json</file>
+        <file>assets/apps_windows.json</file>
+        <file>assets/box.png</file>
+        <file>assets/sunshine.conf</file>
+        <file>images/joystick_on.png</file>
+    </qresource>
+</RCC>
