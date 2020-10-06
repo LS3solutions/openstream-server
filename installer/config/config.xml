@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Installer>
+    <Name>Open Stream App</Name>
+    <Version>1.0.0</Version>
+    <Title>Open Stream</Title>
+    <Publisher>Open Stream</Publisher>
+    <StartMenuDir>Open Stream</StartMenuDir>
+    <TargetDir>@HomeDir@/OpenStream/</TargetDir>
+</Installer>
