@@ -26,7 +26,7 @@ list(PREPEND PLATFORM_LIBRARIES
 add_subdirectory(openstreamhost)
 find_package(Qt5 COMPONENTS Widgets Network REQUIRED)
 
-list(APPEND SUNSHINE_EXTERNAL_LIBRARIES
+list(APPEND OPENSTREAM_EXTERNAL_LIBRARIES
 		${CMAKE_THREAD_LIBS_INIT}
     )
 
@@ -48,5 +48,5 @@ add_executable(openstreamapp
   openstreamapp.qrc
 )
 
-target_link_libraries(openstreamapp PRIVATE Qt5::Widgets Qt5::Network ${SUNSHINE_EXTERNAL_LIBRARIES})
+target_link_libraries(openstreamapp PRIVATE Qt5::Widgets Qt5::Network ${OPENSTREAM_EXTERNAL_LIBRARIES})
 

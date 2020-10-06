@@ -9,12 +9,12 @@ set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR})
 # On MSYS2, building a stand-alone binary that links with ffmpeg is not possible,
 # Therefore, ffmpeg, libx264 and libx265 must be build from source
 if(WIN32)
-        option(OPENSTREAM_STANDALONE "Compile stand-alone binary of Sunshine" ON)
+        option(OPENSTREAM_STANDALONE "Compile stand-alone binary of Openstream" ON)
         if(OPENSTREAM_STANDALONE)
 		set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -static")
 	
-		if(NOT DEFINED SUNSHINE_PREPARED_BINARIES)
-			set(SUNSHINE_PREPARED_BINARIES "${CMAKE_CURRENT_SOURCE_DIR}/pre-compiled/windows")
+                if(NOT DEFINED OPENSTREAM_PREPARED_BINARIES)
+                        set(OPENSTREAM_PREPARED_BINARIES "${CMAKE_CURRENT_SOURCE_DIR}/pre-compiled/windows")
 		endif()
 		list(PREPEND PLATFORM_LIBRARIES
 			C:/msys64/mingw64/lib/gcc/x86_64-w64-mingw32/${CMAKE_CXX_COMPILER_VERSION}/libstdc++.a
@@ -22,18 +22,18 @@ if(WIN32)
 			)
 
 		set(FFMPEG_INCLUDE_DIRS
-			${SUNSHINE_PREPARED_BINARIES}/include)
+                        ${OPENSTREAM_PREPARED_BINARIES}/include)
 		set(FFMPEG_LIBRARIES
-			${SUNSHINE_PREPARED_BINARIES}/lib/libavcodec.a
-			${SUNSHINE_PREPARED_BINARIES}/lib/libavdevice.a
-			${SUNSHINE_PREPARED_BINARIES}/lib/libavfilter.a
-			${SUNSHINE_PREPARED_BINARIES}/lib/libavformat.a
-			${SUNSHINE_PREPARED_BINARIES}/lib/libavutil.a
-			${SUNSHINE_PREPARED_BINARIES}/lib/libpostproc.a
-			${SUNSHINE_PREPARED_BINARIES}/lib/libswresample.a
-			${SUNSHINE_PREPARED_BINARIES}/lib/libswscale.a
-			${SUNSHINE_PREPARED_BINARIES}/lib/libx264.a
-			${SUNSHINE_PREPARED_BINARIES}/lib/libx265.a
+                        ${OPENSTREAM_PREPARED_BINARIES}/lib/libavcodec.a
+                        ${OPENSTREAM_PREPARED_BINARIES}/lib/libavdevice.a
+                        ${OPENSTREAM_PREPARED_BINARIES}/lib/libavfilter.a
+                        ${OPENSTREAM_PREPARED_BINARIES}/lib/libavformat.a
+                        ${OPENSTREAM_PREPARED_BINARIES}/lib/libavutil.a
+                        ${OPENSTREAM_PREPARED_BINARIES}/lib/libpostproc.a
+                        ${OPENSTREAM_PREPARED_BINARIES}/lib/libswresample.a
+                        ${OPENSTREAM_PREPARED_BINARIES}/lib/libswscale.a
+                        ${OPENSTREAM_PREPARED_BINARIES}/lib/libx264.a
+                        ${OPENSTREAM_PREPARED_BINARIES}/lib/libx265.a
 			z lzma bcrypt C:/msys64/mingw64/lib/libiconv.a)
 	endif()
 else()
@@ -50,12 +50,12 @@ if(NOT OPENSTREAM_STANDALONE)
 	find_package(FFmpeg REQUIRED)
 endif()
 
-list(APPEND SUNSHINE_COMPILE_OPTIONS -fPIC -Wall -Wno-missing-braces -Wno-maybe-uninitialized -Wno-sign-compare)
+list(APPEND OPENSTREAM_COMPILE_OPTIONS -fPIC -Wall -Wno-missing-braces -Wno-maybe-uninitialized -Wno-sign-compare)
 
 if(WIN32)
 	add_subdirectory(tools) #This is temporary, only tools for Windows are needed, for now
 
-	list(APPEND SUNSHINE_DEFINITIONS APPS_JSON="apps_windows.json")
+        list(APPEND OPENSTREAM_DEFINITIONS APPS_JSON="apps_windows.json")
 	include_directories(
 		ViGEmClient/include)
 	set(PLATFORM_TARGET_FILES
@@ -84,7 +84,7 @@ if(WIN32)
 	set_source_files_properties(ViGEmClient/src/ViGEmClient.cpp PROPERTIES COMPILE_DEFINITIONS "UNICODE=1;ERROR_INVALID_DEVICE_OBJECT_PARAMETER=650")
 	set_source_files_properties(ViGEmClient/src/ViGEmClient.cpp PROPERTIES COMPILE_FLAGS "-Wno-unknown-pragmas -Wno-misleading-indentation -Wno-class-memaccess")
 else()
-	list(APPEND SUNSHINE_DEFINITIONS APPS_JSON="apps_linux.json")
+        list(APPEND OPENSTREAM_DEFINITIONS APPS_JSON="apps_linux.json")
 
 	find_package(X11 REQUIRED)
 	set(PLATFORM_TARGET_FILES
@@ -107,17 +107,17 @@ else()
 		${X11_INCLUDE_DIR}
 		/usr/include/libevdev-1.0)
 
-	if(NOT DEFINED SUNSHINE_EXECUTABLE_PATH)
-                set(SUNSHINE_EXECUTABLE_PATH "${CMAKE_CURRENT_BINARY_DIR}/openstreamhost")
+        if(NOT DEFINED OPENSTREAM_EXECUTABLE_PATH)
+                set(OPENSTREAM_EXECUTABLE_PATH "${CMAKE_CURRENT_BINARY_DIR}/openstreamhost")
 	endif()
 	configure_file(gen-deb.in gen-deb @ONLY)
-	configure_file(sunshine.service.in sunshine.service @ONLY)
+        configure_file(openstream.service.in openstream.service @ONLY)
 endif()
 
 set(Boost_USE_STATIC_LIBS ON)
 find_package(Boost COMPONENTS log filesystem REQUIRED)
 
-set(SUNSHINE_TARGET_FILES
+set(OPENSTREAM_TARGET_FILES
 	moonlight-common-c/reedsolomon/rs.c
 	moonlight-common-c/reedsolomon/rs.h
 	moonlight-common-c/src/Input.h
@@ -168,17 +168,17 @@ include_directories(
 
 string(TOUPPER "x${CMAKE_BUILD_TYPE}" BUILD_TYPE)
 if("${BUILD_TYPE}" STREQUAL "XDEBUG")
-	list(APPEND SUNSHINE_COMPILE_OPTIONS -O0 -pedantic -ggdb3)
+        list(APPEND OPENSTREAM_COMPILE_OPTIONS -O0 -pedantic -ggdb3)
 	if(WIN32)
                 set_source_files_properties(openstreamhost/nvhttp.cpp PROPERTIES COMPILE_FLAGS -O2)
 	endif()
 else()
 	add_definitions(-DNDEBUG)
-	list(APPEND SUNSHINE_COMPILE_OPTIONS -O3)
+        list(APPEND OPENSTREAM_COMPILE_OPTIONS -O3)
 endif()
 
-if(NOT SUNSHINE_ASSETS_DIR)
-	set(SUNSHINE_ASSETS_DIR "${CMAKE_CURRENT_SOURCE_DIR}/assets")
+if(NOT OPENSTREAM_ASSETS_DIR)
+	set(OPENSTREAM_ASSETS_DIR "${CMAKE_CURRENT_SOURCE_DIR}/assets")
 endif()
 
 if(OPENSTREAM_STANDALONE)
@@ -187,7 +187,7 @@ if(OPENSTREAM_STANDALONE)
 		C:/msys64/mingw64/lib/libcrypto.a)
 endif()
 
-list(APPEND SUNSHINE_EXTERNAL_LIBRARIES
+list(APPEND OPENSTREAM_EXTERNAL_LIBRARIES
 		${CMAKE_THREAD_LIBS_INIT}
 		stdc++fs
 		enet
@@ -197,10 +197,10 @@ list(APPEND SUNSHINE_EXTERNAL_LIBRARIES
 		${OPENSSL_LIBRARIES}
 		${PLATFORM_LIBRARIES})
 
-list(APPEND SUNSHINE_DEFINITIONS SUNSHINE_ASSETS_DIR="${SUNSHINE_ASSETS_DIR}")
-add_executable(openstreamhost ${SUNSHINE_TARGET_FILES})
-target_link_libraries(openstreamhost ${SUNSHINE_EXTERNAL_LIBRARIES})
-target_compile_definitions(openstreamhost PUBLIC ${SUNSHINE_DEFINITIONS})
+list(APPEND OPENSTREAM_DEFINITIONS OPENSTREAM_ASSETS_DIR="${OPENSTREAM_ASSETS_DIR}")
+add_executable(openstreamhost ${OPENSTREAM_TARGET_FILES})
+target_link_libraries(openstreamhost ${OPENSTREAM_EXTERNAL_LIBRARIES})
+target_compile_definitions(openstreamhost PUBLIC ${OPENSTREAM_DEFINITIONS})
 set_target_properties(openstreamhost PROPERTIES CXX_STANDARD 17)
 
-target_compile_options(openstreamhost PRIVATE ${SUNSHINE_COMPILE_OPTIONS})
+target_compile_options(openstreamhost PRIVATE ${OPENSTREAM_COMPILE_OPTIONS})

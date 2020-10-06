@@ -705,7 +705,7 @@ void cancel(resp_https_t response, req_https_t request) {
 void appasset(resp_https_t response, req_https_t request) {
   print_req<SimpleWeb::HTTPS>(request);
 
-  std::ifstream in(SUNSHINE_ASSETS_DIR "/box.png");
+  std::ifstream in(OPENSTREAM_ASSETS_DIR "/box.png");
   response->write(SimpleWeb::StatusCode::success_ok, in);
 }
 

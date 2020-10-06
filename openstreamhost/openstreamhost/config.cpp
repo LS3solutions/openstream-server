@@ -12,7 +12,7 @@
 #define PRIVATE_KEY_FILE CA_DIR "/cakey.pem"
 #define CERTIFICATE_FILE CA_DIR "/cacert.pem"
 
-#define APPS_JSON_PATH SUNSHINE_ASSETS_DIR "/" APPS_JSON
+#define APPS_JSON_PATH OPENSTREAM_ASSETS_DIR "/" APPS_JSON
 namespace config {
 using namespace std::literals;
 
@@ -458,7 +458,7 @@ void apply_config(std::unordered_map<std::string, std::string> &&vars) {
 }
 
 int parse(int argc, char *argv[]) {
-  const char *config_file = SUNSHINE_ASSETS_DIR "/sunshine.conf";
+  const char *config_file = OPENSTREAM_ASSETS_DIR "/sunshine.conf";
 
   std::unordered_map<std::string, std::string> cmd_vars;
 

@@ -20,8 +20,8 @@ before_build:
 build_script:
   - cmd: set OLDPATH=%PATH%
   - cmd: set PATH=C:\msys64\mingw64\bin
-  - sh: cmake -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DSUNSHINE_EXECUTABLE_PATH=sunshine -DSUNSHINE_ASSETS_DIR=/etc/sunshine ..
-  - cmd: cmake -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DSUNSHINE_STANDALONE=ON -DSUNSHINE_ASSETS_DIR=assets -G "MinGW Makefiles" ..
+  - sh: cmake -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DOPENSTREAM_EXECUTABLE_PATH=sunshine -DOPENSTREAM_ASSETS_DIR=/etc/sunshine ..
+  - cmd: cmake -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DOPENSTREAM_STANDALONE=ON -DOPENSTREAM_ASSETS_DIR=assets -G "MinGW Makefiles" ..
   - sh: make -j$(nproc)
   - cmd: mingw32-make -j2
   - cmd: set PATH=%OLDPATH%

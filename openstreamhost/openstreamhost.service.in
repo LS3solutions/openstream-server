@@ -1,5 +1,5 @@
 [Unit]
-Description=Sunshine Gamestream Server for Moonlight
+Description=Openstream Gamestream Server for Moonlight
 
 [Service]
 WorkingDirectory=/home/%u
@@ -7,7 +7,7 @@ Environment="DISPLAY=:0"
 Type=simple
 # wait for Xorg
 ExecStartPre=/bin/sh -c 'while ! pgrep Xorg; do sleep 2; done'
-ExecStart=@SUNSHINE_EXECUTABLE_PATH@
+ExecStart=@OPENSTREAM_EXECUTABLE_PATH@
 
 [Install]
 WantedBy=default.target
