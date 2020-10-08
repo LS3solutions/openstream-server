@@ -1,6 +1,7 @@
 # Open-Stream 
 
 Open source low latency stream solution. 
+Open Stream is a fork open Sunshine Server. Creating open source solution for Gaming and Desktop Management.
 
 -----
 ### Project structure
