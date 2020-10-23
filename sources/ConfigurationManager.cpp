@@ -9,7 +9,17 @@ ConfigurationManager::ConfigurationManager()
 
 void ConfigurationManager::loadRootConfiguration()
 {
-    QFile inputFile(configFile);
+    if(!folderAssetsExists()){
+        QDir().mkdir(ASSETS_FOLDER_FILE_PATH);
+        copyAssetsFiles();
+    }
+
+    else if(!configFileExists()) {
+        copyAssetsFiles();
+    }
+
+
+    QFile inputFile(CONFIG_FILE_PATH);
     if(inputFile.open(QIODevice::ReadOnly))
     {
         QTextStream in(&inputFile);
@@ -33,7 +43,7 @@ void ConfigurationManager::loadRootConfiguration()
 
 void ConfigurationManager::saveConfiguration()
 {
-    QFile outputConf(configFile);
+    QFile outputConf(CONFIG_FILE_PATH);
     outputConf.open(QIODevice::WriteOnly);
     QHash<QString, QString>::iterator i;
     QTextStream outStream(&outputConf);
@@ -56,4 +66,30 @@ void ConfigurationManager::setEntry(QString entry, QString value)
 QString ConfigurationManager::getKey(QString key)
 {
     return entries.value(key);
+}
+
+bool ConfigurationManager::configFileExists() {
+    QFileInfo check_file(this->CONFIG_FILE_PATH);
+    // check if file exists and if yes: Is it really a file and no directory?
+    if (check_file.exists() && check_file.isFile()) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+bool ConfigurationManager::folderAssetsExists() {
+    QFileInfo check_file(this->ASSETS_FOLDER_FILE_PATH);
+    if (check_file.exists() && check_file.isDir()) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+void ConfigurationManager::copyAssetsFiles() {
+    QFile().copy(":assets/apps_linux.json", ASSETS_FOLDER_FILE_PATH + "/apps_linux.json");
+    QFile().copy(":assets/apps_windows.json", ASSETS_FOLDER_FILE_PATH + "/apps_windows.json");
+    QFile().copy(":assets/box.png", ASSETS_FOLDER_FILE_PATH + "/box.png");
+    QFile().copy(":assets/sunshine.conf", ASSETS_FOLDER_FILE_PATH + "/sunshine.conf");
 }

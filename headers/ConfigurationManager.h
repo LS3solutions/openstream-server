@@ -11,6 +11,8 @@
 #include <QDebug>
 #include <QSaveFile>
 #include <QCoreApplication>
+#include <QFileInfo>
+#include <QDir>
 
 class ConfigurationManager : public QObject
 {
@@ -22,7 +24,8 @@ public:
     QString getKey(QString key);
 private:
 
-    const QString configFile = QString(QCoreApplication::applicationDirPath() + "/assets/sunshine.conf");
+    const QString CONFIG_FILE_PATH = QString(QCoreApplication::applicationDirPath() + "/assets/sunshine.conf");
+    const QString ASSETS_FOLDER_FILE_PATH = QString(QCoreApplication::applicationDirPath() + "/assets");
 
     /**
      * @brief loadRootConfiguration places the template configuration
@@ -36,6 +39,21 @@ private:
      */
 
     QHash<QString, QString> entries;
+
+    /**
+     * @brief checks if the configuration file exists in assets folder.
+     * Useful for prevent runtime errors if the assets folder hasn't being copied in
+     * when the installer was built.
+     */
+    bool configFileExists();
+
+    /**
+     * @brief checks if the assets folder exists. Useful for prevent runtime errors
+     * if the assets folder hasn't being copied in when the installer was built.
+     */
+    bool folderAssetsExists();
+
+    void copyAssetsFiles();
 };
 
 #endif // CONFIGURATIONMANAGER_H
