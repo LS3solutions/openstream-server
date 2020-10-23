@@ -16,23 +16,6 @@ ConfigurationDialog::ConfigurationDialog(QWidget *parent)
     buttonBox = new QDialogButtonBox(QDialogButtonBox::Save
                                  | QDialogButtonBox::Close);
 
-    /*encoder*/
-    encoderFieldGroupBox = new QGroupBox(this);
-    encoderFieldRadioBtnHardware = new QRadioButton("Hardware", this);
-    encoderFieldRadioBtnSoftware = new QRadioButton("Software", this);
-
-    if(config->getKey(QString("encoder")) == "nvenc")
-        encoderFieldRadioBtnHardware->setChecked(true);
-    else
-        encoderFieldRadioBtnSoftware->setChecked(true);
-
-    encoderHBoxLayout = new QHBoxLayout(this);
-    encoderHBoxLayout->addWidget(encoderFieldRadioBtnHardware);
-    encoderHBoxLayout->addWidget( encoderFieldRadioBtnSoftware);
-    encoderFieldGroupBox->setLayout(encoderHBoxLayout);
-
-    configInputForm->addRow(ENCODER_LABEL, encoderFieldGroupBox);
-
     /*nr of threads*/
     minThreadsFieldLineEdit = new QLineEdit(this);
     minThreadsFieldLineEdit->setText(config->getKey(QString("min_threads")));
@@ -67,12 +50,6 @@ void ConfigurationDialog::updateNewConfiguration()
 {
     qDebug() << "Update new configuration" << endl;
     QHash<QString, QString> entries = QHash<QString, QString>();
-
-    /*Checks for encoder opt*/
-    if(encoderFieldRadioBtnHardware->isChecked())
-        config->setEntry("encoder", "nvenc");
-    else
-        config->setEntry("encoder", "software");
 
     /*Checks for nr of threads*/
     QString nrOfThreads = minThreadsFieldLineEdit->text();

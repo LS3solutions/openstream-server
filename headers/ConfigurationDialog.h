@@ -34,10 +34,6 @@ private:
     QDialogButtonBox *buttonBox;
     void cleaning();
 
-    QGroupBox *encoderFieldGroupBox;
-    QRadioButton *encoderFieldRadioBtnHardware;
-    QRadioButton *encoderFieldRadioBtnSoftware;
-    QHBoxLayout *encoderHBoxLayout;
     QLineEdit *minThreadsFieldLineEdit;
     QString ENCODER_LABEL = QString("Encoder");
     QString MIN_THREADS_LABEL = QString("Threads");
