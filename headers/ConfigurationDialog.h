@@ -34,8 +34,20 @@ private:
     QDialogButtonBox *buttonBox;
     void cleaning();
 
+    /********Software encoder speed****/
+    QRadioButton *encswSpeedFastRadioBtn;
+    QRadioButton *encswSpeedFasterRadioBtn;
+    QRadioButton *encswSpeedUltraFastRadioBtn;
+    QGroupBox *encswFieldGroupBox;
+    QHBoxLayout *encswHBoxLayout;
+    QString ENCODER_SPEED_LABEL = QString("Encoding speed");
+    QString ENCODER_SPEED_FAST = QString("fast");
+    QString ENCODER_SPEED_FASTER = QString("faster");
+    QString ENCODER_SPEED_ULTRAFAST = QString("ultrafast");
+
+
+    /********Number of threads*********/
     QLineEdit *minThreadsFieldLineEdit;
-    QString ENCODER_LABEL = QString("Encoder");
     QString MIN_THREADS_LABEL = QString("Threads");
 };
 

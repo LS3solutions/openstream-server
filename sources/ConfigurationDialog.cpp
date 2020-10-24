@@ -16,7 +16,27 @@ ConfigurationDialog::ConfigurationDialog(QWidget *parent)
     buttonBox = new QDialogButtonBox(QDialogButtonBox::Save
                                  | QDialogButtonBox::Close);
 
-    /*nr of threads*/
+    /********Software encoder speed****/
+    encswSpeedFastRadioBtn = new QRadioButton(ENCODER_SPEED_FAST.left(1).toUpper()+ENCODER_SPEED_FAST.mid(1),this);
+    encswSpeedFasterRadioBtn = new QRadioButton(ENCODER_SPEED_FASTER.left(1).toUpper()+ENCODER_SPEED_FASTER.mid(1), this);
+    encswSpeedUltraFastRadioBtn = new QRadioButton(ENCODER_SPEED_ULTRAFAST.left(1).toUpper()+ENCODER_SPEED_ULTRAFAST.mid(1), this);
+    encswHBoxLayout = new QHBoxLayout(this);
+    encswHBoxLayout->addWidget(encswSpeedFastRadioBtn);
+    encswHBoxLayout->addWidget(encswSpeedFasterRadioBtn);
+    encswHBoxLayout->addWidget(encswSpeedUltraFastRadioBtn);
+
+    if(config->getKey(QString("sw_preset")) == ENCODER_SPEED_FAST)
+        encswSpeedFastRadioBtn->setChecked(true);
+    else if(config->getKey(QString("sw_preset")) == ENCODER_SPEED_FASTER)
+        encswSpeedFasterRadioBtn->setChecked(true);
+    else if (config->getKey(QString("sw_preset")) == ENCODER_SPEED_ULTRAFAST)
+        encswSpeedUltraFastRadioBtn->setChecked(true);
+
+    encswFieldGroupBox = new QGroupBox(this);
+    encswFieldGroupBox->setLayout(encswHBoxLayout);
+    configInputForm->addRow(ENCODER_SPEED_LABEL, encswFieldGroupBox);
+
+    /********Number of threads*********/
     minThreadsFieldLineEdit = new QLineEdit(this);
     minThreadsFieldLineEdit->setText(config->getKey(QString("min_threads")));
 
@@ -49,7 +69,14 @@ void ConfigurationDialog::editConfigurationClicked()
 void ConfigurationDialog::updateNewConfiguration()
 {
     qDebug() << "Update new configuration" << endl;
-    QHash<QString, QString> entries = QHash<QString, QString>();
+
+    /********Software encoder speed****/
+    if(encswSpeedFastRadioBtn->isChecked())
+        config->setEntry("sw_preset", ENCODER_SPEED_FAST);
+    else if(encswSpeedFasterRadioBtn->isChecked())
+        config->setEntry("sw_preset", ENCODER_SPEED_FASTER);
+    else if(encswSpeedUltraFastRadioBtn->isChecked())
+        config->setEntry("sw_preset", ENCODER_SPEED_ULTRAFAST);
 
     /*Checks for nr of threads*/
     QString nrOfThreads = minThreadsFieldLineEdit->text();

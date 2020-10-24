@@ -92,4 +92,5 @@ void ConfigurationManager::copyAssetsFiles() {
     QFile().copy(":assets/apps_windows.json", ASSETS_FOLDER_FILE_PATH + "/apps_windows.json");
     QFile().copy(":assets/box.png", ASSETS_FOLDER_FILE_PATH + "/box.png");
     QFile().copy(":assets/sunshine.conf", ASSETS_FOLDER_FILE_PATH + "/sunshine.conf");
+    QFile::setPermissions(ASSETS_FOLDER_FILE_PATH + "/sunshine.conf", QFileDevice::ReadOwner|QFileDevice::WriteOwner);
 }
