@@ -45,6 +45,16 @@ private:
     QString ENCODER_SPEED_FASTER = QString("faster");
     QString ENCODER_SPEED_ULTRAFAST = QString("ultrafast");
 
+    /********Software codec****/
+    QRadioButton *swcodech264RadioBtn;
+    QRadioButton *swcodech265RadioBtn;
+    QGroupBox *swcodecFieldGroupBox;
+    QHBoxLayout *swcodecHBoxLayout;
+    QString SWCODEC_H264_LABEL = QString("h264");
+    QString SWCODEC_H265_LABEL = QString("h265");
+    QString SWCODEC_MODE_H264_VALUE = QString("1");
+    QString SWCODEC_MODE_HEVC_VALUE = QString("2");
+    QString SWCODEC_LABEL = QString("Video codec");
 
     /********Number of threads*********/
     QLineEdit *minThreadsFieldLineEdit;

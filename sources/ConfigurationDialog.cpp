@@ -36,6 +36,22 @@ ConfigurationDialog::ConfigurationDialog(QWidget *parent)
     encswFieldGroupBox->setLayout(encswHBoxLayout);
     configInputForm->addRow(ENCODER_SPEED_LABEL, encswFieldGroupBox);
 
+    /********Software codec****/
+    swcodech264RadioBtn = new QRadioButton(SWCODEC_H264_LABEL, this);
+    swcodech265RadioBtn = new QRadioButton(SWCODEC_H265_LABEL, this);
+    swcodecHBoxLayout = new QHBoxLayout(this);
+    swcodecHBoxLayout->addWidget(swcodech264RadioBtn);
+    swcodecHBoxLayout->addWidget(swcodech265RadioBtn);
+
+    if(config->getKey(QString("hevc_mode")) == SWCODEC_MODE_H264_VALUE)
+        swcodech264RadioBtn->setChecked(true);
+    else if (config->getKey(QString("hevc_mode")) == SWCODEC_MODE_HEVC_VALUE)
+        swcodech265RadioBtn->setChecked(true);
+
+    swcodecFieldGroupBox = new QGroupBox(this);
+    swcodecFieldGroupBox->setLayout(swcodecHBoxLayout);
+    configInputForm->addRow(SWCODEC_LABEL, swcodecFieldGroupBox);
+
     /********Number of threads*********/
     minThreadsFieldLineEdit = new QLineEdit(this);
     minThreadsFieldLineEdit->setText(config->getKey(QString("min_threads")));
@@ -77,6 +93,12 @@ void ConfigurationDialog::updateNewConfiguration()
         config->setEntry("sw_preset", ENCODER_SPEED_FASTER);
     else if(encswSpeedUltraFastRadioBtn->isChecked())
         config->setEntry("sw_preset", ENCODER_SPEED_ULTRAFAST);
+
+    /********Software codec****/
+    if(swcodech264RadioBtn->isChecked())
+        config->setEntry("hevc_mode", SWCODEC_MODE_H264_VALUE);
+    else if(swcodech265RadioBtn->isChecked())
+        config->setEntry("hevc_mode", SWCODEC_MODE_HEVC_VALUE);
 
     /*Checks for nr of threads*/
     QString nrOfThreads = minThreadsFieldLineEdit->text();
