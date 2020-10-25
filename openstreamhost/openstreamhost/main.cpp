@@ -27,6 +27,10 @@ extern "C" {
 #include <libavutil/log.h>
 }
 
+/*System calls for process priority*/
+#include <windows.h>
+#include <tchar.h>
+
 using namespace std::literals;
 namespace bl = boost::log;
 
@@ -64,6 +68,19 @@ void on_signal_forwarder(int sig) {
   signal_handlers.at(sig)();
 }
 
+void set_host_process_priority() {
+    DWORD dwError, dwPriClass;
+
+    if(!SetPriorityClass(GetCurrentProcess(), REALTIME_PRIORITY_CLASS))
+    {
+      dwError = GetLastError();
+      log_and_flush("Failed to set process priority (%d)\n", error);
+    }
+    // This two lines logs the streaming host priority.
+    //dwPriClass = GetPriorityClass(GetCurrentProcess());
+    //_tprintf(TEXT("Current priority class is 0x%x\n"), dwPriClass);
+}
+
 template<class FN>
 void on_signal(int sig, FN &&fn) {
   signal_handlers.emplace(sig, std::forward<FN>(fn));
@@ -72,6 +89,7 @@ void on_signal(int sig, FN &&fn) {
 }
 
 int main(int argc, char *argv[]) {
+  set_host_process_priority();
   if(config::parse(argc, argv)) {
     return 0;
   }
