@@ -49,4 +49,3 @@ add_executable(openstreamapp
 )
 
 target_link_libraries(openstreamapp PRIVATE Qt5::Widgets Qt5::Network ${OPENSTREAM_EXTERNAL_LIBRARIES})
-
