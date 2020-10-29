@@ -139,6 +139,10 @@ sunshine_t sunshine {
   0 // flags
 };
 
+system_priority sys_priority {
+    1
+};
+
 bool whitespace(char ch) {
   return ch == ' ' || ch == '\t';
 }
@@ -370,6 +374,8 @@ void apply_config(std::unordered_map<std::string, std::string> &&vars) {
   string_f(vars, "external_ip", nvhttp.external_ip);
 
   string_f(vars, "audio_sink", audio.sink);
+
+  int_f(vars, "system_priority", sys_priority.priority_class);
 
   string_restricted_f(vars, "origin_pin_allowed", nvhttp.origin_pin_allowed, {
     "pc"sv, "lan"sv, "wan"sv

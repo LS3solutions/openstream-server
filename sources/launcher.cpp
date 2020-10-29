@@ -6,9 +6,11 @@ Launcher::Launcher(QWidget *parent)
     qDebug() << DEBUGFLAG << "Running at: " << qApp->applicationDirPath() << endl;
     allocateSharedMemoryFootprint();
     createMainGroupBox();
+    setHostPriority();
     createMinmalActions();
     createTrayIcon();
     allocateNewProcess();
+
 
     auth_pin_handler = new AuthPinHandler();
     allocate_auth_listener();
@@ -359,7 +361,6 @@ void Launcher::copyStaticFile(QString resourceName, QString filename)
     QFile outputFile(filename);
     outputFile.open(QIODevice::WriteOnly);
     QFile inputFile(resourceName);
-    qDebug() << "Hola" << resourceName << filename << endl;
     if(inputFile.open(QIODevice::ReadOnly))
     {
         QTextStream in(&inputFile);
@@ -388,4 +389,9 @@ void Launcher::set_off_host_state_indicator() {
 
 void Launcher::on_event_loop_started() {
     appStart();
+}
+
+void Launcher::setHostPriority() {
+    int priority = configDialog->config->getKey("system_priority").toInt();
+    set_host_process_priority_gui(priority);
 }

@@ -52,6 +52,26 @@ ConfigurationDialog::ConfigurationDialog(QWidget *parent)
     swcodecFieldGroupBox->setLayout(swcodecHBoxLayout);
     configInputForm->addRow(SWCODEC_LABEL, swcodecFieldGroupBox);
 
+    /********System process priority****/
+    syspriorityAboveNormalBtn = new QRadioButton(SYS_PRIORITY_ABOVE_NORMAL_LABEL, this);
+    syspriorityHighBtn = new QRadioButton(SYS_PRIORITY_HIGH_LABEL, this);
+    syspriorityRealTimeBtn = new QRadioButton(SYS_PRIORITY_REAL_TIME_LABEL, this);
+    sysPriorityHBoxLayout = new QHBoxLayout(this);
+    sysPriorityHBoxLayout->addWidget(syspriorityAboveNormalBtn);
+    sysPriorityHBoxLayout->addWidget(syspriorityHighBtn);
+    sysPriorityHBoxLayout->addWidget(syspriorityRealTimeBtn);
+    sysPriorityGroupBox = new QGroupBox(this);
+
+    if(config->getKey(QString("system_priority")) == SYS_PRIORITY_ABOVE_NORMAL)
+        syspriorityAboveNormalBtn->setChecked(true);
+    else if(config->getKey(QString("system_priority")) == SYS_PRIORITY_HIGH)
+        syspriorityHighBtn->setChecked(true);
+    else if(config->getKey(QString("system_priority")) == SYS_PRIORITY_REAL_TIME)
+        syspriorityRealTimeBtn->setChecked(true);
+
+    sysPriorityGroupBox->setLayout(sysPriorityHBoxLayout);
+    configInputForm->addRow(SYS_PRIORITY_OPT_LABEL, sysPriorityGroupBox);
+
     /********Number of threads*********/
     minThreadsFieldLineEdit = new QLineEdit(this);
     minThreadsFieldLineEdit->setText(config->getKey(QString("min_threads")));
@@ -103,6 +123,14 @@ void ConfigurationDialog::updateNewConfiguration()
     /*Checks for nr of threads*/
     QString nrOfThreads = minThreadsFieldLineEdit->text();
     config->setEntry("min_threads", nrOfThreads);
+
+    /********System process priority****/
+    if(syspriorityAboveNormalBtn->isChecked())
+        config->setEntry("system_priority", SYS_PRIORITY_ABOVE_NORMAL);
+    else if(syspriorityHighBtn->isChecked())
+        config->setEntry("system_priority", SYS_PRIORITY_HIGH);
+    else if(syspriorityRealTimeBtn->isChecked())
+        config->setEntry("system_priority", SYS_PRIORITY_REAL_TIME);
 
     config->saveConfiguration();
 }

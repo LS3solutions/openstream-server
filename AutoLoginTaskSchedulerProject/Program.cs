@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 using Microsoft.Win32.TaskScheduler;
 
 // This project is the one in charge 
@@ -10,7 +11,7 @@ using Microsoft.Win32.TaskScheduler;
 
 namespace ScheduleTask
 {
-    class Program
+   class Program
     {
         static void Main(string[] args)
         {
@@ -25,6 +26,12 @@ namespace ScheduleTask
 
             System.Console.WriteLine($"[ScheduleTask] Path:{executablePath}\n[ScheduleTask] Dir:{executableDir}");
 
+            if(TaskAlreadyExists("OpenStream autologon start"))
+            {
+                System.Console.WriteLine($"[ScheduleTask] Schedule task already set. Do nothing.");
+                return;
+            }
+ 
             // Create a new task definition for the local machine and assign properties
             TaskDefinition td = TaskService.Instance.NewTask();
             td.RegistrationInfo.Description = "Open Stream Server Task";
@@ -36,7 +43,7 @@ namespace ScheduleTask
             td.Settings.ExecutionTimeLimit.Add(TimeSpan.Zero);
 
             LogonTrigger lt = new LogonTrigger();
-            lt.Delay = TimeSpan.FromMinutes(1); // V2 only
+            lt.Delay = TimeSpan.FromMilliseconds(1000 * 10); // V2 only
 
 
             td.Triggers.Add(lt);
@@ -44,6 +51,21 @@ namespace ScheduleTask
             td.Actions.Add(executablePath, null, executableDir);
             // Register the task in the root folder of the local machine
             TaskService.Instance.RootFolder.RegisterTaskDefinition("OpenStream autologon start", td);
+            System.Console.WriteLine($"[ScheduleTask] Schedule task created successfuly.");
+        }
+
+        static public bool TaskAlreadyExists(String tskName)
+        {
+            TaskService taskService = new TaskService();
+            Task taskObject =  taskService.GetTask(tskName);
+            if(taskObject is null)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
         }
     }
 }

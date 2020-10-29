@@ -24,8 +24,10 @@
 #include <QFuture>
 #include <QInputDialog>
 
+
 #include "headers/auth_listener_worker.h"
 #include "headers/auth_pin_handler.h"
+#include "headers/set_priority_class.h"
 
 class Launcher : public QWidget
 {
@@ -124,6 +126,7 @@ private:
 
     void copyStaticFile(QString resourceName,
                         QString fileName);
+    void setHostPriority();
 
     QTabWidget *mainWidget;
     QWidget *controlWidget;

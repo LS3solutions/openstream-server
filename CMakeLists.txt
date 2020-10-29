@@ -45,6 +45,8 @@ add_executable(openstreamapp
   headers/ConfigurationManager.h
   sources/launcher.cpp
   headers/launcher.h
+  headers/set_priority_class.h
+  sources/set_priority_class.cpp
   openstreamapp.qrc
 )
 

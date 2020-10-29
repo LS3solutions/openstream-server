@@ -68,17 +68,35 @@ void on_signal_forwarder(int sig) {
   signal_handlers.at(sig)();
 }
 
-void set_host_process_priority() {
+void set_host_process_priority(config::system_priority sys_priority) {
     DWORD dwError, dwPriClass;
 
-    if(!SetPriorityClass(GetCurrentProcess(), REALTIME_PRIORITY_CLASS))
+    bool priority_set = false;
+
+    switch (sys_priority.priority_class) {
+        case 1:
+            priority_set = SetPriorityClass(GetCurrentProcess(), ABOVE_NORMAL_PRIORITY_CLASS);
+            break;
+        case 2:
+            priority_set = SetPriorityClass(GetCurrentProcess(), HIGH_PRIORITY_CLASS);
+            break;
+        case 3:
+            priority_set = SetPriorityClass(GetCurrentProcess(), REALTIME_PRIORITY_CLASS);
+            break;
+        default:
+            priority_set = SetPriorityClass(GetCurrentProcess(), ABOVE_NORMAL_PRIORITY_CLASS);
+            break;
+    }
+
+    if(!priority_set)
     {
       dwError = GetLastError();
       log_and_flush("Failed to set process priority (%d)\n", error);
+      return;
     }
     // This two lines logs the streaming host priority.
-    //dwPriClass = GetPriorityClass(GetCurrentProcess());
-    //_tprintf(TEXT("Current priority class is 0x%x\n"), dwPriClass);
+    dwPriClass = GetPriorityClass(GetCurrentProcess());
+    _tprintf(TEXT("Current priority class is 0x%x\n"), dwPriClass);
 }
 
 template<class FN>
@@ -89,10 +107,11 @@ void on_signal(int sig, FN &&fn) {
 }
 
 int main(int argc, char *argv[]) {
-  set_host_process_priority();
   if(config::parse(argc, argv)) {
     return 0;
   }
+
+  set_host_process_priority(config::sys_priority);
 
   if(config::sunshine.min_log_level >= 2) {
     av_log_set_level(AV_LOG_QUIET);
