@@ -40,7 +40,7 @@ namespace ScheduleTask
             td.Principal.RunLevel = TaskRunLevel.Highest;
 
             //Allows the task to run infinetly. 
-            td.Settings.ExecutionTimeLimit.Add(TimeSpan.Zero);
+            td.Settings.ExecutionTimeLimit = (TimeSpan.Zero);
 
             LogonTrigger lt = new LogonTrigger();
             lt.Delay = TimeSpan.FromMilliseconds(1000 * 10); // V2 only

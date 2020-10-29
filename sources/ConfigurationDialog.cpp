@@ -7,6 +7,7 @@ ConfigurationDialog::ConfigurationDialog(QWidget *parent)
     : QDialog(parent)
 {
     config = new ConfigurationManager();
+    entries_snapshot = QHash<QString, QString>();
 
     //TODO: refine this writing to disc
     config->setEntry("file_apps", QCoreApplication::applicationDirPath() + "/assets/apps_windows.json");
@@ -29,15 +30,22 @@ ConfigurationDialog::ConfigurationDialog(QWidget *parent)
     encswHBoxLayout->addWidget(encswSpeedSuperFastRadioBtn);
     encswHBoxLayout->addWidget(encswSpeedUltraFastRadioBtn);
 
-    if(config->getKey(QString("sw_preset")) == ENCODER_SPEED_FAST)
+    if(config->getKey(QString("sw_preset")) == ENCODER_SPEED_FAST) {
         encswSpeedFastRadioBtn->setChecked(true);
-    else if(config->getKey(QString("sw_preset")) == ENCODER_SPEED_FASTER)
+        entries_snapshot.insert("sw_preset", ENCODER_SPEED_FAST);
+    }
+    else if(config->getKey(QString("sw_preset")) == ENCODER_SPEED_FASTER) {
         encswSpeedFasterRadioBtn->setChecked(true);
-    else if (config->getKey(QString("sw_preset")) == ENCODER_SPEED_ULTRAFAST)
+        entries_snapshot.insert("sw_preset", ENCODER_SPEED_FASTER);
+    }
+    else if (config->getKey(QString("sw_preset")) == ENCODER_SPEED_ULTRAFAST) {
         encswSpeedUltraFastRadioBtn->setChecked(true);
-    else if(config->getKey(QString("sw_preset")) == ENCODER_SPEED_SUPERFAST)
+        entries_snapshot.insert("sw_preset", ENCODER_SPEED_ULTRAFAST);
+    }
+    else if(config->getKey(QString("sw_preset")) == ENCODER_SPEED_SUPERFAST) {
         encswSpeedSuperFastRadioBtn->setChecked(true);
-
+        entries_snapshot.insert("sw_preset", ENCODER_SPEED_SUPERFAST);
+    }
     encswFieldGroupBox = new QGroupBox(this);
     encswFieldGroupBox->setLayout(encswHBoxLayout);
     configInputForm->addRow(ENCODER_SPEED_LABEL, encswFieldGroupBox);
@@ -49,10 +57,14 @@ ConfigurationDialog::ConfigurationDialog(QWidget *parent)
     swcodecHBoxLayout->addWidget(swcodech264RadioBtn);
     swcodecHBoxLayout->addWidget(swcodech265RadioBtn);
 
-    if(config->getKey(QString("hevc_mode")) == SWCODEC_MODE_H264_VALUE)
+    if(config->getKey(QString("hevc_mode")) == SWCODEC_MODE_H264_VALUE) {
         swcodech264RadioBtn->setChecked(true);
-    else if (config->getKey(QString("hevc_mode")) == SWCODEC_MODE_HEVC_VALUE)
+        entries_snapshot.insert("hevc_mode", SWCODEC_MODE_H264_VALUE);
+    }
+    else if (config->getKey(QString("hevc_mode")) == SWCODEC_MODE_HEVC_VALUE) {
         swcodech265RadioBtn->setChecked(true);
+        entries_snapshot.insert("hevc_mode", SWCODEC_MODE_HEVC_VALUE);
+    }
 
     swcodecFieldGroupBox = new QGroupBox(this);
     swcodecFieldGroupBox->setLayout(swcodecHBoxLayout);
@@ -68,12 +80,18 @@ ConfigurationDialog::ConfigurationDialog(QWidget *parent)
     sysPriorityHBoxLayout->addWidget(syspriorityRealTimeBtn);
     sysPriorityGroupBox = new QGroupBox(this);
 
-    if(config->getKey(QString("system_priority")) == SYS_PRIORITY_ABOVE_NORMAL)
+    if(config->getKey(QString("system_priority")) == SYS_PRIORITY_ABOVE_NORMAL) {
         syspriorityAboveNormalBtn->setChecked(true);
-    else if(config->getKey(QString("system_priority")) == SYS_PRIORITY_HIGH)
+        entries_snapshot.insert("system_priority", SYS_PRIORITY_ABOVE_NORMAL);
+    }
+    else if(config->getKey(QString("system_priority")) == SYS_PRIORITY_HIGH) {
         syspriorityHighBtn->setChecked(true);
-    else if(config->getKey(QString("system_priority")) == SYS_PRIORITY_REAL_TIME)
+        entries_snapshot.insert("system_priority", SYS_PRIORITY_HIGH);
+    }
+    else if(config->getKey(QString("system_priority")) == SYS_PRIORITY_REAL_TIME) {
         syspriorityRealTimeBtn->setChecked(true);
+        entries_snapshot.insert("system_priority",  SYS_PRIORITY_REAL_TIME);
+    }
 
     sysPriorityGroupBox->setLayout(sysPriorityHBoxLayout);
     configInputForm->addRow(SYS_PRIORITY_OPT_LABEL, sysPriorityGroupBox);
@@ -81,6 +99,7 @@ ConfigurationDialog::ConfigurationDialog(QWidget *parent)
     /********Number of threads*********/
     minThreadsFieldLineEdit = new QLineEdit(this);
     minThreadsFieldLineEdit->setText(config->getKey(QString("min_threads")));
+    entries_snapshot.insert("min_threads", config->getKey(QString("min_threads")));
 
     configInputForm->addRow(MIN_THREADS_LABEL, minThreadsFieldLineEdit);
 
@@ -142,10 +161,18 @@ void ConfigurationDialog::updateNewConfiguration()
 
     config->saveConfiguration();
 
-    /*Pseudo-Restart host after config changes*/
-    QMessageBox::information(this, "Info",
-                                     tr("Configuration changed. Stream host will restart."));
-    emit configuration_changed();
+    if( entries_snapshot.value("sw_preset") != config->getKey("sw_preset")
+        || entries_snapshot.value("hevc_mode") != config->getKey("hevc_mode")
+        || entries_snapshot.value("min_threads") != config->getKey("min_threads")
+        || entries_snapshot.value("system_priority") != config->getKey("system_priority"))
+    {
+        entries_snapshot.insert("sw_preset",config->getKey("sw_preset"));
+        entries_snapshot.insert("hevc_mode", config->getKey("hevc_mode"));
+        entries_snapshot.insert("min_threads",config->getKey("min_threads"));
+        entries_snapshot.insert("system_priority", config->getKey("system_priority"));
+        emit configuration_changed();
+    }
+
 }
 
 void ConfigurationDialog::setGUIPriority() {

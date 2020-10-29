@@ -79,6 +79,8 @@ private:
     /********Number of threads*********/
     QLineEdit *minThreadsFieldLineEdit;
     QString MIN_THREADS_LABEL = QString("Threads");
+
+    QHash<QString, QString> entries_snapshot;
 };
 
 #endif // CONFIGURATIONDIALOG_H

@@ -392,7 +392,11 @@ void Launcher::on_event_loop_started() {
 
 void Launcher::configuration_changed_apply() {
     configDialog->setGUIPriority();
-    if(proc->state() == QProcess::Running)
+    if(proc->state() == QProcess::Running) {
+        /*Pseudo-Restart host after config changes*/
+        QMessageBox::information(this, "Info",
+                                         tr("Configuration changed. Stream host will restart."));
         stopSunshine();
         startSunshine();
+    }
 }
