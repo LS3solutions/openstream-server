@@ -95,8 +95,8 @@ void set_host_process_priority(config::system_priority sys_priority) {
       return;
     }
     // This two lines logs the streaming host priority.
-    dwPriClass = GetPriorityClass(GetCurrentProcess());
-    _tprintf(TEXT("Current priority class is 0x%x\n"), dwPriClass);
+    //dwPriClass = GetPriorityClass(GetCurrentProcess());
+    //_tprintf(TEXT("Current priority class is 0x%x\n"), dwPriClass);
 }
 
 template<class FN>
@@ -157,7 +157,6 @@ int main(int argc, char *argv[]) {
     os << _date << log_type << view.attribute_values()[message].extract<std::string>();
   });
 
-  //BOOST_LOG(info) << "Starting streamming host..."sv;
   log_and_flush("Starting streamming host..."sv, info);
 
   bl::core::get()->add_sink(sink);

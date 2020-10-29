@@ -56,12 +56,14 @@ private:
     QRadioButton *encswSpeedFastRadioBtn;
     QRadioButton *encswSpeedFasterRadioBtn;
     QRadioButton *encswSpeedUltraFastRadioBtn;
+    QRadioButton *encswSpeedSuperFastRadioBtn;
     QGroupBox *encswFieldGroupBox;
     QHBoxLayout *encswHBoxLayout;
     QString ENCODER_SPEED_LABEL = QString("Encoding speed");
     QString ENCODER_SPEED_FAST = QString("fast");
     QString ENCODER_SPEED_FASTER = QString("faster");
     QString ENCODER_SPEED_ULTRAFAST = QString("ultrafast");
+    QString ENCODER_SPEED_SUPERFAST = QString("superfast");
 
     /********Software codec****/
     QRadioButton *swcodech264RadioBtn;

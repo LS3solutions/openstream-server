@@ -1,6 +1,7 @@
 #include "headers/ConfigurationDialog.h"
 #include <QCoreApplication>
 #include "headers/set_priority_class.h"
+#include <QMessageBox>
 
 ConfigurationDialog::ConfigurationDialog(QWidget *parent)
     : QDialog(parent)
@@ -21,9 +22,11 @@ ConfigurationDialog::ConfigurationDialog(QWidget *parent)
     encswSpeedFastRadioBtn = new QRadioButton(ENCODER_SPEED_FAST.left(1).toUpper()+ENCODER_SPEED_FAST.mid(1),this);
     encswSpeedFasterRadioBtn = new QRadioButton(ENCODER_SPEED_FASTER.left(1).toUpper()+ENCODER_SPEED_FASTER.mid(1), this);
     encswSpeedUltraFastRadioBtn = new QRadioButton(ENCODER_SPEED_ULTRAFAST.left(1).toUpper()+ENCODER_SPEED_ULTRAFAST.mid(1), this);
+    encswSpeedSuperFastRadioBtn = new QRadioButton(ENCODER_SPEED_SUPERFAST.left(1).toUpper()+ENCODER_SPEED_SUPERFAST.mid(1), this);
     encswHBoxLayout = new QHBoxLayout(this);
     encswHBoxLayout->addWidget(encswSpeedFastRadioBtn);
     encswHBoxLayout->addWidget(encswSpeedFasterRadioBtn);
+    encswHBoxLayout->addWidget(encswSpeedSuperFastRadioBtn);
     encswHBoxLayout->addWidget(encswSpeedUltraFastRadioBtn);
 
     if(config->getKey(QString("sw_preset")) == ENCODER_SPEED_FAST)
@@ -32,6 +35,8 @@ ConfigurationDialog::ConfigurationDialog(QWidget *parent)
         encswSpeedFasterRadioBtn->setChecked(true);
     else if (config->getKey(QString("sw_preset")) == ENCODER_SPEED_ULTRAFAST)
         encswSpeedUltraFastRadioBtn->setChecked(true);
+    else if(config->getKey(QString("sw_preset")) == ENCODER_SPEED_SUPERFAST)
+        encswSpeedSuperFastRadioBtn->setChecked(true);
 
     encswFieldGroupBox = new QGroupBox(this);
     encswFieldGroupBox->setLayout(encswHBoxLayout);
@@ -114,6 +119,8 @@ void ConfigurationDialog::updateNewConfiguration()
         config->setEntry("sw_preset", ENCODER_SPEED_FASTER);
     else if(encswSpeedUltraFastRadioBtn->isChecked())
         config->setEntry("sw_preset", ENCODER_SPEED_ULTRAFAST);
+    else if(encswSpeedSuperFastRadioBtn->isChecked())
+        config->setEntry("sw_preset", ENCODER_SPEED_SUPERFAST);
 
     /********Software codec****/
     if(swcodech264RadioBtn->isChecked())
@@ -136,6 +143,8 @@ void ConfigurationDialog::updateNewConfiguration()
     config->saveConfiguration();
 
     /*Pseudo-Restart host after config changes*/
+    QMessageBox::information(this, "Info",
+                                     tr("Configuration changed. Stream host will restart."));
     emit configuration_changed();
 }
 
