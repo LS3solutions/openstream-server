@@ -6,7 +6,7 @@ Launcher::Launcher(QWidget *parent)
     qDebug() << DEBUGFLAG << "Running at: " << qApp->applicationDirPath() << endl;
     allocateSharedMemoryFootprint();
     createMainGroupBox();
-    setHostPriority();
+    configDialog->setGUIPriority();
     createMinmalActions();
     createTrayIcon();
     allocateNewProcess();
@@ -19,6 +19,7 @@ Launcher::Launcher(QWidget *parent)
     connect(stopSunshineButton, &QAbstractButton::clicked, this, &Launcher::stopSunshine);
     connect(configureSunshineButton, &QAbstractButton::clicked,
             configDialog, &ConfigurationDialog::editConfigurationClicked);
+    connect(configDialog, &ConfigurationDialog::configuration_changed, this, &Launcher::configuration_changed_apply);
     connect(trayIcon, &QSystemTrayIcon::activated, this, &Launcher::trayIconActivated);
 
     //This restores de QTrayApp when the notification is clicked
@@ -193,8 +194,6 @@ void Launcher::stopSunshine()
         delete proc;
         allocateNewProcess();
         qDebug() << "Process host stopped " << pid << endl;
-        QMessageBox::information(this, "Info",
-                                 tr("Sunshine Host Stopped"));
     }
     else {
         qDebug() << "Process currently stopped.";
@@ -391,7 +390,9 @@ void Launcher::on_event_loop_started() {
     appStart();
 }
 
-void Launcher::setHostPriority() {
-    int priority = configDialog->config->getKey("system_priority").toInt();
-    set_host_process_priority_gui(priority);
+void Launcher::configuration_changed_apply() {
+    configDialog->setGUIPriority();
+    if(proc->state() == QProcess::Running)
+        stopSunshine();
+        startSunshine();
 }

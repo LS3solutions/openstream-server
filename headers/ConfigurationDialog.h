@@ -20,7 +20,10 @@ class ConfigurationDialog : public QDialog
 
 public:
     ConfigurationDialog(QWidget*parent = nullptr);
-    ConfigurationManager *config;
+    void setGUIPriority();
+
+signals:
+    void configuration_changed();
 
 public slots:
     void editConfigurationClicked();
@@ -28,6 +31,7 @@ public slots:
     void reject() override;
 
 private:
+    ConfigurationManager *config;
     QFormLayout *configInputForm;
     void updateNewConfiguration();
 

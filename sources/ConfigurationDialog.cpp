@@ -1,5 +1,6 @@
 #include "headers/ConfigurationDialog.h"
 #include <QCoreApplication>
+#include "headers/set_priority_class.h"
 
 ConfigurationDialog::ConfigurationDialog(QWidget *parent)
     : QDialog(parent)
@@ -133,4 +134,12 @@ void ConfigurationDialog::updateNewConfiguration()
         config->setEntry("system_priority", SYS_PRIORITY_REAL_TIME);
 
     config->saveConfiguration();
+
+    /*Pseudo-Restart host after config changes*/
+    emit configuration_changed();
+}
+
+void ConfigurationDialog::setGUIPriority() {
+    int priority = config->getKey("system_priority").toInt();
+    set_host_process_priority_gui(priority);
 }

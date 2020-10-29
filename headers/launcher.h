@@ -57,6 +57,7 @@ public slots:
      */
     void on_event_loop_started();
 
+    void configuration_changed_apply();
 private slots:
     void trayIconActivated(QSystemTrayIcon::ActivationReason reason);
     void startSunshine();
@@ -126,7 +127,6 @@ private:
 
     void copyStaticFile(QString resourceName,
                         QString fileName);
-    void setHostPriority();
 
     QTabWidget *mainWidget;
     QWidget *controlWidget;
