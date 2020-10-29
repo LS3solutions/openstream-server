@@ -20,6 +20,10 @@ class ConfigurationDialog : public QDialog
 
 public:
     ConfigurationDialog(QWidget*parent = nullptr);
+    void setGUIPriority();
+
+signals:
+    void configuration_changed();
 
 public slots:
     void editConfigurationClicked();
@@ -33,6 +37,20 @@ private:
 
     QDialogButtonBox *buttonBox;
     void cleaning();
+
+    /********System process priority****/
+    QRadioButton *syspriorityAboveNormalBtn;
+    QRadioButton *syspriorityHighBtn;
+    QRadioButton *syspriorityRealTimeBtn;
+    QGroupBox *sysPriorityGroupBox;
+    QHBoxLayout *sysPriorityHBoxLayout;
+    QString SYS_PRIORITY_ABOVE_NORMAL_LABEL = QString("Above Normal");
+    QString SYS_PRIORITY_HIGH_LABEL = QString("High");
+    QString SYS_PRIORITY_REAL_TIME_LABEL = QString("Real Time");
+    QString SYS_PRIORITY_OPT_LABEL = QString("Process Priority");
+    QString SYS_PRIORITY_ABOVE_NORMAL = QString("1");
+    QString SYS_PRIORITY_HIGH = QString("2");
+    QString SYS_PRIORITY_REAL_TIME = QString("3");
 
     /********Software encoder speed****/
     QRadioButton *encswSpeedFastRadioBtn;

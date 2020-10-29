@@ -24,8 +24,10 @@
 #include <QFuture>
 #include <QInputDialog>
 
+
 #include "headers/auth_listener_worker.h"
 #include "headers/auth_pin_handler.h"
+#include "headers/set_priority_class.h"
 
 class Launcher : public QWidget
 {
@@ -55,6 +57,7 @@ public slots:
      */
     void on_event_loop_started();
 
+    void configuration_changed_apply();
 private slots:
     void trayIconActivated(QSystemTrayIcon::ActivationReason reason);
     void startSunshine();

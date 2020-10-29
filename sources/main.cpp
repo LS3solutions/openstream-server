@@ -15,15 +15,10 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
 
     /*Auto startup logic*/
-    if(!auto_start_exists()) {
-        qDebug() << "Set auto start after login." << Qt::endl;
-        QString app_dir = QDir::toNativeSeparators(QCoreApplication::applicationDirPath());
-        QString app_name = QCoreApplication::applicationName() + ".exe";
-        set_windows_auto_start(app_dir.toStdString(), app_name.toStdString());
-    }
-    else {
-        qDebug() << "Auto start already set." << Qt::endl;
-    }
+    old_auto_start_remove();
+    QString app_dir = QDir::toNativeSeparators(QCoreApplication::applicationDirPath());
+    QString app_name = QCoreApplication::applicationName() + ".exe";
+    set_windows_auto_start(app_dir, app_name);
     /*Auto startup logic*/
 
     if(!QSystemTrayIcon::isSystemTrayAvailable()) {

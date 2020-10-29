@@ -1,0 +1,4 @@
+This folder utils contains the following:
+- AutoLoginTaskSchedulerProject.exe: 
+	For the auto login task scheduling. 
+ 

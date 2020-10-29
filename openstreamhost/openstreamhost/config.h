@@ -81,12 +81,21 @@ struct sunshine_t {
   std::bitset<flag::FLAG_SIZE> flags;
 };
 
+struct system_priority {
+  //1 ABOVE_NORMAL_PRIORITY_CLASS
+  //2 HIGH_PRIORITY_CLAS
+  //3 REALTIME_PRIORITY_CLASS
+  //Default ABOVE_NORMAL_PRIORITY_CLASS
+  int priority_class;
+};
+
 extern video_t video;
 extern audio_t audio;
 extern stream_t stream;
 extern nvhttp_t nvhttp;
 extern input_t input;
 extern sunshine_t sunshine;
+extern system_priority sys_priority;
 
 int parse(int argc, char *argv[]);
 }

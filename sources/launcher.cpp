@@ -6,9 +6,11 @@ Launcher::Launcher(QWidget *parent)
     qDebug() << DEBUGFLAG << "Running at: " << qApp->applicationDirPath() << endl;
     allocateSharedMemoryFootprint();
     createMainGroupBox();
+    configDialog->setGUIPriority();
     createMinmalActions();
     createTrayIcon();
     allocateNewProcess();
+
 
     auth_pin_handler = new AuthPinHandler();
     allocate_auth_listener();
@@ -17,6 +19,7 @@ Launcher::Launcher(QWidget *parent)
     connect(stopSunshineButton, &QAbstractButton::clicked, this, &Launcher::stopSunshine);
     connect(configureSunshineButton, &QAbstractButton::clicked,
             configDialog, &ConfigurationDialog::editConfigurationClicked);
+    connect(configDialog, &ConfigurationDialog::configuration_changed, this, &Launcher::configuration_changed_apply);
     connect(trayIcon, &QSystemTrayIcon::activated, this, &Launcher::trayIconActivated);
 
     //This restores de QTrayApp when the notification is clicked
@@ -191,8 +194,6 @@ void Launcher::stopSunshine()
         delete proc;
         allocateNewProcess();
         qDebug() << "Process host stopped " << pid << endl;
-        QMessageBox::information(this, "Info",
-                                 tr("Sunshine Host Stopped"));
     }
     else {
         qDebug() << "Process currently stopped.";
@@ -359,7 +360,6 @@ void Launcher::copyStaticFile(QString resourceName, QString filename)
     QFile outputFile(filename);
     outputFile.open(QIODevice::WriteOnly);
     QFile inputFile(resourceName);
-    qDebug() << "Hola" << resourceName << filename << endl;
     if(inputFile.open(QIODevice::ReadOnly))
     {
         QTextStream in(&inputFile);
@@ -388,4 +388,11 @@ void Launcher::set_off_host_state_indicator() {
 
 void Launcher::on_event_loop_started() {
     appStart();
+}
+
+void Launcher::configuration_changed_apply() {
+    configDialog->setGUIPriority();
+    if(proc->state() == QProcess::Running)
+        stopSunshine();
+        startSunshine();
 }
