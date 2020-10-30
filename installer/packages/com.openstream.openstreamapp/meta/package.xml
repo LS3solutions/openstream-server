@@ -8,4 +8,5 @@
     <Licenses>
             <License file="gpl3.txt" name="GNU General Public License v3.0"/>
     </Licenses>
+    <Script>installscript.qs</Script>
 </Package>
