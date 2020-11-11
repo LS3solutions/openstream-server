@@ -7,12 +7,16 @@
 #include <optional>
 
 namespace config {
+
 struct video_t {
   // ffmpeg params
   int crf; // higher == more compression and less quality
   int qp; // higher == more compression and less quality, ignored if crf != 0
 
   int hevc_mode;
+  int vbv_maxrate;
+  int vbv_bufsize;
+  std::string x265_params;
 
   int min_threads; // Minimum number of threads/slices for CPU encoding
   struct {

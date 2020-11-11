@@ -80,6 +80,14 @@ private:
     QLineEdit *minThreadsFieldLineEdit;
     QString MIN_THREADS_LABEL = QString("Threads");
 
+    /*******HEVC params****************/
+    QLineEdit *x265vbvMaxRateFieldLineEdit;
+    QString x265vbvMaxRate_LABEL = QString("vbv_maxrate");
+    QLineEdit *x265vbvBufsizeFieldLineEdit;
+    QString x265vbvBufsize_LABEL = QString("vbv_bufsize");
+    QLineEdit *crfLineEdit;
+    QString crf_LABEL = QString("CRF");
+
     QHash<QString, QString> entries_snapshot;
 };
 

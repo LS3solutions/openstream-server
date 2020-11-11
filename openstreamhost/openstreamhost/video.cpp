@@ -251,7 +251,7 @@ auto capture_thread_async = safe::make_shared<capture_thread_async_ctx_t>(start_
 auto capture_thread_sync = safe::make_shared<capture_thread_sync_ctx_t>(start_capture_sync, end_capture_sync);
 
 #ifdef _WIN32
-static encoder_t nvenc {
+encoder_t nvenc {
   "nvenc"sv,
   { (int)nv::profile_h264_e::high, (int)nv::profile_hevc_e::main, (int)nv::profile_hevc_e::main_10 },
   AV_HWDEVICE_TYPE_D3D11VA,
@@ -286,7 +286,8 @@ static encoder_t nvenc {
 };
 #endif
 
-static encoder_t software {
+std::string x265_base_params = "info=0:keyint=-1"s;
+encoder_t software {
   "software"sv,
   { FF_PROFILE_H264_HIGH, FF_PROFILE_HEVC_MAIN, FF_PROFILE_HEVC_MAIN_10 },
   AV_HWDEVICE_TYPE_NONE,
@@ -298,7 +299,7 @@ static encoder_t software {
     // It also looks like gop_size isn't passed on to x265, so we have to set
     // 'keyint=-1' in the parameters ourselves.
     {
-      { "x265-params"s, "info=0:keyint=-1"s },
+      { "x265-params"s, &config::video.x265_params },
       { "preset"s, &config::video.sw.preset },
       { "tune"s, &config::video.sw.tune }
     },
@@ -320,7 +321,7 @@ static encoder_t software {
   nullptr
 };
 
-static std::vector<encoder_t> encoders {
+std::vector<encoder_t> encoders {
 #ifdef _WIN32
   nvenc,
 #endif
@@ -1147,7 +1148,7 @@ bool validate_encoder(encoder_t &encoder) {
   return true;
 }
 
-int init() {
+int init() {   
   KITTY_WHILE_LOOP(auto pos = std::begin(encoders), pos != std::end(encoders), {
     if(
       (!config::video.encoder.empty() && pos->name != config::video.encoder)  ||

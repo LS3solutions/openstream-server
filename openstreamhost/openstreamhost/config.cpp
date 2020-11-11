@@ -90,7 +90,9 @@ video_t video {
   28, // qp
 
   0, // hevc_mode
-
+  1500, //vbv_maxrate
+  3000, //vbv_bufsize
+  "info=0:keyint=-1",
   1, // min_threads
   {
     "superfast"s, // preset
@@ -358,6 +360,9 @@ void apply_config(std::unordered_map<std::string, std::string> &&vars) {
   int_between_f(vars, "hevc_mode", video.hevc_mode, {
     0, 3
   });
+  int_f(vars, "vbv_maxrate", video.vbv_maxrate);
+  int_f(vars, "vbv_bufsize", video.vbv_bufsize);
+  video.x265_params = video.x265_params + ":vbv-maxrate=" + std::to_string(video.vbv_maxrate) + ":vbv-bufsize=" + std::to_string(video.vbv_bufsize);
   string_f(vars, "sw_preset", video.sw.preset);
   string_f(vars, "sw_tune", video.sw.tune);
   int_f(vars, "nv_preset", video.nv.preset, nv::preset_from_view);

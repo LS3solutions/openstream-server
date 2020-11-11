@@ -103,6 +103,23 @@ ConfigurationDialog::ConfigurationDialog(QWidget *parent)
 
     configInputForm->addRow(MIN_THREADS_LABEL, minThreadsFieldLineEdit);
 
+    /*******HEVC params****************/
+    x265vbvMaxRateFieldLineEdit = new QLineEdit(this);
+    x265vbvMaxRateFieldLineEdit->setText(config->getKey(QString("vbv_maxrate")));
+    entries_snapshot.insert("vbv_maxrate", config->getKey(QString("vbv_maxrate")));
+    configInputForm->addRow(x265vbvMaxRate_LABEL, x265vbvMaxRateFieldLineEdit);
+
+    x265vbvBufsizeFieldLineEdit = new QLineEdit(this);
+    x265vbvBufsizeFieldLineEdit->setText(config->getKey(QString("vbv_bufsize")));
+    entries_snapshot.insert("vbv_bufsize", config->getKey(QString("vbv_bufsize")));
+    configInputForm->addRow(x265vbvBufsize_LABEL, x265vbvBufsizeFieldLineEdit);
+
+    crfLineEdit = new QLineEdit(this);
+    crfLineEdit->setText(config->getKey(QString("crf")));
+    entries_snapshot.insert("crf", config->getKey(QString("crf")));
+    configInputForm->addRow(crf_LABEL, crfLineEdit);
+
+    /*******Connections********************/
     connect(buttonBox, &QDialogButtonBox::accepted, this, &ConfigurationDialog::accept);
     connect(buttonBox, &QDialogButtonBox::rejected, this, &ConfigurationDialog::reject);
     configInputForm->addWidget(buttonBox);
@@ -159,17 +176,37 @@ void ConfigurationDialog::updateNewConfiguration()
     else if(syspriorityRealTimeBtn->isChecked())
         config->setEntry("system_priority", SYS_PRIORITY_REAL_TIME);
 
+
+    /***************HEVC params***************/
+    QString x265vbvMaxRate = x265vbvMaxRateFieldLineEdit->text();
+    config->setEntry("vbv_maxrate", x265vbvMaxRate);
+    QString x265vbvBufsize = x265vbvBufsizeFieldLineEdit->text();
+    config->setEntry("vbv_bufsize", x265vbvBufsize);
+    QString crf = crfLineEdit->text();
+    config->setEntry("crf", crf);
+
     config->saveConfiguration();
 
+    /*
+    *   TODO: This short term working memory for detect config changes
+    *   should be improved to something less manual, when the config
+    *   options became unmanageable.
+    */
     if( entries_snapshot.value("sw_preset") != config->getKey("sw_preset")
         || entries_snapshot.value("hevc_mode") != config->getKey("hevc_mode")
         || entries_snapshot.value("min_threads") != config->getKey("min_threads")
-        || entries_snapshot.value("system_priority") != config->getKey("system_priority"))
+        || entries_snapshot.value("system_priority") != config->getKey("system_priority")
+        || entries_snapshot.value("vbv_maxrate") != config->getKey("vbv_maxrate")
+        || entries_snapshot.value("vbv_bufsize") != config->getKey("vbv_bufsize")
+        || entries_snapshot.value("crf") != config->getKey("crf"))
     {
         entries_snapshot.insert("sw_preset",config->getKey("sw_preset"));
         entries_snapshot.insert("hevc_mode", config->getKey("hevc_mode"));
         entries_snapshot.insert("min_threads",config->getKey("min_threads"));
         entries_snapshot.insert("system_priority", config->getKey("system_priority"));
+        entries_snapshot.insert("vbv_maxrate", config->getKey("vbv_maxrate"));
+        entries_snapshot.insert("vbv_bufsize", config->getKey("vbv_bufsize"));
+        entries_snapshot.insert("crf", config->getKey("crf"));
         emit configuration_changed();
     }
 
