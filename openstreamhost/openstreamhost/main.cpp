@@ -112,7 +112,6 @@ int main(int argc, char *argv[]) {
   }
 
   set_host_process_priority(config::sys_priority);
-
   if(config::sunshine.min_log_level >= 2) {
     av_log_set_level(AV_LOG_QUIET);
   }
@@ -158,7 +157,6 @@ int main(int argc, char *argv[]) {
   });
 
   log_and_flush("Starting streamming host..."sv, info);
-
   bl::core::get()->add_sink(sink);
   auto fg = util::fail_guard(log_flush);
 

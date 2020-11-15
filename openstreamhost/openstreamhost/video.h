@@ -58,6 +58,30 @@ void capture(
   void *channel_data);
 
 int init();
+
+namespace windows_controls {
+/**
+ * DisplayTopology,
+ * and enable_disable_screen()
+ * are used for solving the bug with black screen
+ * in moonlight client when using hevc for encoding/decoding.
+ */
+enum class display_topology
+{
+    Internal,
+    Clone,
+    Extend,
+    External,
+    Error
+};
+
+display_topology get_display_topology();
+bool set_display_topology(display_topology topology);
+void set_topology( std::string&& mode );
+void get_topology();
+void enable_disable_screen();
+}
+
 }
 
 #endif //SUNSHINE_VIDEO_H

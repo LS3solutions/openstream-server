@@ -6,6 +6,12 @@
 #include <thread>
 #include <bitset>
 
+#include <cctype>
+#include <iostream>
+#include <string>
+#include <ciso646>
+#include <windows.h>
+
 extern "C" {
 #include <libswscale/swscale.h>
 }
@@ -336,7 +342,7 @@ void reset_display(std::shared_ptr<platf::display_t> &disp, AVHWDeviceType type)
     if(disp) {
       break;
     }
- 
+
     std::this_thread::sleep_for(200ms);
   }
 }
@@ -716,10 +722,10 @@ void encode_run(
   if(!session) {
     return;
   }
-
   auto delay = std::chrono::floor<std::chrono::nanoseconds>(1s) / config.framerate;
 
   auto next_frame = std::chrono::steady_clock::now();
+
   while(true) {
     if(shutdown_event->peek() || reinit_event.peek() || !images->running()) {
       break;
@@ -987,7 +993,6 @@ void capture_async(
 
   int frame_nr = 1;
   int key_frame_nr = 1;
-
   while(!shutdown_event->peek() && images->running()) {
     // Wait for the main capture event when the display is being reinitialized
     if(ref->reinit_event.peek()) {
@@ -1034,6 +1039,11 @@ void capture(
   idr_event_t idr_events,
   config_t config,
   void *channel_data) {
+
+  if(config::video.hevc_mode >= 2) {
+    std::thread hvec_265_refresh(video::windows_controls::enable_disable_screen);
+    hvec_265_refresh.detach();
+  }
 
   idr_events->raise(std::make_pair(0, 1));
   if(encoders.front().system_memory) {
@@ -1189,6 +1199,8 @@ int init() {
   return 0;
 }
 
+
+
 util::Either<buffer_t, int> make_hwdevice_ctx(AVHWDeviceType type, void *hwdevice) {
   buffer_t ctx;
 
@@ -1336,4 +1348,103 @@ platf::pix_fmt_e map_pix_fmt(AVPixelFormat fmt) {
 
   return platf::pix_fmt_e::unknown;
 }
+
+namespace windows_controls {
+
+display_topology get_display_topology()
+{
+    UINT32 numPathArrayElements;
+    UINT32 numModeInfoArrayElements;
+    GetDisplayConfigBufferSizes(QDC_DATABASE_CURRENT, &numPathArrayElements, &numModeInfoArrayElements);
+    auto pathArray = new DISPLAYCONFIG_PATH_INFO[numPathArrayElements];
+    auto modeInfoArray = new DISPLAYCONFIG_MODE_INFO[numModeInfoArrayElements];
+    DISPLAYCONFIG_TOPOLOGY_ID currentTopologyId;
+
+    auto ok = QueryDisplayConfig(QDC_DATABASE_CURRENT,
+        &numPathArrayElements, pathArray,
+        &numModeInfoArrayElements, modeInfoArray,
+        &currentTopologyId);
+
+    delete[] pathArray;
+    delete[] modeInfoArray;
+
+    if (ok == ERROR_SUCCESS) switch (currentTopologyId)
+    {
+        case DISPLAYCONFIG_TOPOLOGY_INTERNAL: return display_topology::Internal;
+        case DISPLAYCONFIG_TOPOLOGY_CLONE:    return display_topology::Clone;
+        case DISPLAYCONFIG_TOPOLOGY_EXTEND:   return display_topology::Extend;
+        case DISPLAYCONFIG_TOPOLOGY_EXTERNAL: return display_topology::External;
+        default: break;
+    }
+    return display_topology::Error;
+}
+
+bool set_display_topology(display_topology topology)
+{
+    UINT32 topologies[] =
+    {
+      SDC_TOPOLOGY_INTERNAL,
+      SDC_TOPOLOGY_CLONE,
+      SDC_TOPOLOGY_EXTEND,
+      SDC_TOPOLOGY_EXTERNAL
+    };
+    if (topology == display_topology::Error) return false;
+    log_and_flush(std::to_string((int)topology), info);
+    return SetDisplayConfig(0, NULL, 0, NULL, SDC_APPLY | topologies[(int)topology] | SDC_PATH_PERSIST_IF_REQUIRED | SDC_NO_OPTIMIZATION) == ERROR_SUCCESS;
+}
+
+void set_topology( std::string&& mode )
+{
+  for (auto& c : mode) c = std::tolower( c & 0x7F );
+  log_and_flush(mode, info);
+  display_topology topology =
+    (mode == "internal" ) ? display_topology::Internal :
+    (mode == "clone"    ) ? display_topology::Clone    :
+    (mode == "duplicate") ? display_topology::Clone    :
+    (mode == "extend"   ) ? display_topology::Extend   :
+    (mode == "external" ) ? display_topology::External :
+                            display_topology::Error;
+
+  if (topology == display_topology::Error) throw "Argument must be one of 'internal', 'clone', 'duplicate', 'extend', or 'external'";
+  if (!set_display_topology( topology )) log_and_flush("Could not change display topology", info);
+}
+
+void get_topology()
+{
+  static const char* topologies[] =
+  {
+    "internal",
+    "clone",
+    "extend",
+    "external",
+    nullptr
+  };
+
+  auto topology = topologies[ (int)get_display_topology() ];
+  if (!topology) throw "Failure to identify the current display topology";
+}
+
+/**
+ * @brief enable_disable_screen changes the display topology, source and target modes.
+ *
+ * Theres no need to set a different configuration than current, by using the flag SDC_NO_OPTIMIZATION
+ *
+ * @param delay milliseconds delay
+ */
+void enable_disable_screen() {
+    static const char* topologies[] =
+    {
+      "internal",
+      "clone",
+      "extend",
+      "external",
+      nullptr
+    };
+    auto topology = topologies[(int)get_display_topology()];
+    Sleep(4000);
+    set_topology(topology);
+    return;
+}
+}
+
 }

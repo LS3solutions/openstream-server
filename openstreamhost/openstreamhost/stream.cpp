@@ -325,6 +325,8 @@ fec_t encode(const std::string_view &payload, size_t blocksize, size_t fecpercen
   auto parity_shards = (data_shards * fecpercentage + 99) / 100;
   auto nr_shards = data_shards + parity_shards;
 
+
+
   if(nr_shards > DATA_SHARDS_MAX) {
     BOOST_LOG(error)
       << "Number of fragments for reed solomon exceeds DATA_SHARDS_MAX"sv << std::endl
