@@ -50,7 +50,7 @@ ConfigurationDialog::ConfigurationDialog(QWidget *parent)
     encswFieldGroupBox->setLayout(encswHBoxLayout);
     configInputForm->addRow(ENCODER_SPEED_LABEL, encswFieldGroupBox);
 
-    /********Software codec****/
+    /********codec****/
     swcodech264RadioBtn = new QRadioButton(SWCODEC_H264_LABEL, this);
     swcodech265RadioBtn = new QRadioButton(SWCODEC_H265_LABEL, this);
     swcodecHBoxLayout = new QHBoxLayout(this);
@@ -69,6 +69,30 @@ ConfigurationDialog::ConfigurationDialog(QWidget *parent)
     swcodecFieldGroupBox = new QGroupBox(this);
     swcodecFieldGroupBox->setLayout(swcodecHBoxLayout);
     configInputForm->addRow(SWCODEC_LABEL, swcodecFieldGroupBox);
+
+    /********Software - NVEC encoders************/
+    encoderFieldGroupBox = new QGroupBox(this);
+    encoderFieldRadioBtnNVENC = new QRadioButton("nvenc", this);
+    encoderFieldRadioBtnSoftware = new QRadioButton("software", this);
+
+    if(config->getKey(QString("encoder")) == "nvenc") {
+         encoderFieldRadioBtnNVENC->setChecked(true);
+         entries_snapshot.insert("encoder", ENCODER_NVENC);
+    }
+    else {
+        encoderFieldRadioBtnSoftware->setChecked(true);
+        entries_snapshot.insert("encoder", ENCODER_SW);
+    }
+
+    encoderHBoxLayout = new QHBoxLayout(this);
+    encoderHBoxLayout->addWidget(encoderFieldRadioBtnNVENC);
+    encoderHBoxLayout->addWidget( encoderFieldRadioBtnSoftware);
+    encoderFieldGroupBox->setLayout(encoderHBoxLayout);
+
+    configInputForm->addRow(ENCODER_LABEL, encoderFieldGroupBox);
+
+    amdComingSoonLabel = new QLabel(AMD_COMING_SOON_LABEL, this);
+    configInputForm->addRow(amdComingSoonLabel);
 
     /********System process priority****/
     syspriorityAboveNormalBtn = new QRadioButton(SYS_PRIORITY_ABOVE_NORMAL_LABEL, this);
@@ -164,6 +188,13 @@ void ConfigurationDialog::updateNewConfiguration()
     else if(encswSpeedSuperFastRadioBtn->isChecked())
         config->setEntry("sw_preset", ENCODER_SPEED_SUPERFAST);
 
+    /********Encoder***********/
+    /*Checks for encoder opt*/
+    if(encoderFieldRadioBtnNVENC->isChecked())
+        config->setEntry("encoder", ENCODER_NVENC);
+    else
+        config->setEntry("encoder", ENCODER_SW);
+
     /********Software codec****/
     if(swcodech264RadioBtn->isChecked())
         config->setEntry("hevc_mode", SWCODEC_MODE_H264_VALUE);
@@ -207,7 +238,8 @@ void ConfigurationDialog::updateNewConfiguration()
         || entries_snapshot.value("vbv_maxrate") != config->getKey("vbv_maxrate")
         || entries_snapshot.value("vbv_bufsize") != config->getKey("vbv_bufsize")
         || entries_snapshot.value("crf") != config->getKey("crf")
-        || entries_snapshot.value("pools") != config->getKey("pools"))
+        || entries_snapshot.value("pools") != config->getKey("pools")
+        || entries_snapshot.value("encoder") != config->getKey("encoder"))
     {
         entries_snapshot.insert("sw_preset",config->getKey("sw_preset"));
         entries_snapshot.insert("hevc_mode", config->getKey("hevc_mode"));
@@ -217,6 +249,7 @@ void ConfigurationDialog::updateNewConfiguration()
         entries_snapshot.insert("vbv_bufsize", config->getKey("vbv_bufsize"));
         entries_snapshot.insert("crf", config->getKey("crf"));
         entries_snapshot.insert("pools", config->getKey("pools"));
+        entries_snapshot.insert("encoder", config->getKey("encoder"));
         emit configuration_changed();
     }
 
