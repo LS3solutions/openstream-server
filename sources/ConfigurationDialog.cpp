@@ -103,6 +103,12 @@ ConfigurationDialog::ConfigurationDialog(QWidget *parent)
 
     configInputForm->addRow(MIN_THREADS_LABEL, minThreadsFieldLineEdit);
 
+    poolsFieldLineEdit = new QLineEdit(this);
+    poolsFieldLineEdit->setText(config->getKey(QString("pools")));
+    entries_snapshot.insert("pools", config->getKey(QString("pools")));
+
+    configInputForm->addRow(POOLS_LABEL, poolsFieldLineEdit);
+
     /*******HEVC params****************/
     x265vbvMaxRateFieldLineEdit = new QLineEdit(this);
     x265vbvMaxRateFieldLineEdit->setText(config->getKey(QString("vbv_maxrate")));
@@ -167,6 +173,8 @@ void ConfigurationDialog::updateNewConfiguration()
     /*Checks for nr of threads*/
     QString nrOfThreads = minThreadsFieldLineEdit->text();
     config->setEntry("min_threads", nrOfThreads);
+    QString nrPools = poolsFieldLineEdit->text();
+    config->setEntry("pools", nrPools);
 
     /********System process priority****/
     if(syspriorityAboveNormalBtn->isChecked())
@@ -198,7 +206,8 @@ void ConfigurationDialog::updateNewConfiguration()
         || entries_snapshot.value("system_priority") != config->getKey("system_priority")
         || entries_snapshot.value("vbv_maxrate") != config->getKey("vbv_maxrate")
         || entries_snapshot.value("vbv_bufsize") != config->getKey("vbv_bufsize")
-        || entries_snapshot.value("crf") != config->getKey("crf"))
+        || entries_snapshot.value("crf") != config->getKey("crf")
+        || entries_snapshot.value("pools") != config->getKey("pools"))
     {
         entries_snapshot.insert("sw_preset",config->getKey("sw_preset"));
         entries_snapshot.insert("hevc_mode", config->getKey("hevc_mode"));
@@ -207,6 +216,7 @@ void ConfigurationDialog::updateNewConfiguration()
         entries_snapshot.insert("vbv_maxrate", config->getKey("vbv_maxrate"));
         entries_snapshot.insert("vbv_bufsize", config->getKey("vbv_bufsize"));
         entries_snapshot.insert("crf", config->getKey("crf"));
+        entries_snapshot.insert("pools", config->getKey("pools"));
         emit configuration_changed();
     }
 

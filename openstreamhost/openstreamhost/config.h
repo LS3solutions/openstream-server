@@ -16,7 +16,15 @@ struct video_t {
   int hevc_mode;
   int vbv_maxrate;
   int vbv_bufsize;
+  // in x265 you control the thread limit with --pools config option and
+  // with --frame-threads option. https://trac.ffmpeg.org/ticket/3730?cversion=1
+  // This struct field 'pools' holds the value for --pools.
+  // The value for --frame-threads is taken from 'min_threads' configuration.
+  int pools;
+
+  // x265 params are passed as a plain string of concatenated options.
   std::string x265_params;
+  std::string x264_params;
 
   int min_threads; // Minimum number of threads/slices for CPU encoding
   struct {

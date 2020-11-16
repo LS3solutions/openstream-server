@@ -79,6 +79,8 @@ private:
     /********Number of threads*********/
     QLineEdit *minThreadsFieldLineEdit;
     QString MIN_THREADS_LABEL = QString("Threads");
+    QLineEdit *poolsFieldLineEdit;
+    QString POOLS_LABEL = QString("Pools");
 
     /*******HEVC params****************/
     QLineEdit *x265vbvMaxRateFieldLineEdit;

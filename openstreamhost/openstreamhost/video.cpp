@@ -292,7 +292,6 @@ encoder_t nvenc {
 };
 #endif
 
-std::string x265_base_params = "info=0:keyint=-1"s;
 encoder_t software {
   "software"sv,
   { FF_PROFILE_H264_HIGH, FF_PROFILE_HEVC_MAIN, FF_PROFILE_HEVC_MAIN_10 },
@@ -314,6 +313,7 @@ encoder_t software {
   },
   {
     {
+      { "x264-params"s, "info=0"s },
       { "preset"s, &config::video.sw.preset },
       { "tune"s, &config::video.sw.tune }
     },
