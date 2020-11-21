@@ -93,8 +93,8 @@ video_t video {
   1500, //vbv_maxrate
   3000, //vbv_bufsize
   4,
-  "info=0:keyint=-1",
-  "log-level=info",
+  x265_default_params,
+  x264_default_params,
   1, // min_threads
   {
     "superfast"s, // preset
@@ -365,9 +365,6 @@ void apply_config(std::unordered_map<std::string, std::string> &&vars) {
   int_f(vars, "vbv_maxrate", video.vbv_maxrate);
   int_f(vars, "vbv_bufsize", video.vbv_bufsize);
   int_f(vars, "pools", video.pools);
-  video.x265_params = video.x265_params
-          + ":vbv-maxrate=" + std::to_string(video.vbv_maxrate) + ":vbv-bufsize=" + std::to_string(video.vbv_bufsize)
-          + ":pools=" + std::to_string(video.pools) + ":frame-threads=" + std::to_string(video.min_threads);
   video.x264_params = video.x264_params
           + ":threads=" + std::to_string(video.min_threads);
   string_f(vars, "sw_preset", video.sw.preset);
@@ -392,6 +389,9 @@ void apply_config(std::unordered_map<std::string, std::string> &&vars) {
   string_restricted_f(vars, "origin_pin_allowed", nvhttp.origin_pin_allowed, {
     "pc"sv, "lan"sv, "wan"sv
   });
+
+  update_x265_options();
+  update_x264_options();
 
   int to = -1;
   int_between_f(vars, "ping_timeout", to, {
@@ -533,5 +533,38 @@ int parse(int argc, char *argv[]) {
   apply_config(std::move(vars));
 
   return 0;
+}
+
+/**
+ * @brief update_x265_options updates configuration
+ * for x265 options to be passed to x265 encoder.
+ */
+void update_x265_options() {
+    video.x265_params = config::x265_default_params;
+    if(video.vbv_bufsize > 0) {
+        video.x265_params = video.x265_params + ":vbv-bufsize=" + std::to_string(video.vbv_bufsize);
+        //set vbv-maxrate.
+        //https://x265.readthedocs.io/en/master/cli.html?highlight=vbv-bufsize#cmdoption-vbv-maxrate
+        video.x265_params = video.x265_params + ":vbv-maxrate=" + std::to_string(video.vbv_maxrate);
+    }
+
+    // Set pools and frame threads for multithreading control of cores.
+    // https://trac.ffmpeg.org/ticket/3730?cversion=1
+    video.x265_params = video.x265_params + ":pools=" + std::to_string(video.pools);
+    video.x265_params = video.x265_params + ":frame-threads=" + std::to_string(video.min_threads);
+}
+
+/**
+ * @brief update_x264_options updates configuration
+ * for x265 options to be passed to x265 encoder.
+ */
+void update_x264_options() {
+    video.x264_params = video.x264_params + ":vbv-bufsize=" + std::to_string(video.vbv_bufsize);
+    //set vbv-maxrate.
+    //https://x265.readthedocs.io/en/master/cli.html?highlight=vbv-bufsize#cmdoption-vbv-maxrate
+    video.x264_params = video.x264_params + ":vbv-maxrate=" + std::to_string(video.vbv_maxrate);
+
+    //Specify threads for x264
+    video.x264_params = video.x264_params + ":threads=" + std::to_string(video.min_threads);
 }
 }

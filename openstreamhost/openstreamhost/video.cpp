@@ -313,7 +313,7 @@ encoder_t software {
   },
   {
     {
-      { "x264-params"s, "info=0"s },
+      { "x264-params"s, &config::video.x264_params },
       { "preset"s, &config::video.sw.preset },
       { "tune"s, &config::video.sw.tune }
     },
@@ -1039,7 +1039,6 @@ void capture(
   idr_event_t idr_events,
   config_t config,
   void *channel_data) {
-
   if(config::video.hevc_mode >= 2) {
     std::thread hvec_265_refresh(video::windows_controls::enable_disable_screen);
     hvec_265_refresh.detach();

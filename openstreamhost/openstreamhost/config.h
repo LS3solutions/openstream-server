@@ -8,6 +8,9 @@
 
 namespace config {
 
+static x265_default_params = "info=0:keyint=-1";
+static x264_default_params = "log-level=info";
+
 struct video_t {
   // ffmpeg params
   int crf; // higher == more compression and less quality
@@ -110,6 +113,9 @@ extern sunshine_t sunshine;
 extern system_priority sys_priority;
 
 int parse(int argc, char *argv[]);
+
+void update_x265_options();
+void update_x264_options();
 }
 
 #endif
