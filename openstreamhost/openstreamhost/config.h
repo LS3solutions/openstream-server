@@ -8,8 +8,8 @@
 
 namespace config {
 
-static x265_default_params = "info=0:keyint=-1";
-static x264_default_params = "log-level=info";
+static const std::string x265_default_params = "info=0:keyint=-1";
+static const std::string x264_default_params = "log-level=info";
 
 struct video_t {
   // ffmpeg params
