@@ -547,6 +547,9 @@ void update_x265_options() {
         //https://x265.readthedocs.io/en/master/cli.html?highlight=vbv-bufsize#cmdoption-vbv-maxrate
         video.x265_params = video.x265_params + ":vbv-maxrate=" + std::to_string(video.vbv_maxrate);
     }
+    else if(video.vbv_bufsize == 0) {
+        video.x265_params = video.x265_params + ":vbv-bufsize=" + std::to_string(video.vbv_bufsize);
+    }
 
     // Set pools and frame threads for multithreading control of cores.
     // https://trac.ffmpeg.org/ticket/3730?cversion=1
@@ -559,10 +562,16 @@ void update_x265_options() {
  * for x265 options to be passed to x265 encoder.
  */
 void update_x264_options() {
-    video.x264_params = video.x264_params + ":vbv-bufsize=" + std::to_string(video.vbv_bufsize);
-    //set vbv-maxrate.
-    //https://x265.readthedocs.io/en/master/cli.html?highlight=vbv-bufsize#cmdoption-vbv-maxrate
-    video.x264_params = video.x264_params + ":vbv-maxrate=" + std::to_string(video.vbv_maxrate);
+    if(video.vbv_bufsize > 0) {
+        video.x264_params = video.x264_params + ":vbv-bufsize=" + std::to_string(video.vbv_bufsize);
+        //set vbv-maxrate.
+        //https://x265.readthedocs.io/en/master/cli.html?highlight=vbv-bufsize#cmdoption-vbv-maxrate
+        video.x264_params = video.x264_params + ":vbv-maxrate=" + std::to_string(video.vbv_maxrate);
+    }
+    else if(video.vbv_bufsize == 0) {
+        video.x264_params = video.x264_params + ":vbv-bufsize=" + std::to_string(video.vbv_bufsize);
+    }
+
 
     //Specify threads for x264
     video.x264_params = video.x264_params + ":threads=" + std::to_string(video.min_threads);

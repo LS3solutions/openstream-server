@@ -149,6 +149,12 @@ ConfigurationDialog::ConfigurationDialog(QWidget *parent)
     entries_snapshot.insert("crf", config->getKey(QString("crf")));
     configInputForm->addRow(crf_LABEL, crfLineEdit);
 
+    /*******FEC_PERCENTAGE*************/
+    fecPercentageFieldLineEdit = new QLineEdit(this);
+    fecPercentageFieldLineEdit->setText(config->getKey(QString("fec_percentage")));
+    entries_snapshot.insert("fec_percentage", config->getKey(QString("fec_percentage")));
+    configInputForm->addRow(fecPercentage_LABEL, fecPercentageFieldLineEdit);
+
     /*******Connections********************/
     connect(buttonBox, &QDialogButtonBox::accepted, this, &ConfigurationDialog::accept);
     connect(buttonBox, &QDialogButtonBox::rejected, this, &ConfigurationDialog::reject);
@@ -224,6 +230,10 @@ void ConfigurationDialog::updateNewConfiguration()
     QString crf = crfLineEdit->text();
     config->setEntry("crf", crf);
 
+    /*****FEC_PERCENTAGE****************/
+    QString fecPercentage = fecPercentageFieldLineEdit->text();
+    config->setEntry("fec_percentage", fecPercentage);
+
     config->saveConfiguration();
 
     /*
@@ -239,7 +249,8 @@ void ConfigurationDialog::updateNewConfiguration()
         || entries_snapshot.value("vbv_bufsize") != config->getKey("vbv_bufsize")
         || entries_snapshot.value("crf") != config->getKey("crf")
         || entries_snapshot.value("pools") != config->getKey("pools")
-        || entries_snapshot.value("encoder") != config->getKey("encoder"))
+        || entries_snapshot.value("encoder") != config->getKey("encoder")
+        || entries_snapshot.value("fec_percentage") != config->getKey("fec_percentage"))
     {
         entries_snapshot.insert("sw_preset",config->getKey("sw_preset"));
         entries_snapshot.insert("hevc_mode", config->getKey("hevc_mode"));
@@ -250,6 +261,7 @@ void ConfigurationDialog::updateNewConfiguration()
         entries_snapshot.insert("crf", config->getKey("crf"));
         entries_snapshot.insert("pools", config->getKey("pools"));
         entries_snapshot.insert("encoder", config->getKey("encoder"));
+        entries_snapshot.insert("fec_percentage", config->getKey("fec_percentage"));
         emit configuration_changed();
     }
 

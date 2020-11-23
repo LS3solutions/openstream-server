@@ -101,6 +101,11 @@ private:
     QLineEdit *crfLineEdit;
     QString crf_LABEL = QString("CRF");
 
+    /*****FEC_PERCENTAGE****************/
+    QLineEdit *fecPercentageFieldLineEdit;
+    QString fecPercentage_LABEL = QString("fec percentage");
+
+
     QHash<QString, QString> entries_snapshot;
 };
 
