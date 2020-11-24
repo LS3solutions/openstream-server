@@ -9,7 +9,7 @@
 namespace config {
 
 //https://forum.videohelp.com/threads/372625-ffmpeg-does-not-apply-parameters-with-libx265
-static const std::string x265_default_params = "info=0:keyint=-1:pmode=1";
+static const std::string x265_default_params = "info=0:keyint=-1:pmode=1:bitrate=0";
 static const std::string x264_default_params = "log-level=info";
 
 struct video_t {
