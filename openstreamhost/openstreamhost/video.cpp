@@ -270,7 +270,7 @@ encoder_t nvenc {
       { "preset"s, &config::video.nv.preset },
       { "rc"s, &config::video.nv.rc }
     },
-    std::nullopt, std::nullopt,
+    std::nullopt,  std::make_optional<encoder_t::option_t>("qp"s, &config::video.qp),
     "hevc_nvenc"s,
   },
   {
@@ -306,7 +306,7 @@ encoder_t software {
     {
       { "x265-params"s, &config::video.x265_params },
       { "preset"s, &config::video.sw.preset },
-      { "tune"s, &config::video.sw.tune }
+      { "tune"s, "zero-latency" }
     },
     std::make_optional<encoder_t::option_t>("crf"s, &config::video.crf), std::make_optional<encoder_t::option_t>("qp"s, &config::video.qp),
     "libx265"s

@@ -555,6 +555,14 @@ void update_x265_options() {
     // https://trac.ffmpeg.org/ticket/3730?cversion=1
     video.x265_params = video.x265_params + ":pools=" + std::to_string(video.pools);
     video.x265_params = video.x265_params + ":frame-threads=" + std::to_string(video.min_threads);
+
+    //Set QP if crf disabled
+    if(video.crf > 0) {
+        video.x265_params = video.x265_params + ":crf=" + std::to_string(video.crf);
+    }
+    else {
+        video.x265_params = video.x265_params + ":qp=" + std::to_string(video.qp);
+    }
 }
 
 /**
@@ -575,5 +583,13 @@ void update_x264_options() {
 
     //Specify threads for x264
     video.x264_params = video.x264_params + ":threads=" + std::to_string(video.min_threads);
+
+    //Set QP if crf disabled
+    if(video.crf > 0) {
+        video.x264_params = video.x264_params + ":crf=" + std::to_string(video.crf);
+    }
+    else {
+        video.x264_params = video.x264_params + ":qp=" + std::to_string(video.qp);
+    }
 }
 }

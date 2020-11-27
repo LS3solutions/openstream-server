@@ -93,13 +93,15 @@ private:
     QLineEdit *poolsFieldLineEdit;
     QString POOLS_LABEL = QString("Pools");
 
-    /*******HEVC params****************/
+    /*******Encoder params****************/
     QLineEdit *x265vbvMaxRateFieldLineEdit;
     QString x265vbvMaxRate_LABEL = QString("vbv_maxrate");
     QLineEdit *x265vbvBufsizeFieldLineEdit;
     QString x265vbvBufsize_LABEL = QString("vbv_bufsize");
     QLineEdit *crfLineEdit;
     QString crf_LABEL = QString("CRF");
+    QLineEdit *QPLineEdit;
+    QString QP_LABEL = QString("QP");
 
     /*****FEC_PERCENTAGE****************/
     QLineEdit *fecPercentageFieldLineEdit;

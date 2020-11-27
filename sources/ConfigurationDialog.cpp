@@ -133,7 +133,7 @@ ConfigurationDialog::ConfigurationDialog(QWidget *parent)
 
     configInputForm->addRow(POOLS_LABEL, poolsFieldLineEdit);
 
-    /*******HEVC params****************/
+    /*******Encoder params****************/
     x265vbvMaxRateFieldLineEdit = new QLineEdit(this);
     x265vbvMaxRateFieldLineEdit->setText(config->getKey(QString("vbv_maxrate")));
     entries_snapshot.insert("vbv_maxrate", config->getKey(QString("vbv_maxrate")));
@@ -148,6 +148,11 @@ ConfigurationDialog::ConfigurationDialog(QWidget *parent)
     crfLineEdit->setText(config->getKey(QString("crf")));
     entries_snapshot.insert("crf", config->getKey(QString("crf")));
     configInputForm->addRow(crf_LABEL, crfLineEdit);
+
+    QPLineEdit = new QLineEdit(this);
+    QPLineEdit->setText(config->getKey(QString("qp")));
+    entries_snapshot.insert("qp", config->getKey(QString("qp")));
+    configInputForm->addRow(QP_LABEL, QPLineEdit);
 
     /*******FEC_PERCENTAGE*************/
     fecPercentageFieldLineEdit = new QLineEdit(this);
@@ -222,13 +227,15 @@ void ConfigurationDialog::updateNewConfiguration()
         config->setEntry("system_priority", SYS_PRIORITY_REAL_TIME);
 
 
-    /***************HEVC params***************/
+    /***************ENCODEr params***************/
     QString x265vbvMaxRate = x265vbvMaxRateFieldLineEdit->text();
     config->setEntry("vbv_maxrate", x265vbvMaxRate);
     QString x265vbvBufsize = x265vbvBufsizeFieldLineEdit->text();
     config->setEntry("vbv_bufsize", x265vbvBufsize);
     QString crf = crfLineEdit->text();
     config->setEntry("crf", crf);
+    QString qp = QPLineEdit->text();
+    config->setEntry("qp", qp);
 
     /*****FEC_PERCENTAGE****************/
     QString fecPercentage = fecPercentageFieldLineEdit->text();
@@ -250,7 +257,8 @@ void ConfigurationDialog::updateNewConfiguration()
         || entries_snapshot.value("crf") != config->getKey("crf")
         || entries_snapshot.value("pools") != config->getKey("pools")
         || entries_snapshot.value("encoder") != config->getKey("encoder")
-        || entries_snapshot.value("fec_percentage") != config->getKey("fec_percentage"))
+        || entries_snapshot.value("fec_percentage") != config->getKey("fec_percentage")
+        || entries_snapshot.value("qp") != config->getKey("qp") )
     {
         entries_snapshot.insert("sw_preset",config->getKey("sw_preset"));
         entries_snapshot.insert("hevc_mode", config->getKey("hevc_mode"));
@@ -262,6 +270,7 @@ void ConfigurationDialog::updateNewConfiguration()
         entries_snapshot.insert("pools", config->getKey("pools"));
         entries_snapshot.insert("encoder", config->getKey("encoder"));
         entries_snapshot.insert("fec_percentage", config->getKey("fec_percentage"));
+        entries_snapshot.insert("qp", config->getKey("qp"));
         emit configuration_changed();
     }
 
