@@ -73,11 +73,16 @@ ConfigurationDialog::ConfigurationDialog(QWidget *parent)
     /********Software - NVEC encoders************/
     encoderFieldGroupBox = new QGroupBox(this);
     encoderFieldRadioBtnNVENC = new QRadioButton("nvenc", this);
+    encoderFieldRadioBtnAMF = new QRadioButton("amf", this);
     encoderFieldRadioBtnSoftware = new QRadioButton("software", this);
 
     if(config->getKey(QString("encoder")) == "nvenc") {
          encoderFieldRadioBtnNVENC->setChecked(true);
          entries_snapshot.insert("encoder", ENCODER_NVENC);
+    }
+    else if (config->getKey(QString("encoder")) == "amf") {
+        encoderFieldRadioBtnAMF->setChecked(true);
+        entries_snapshot.insert("encoder", ENCODER_AMF);
     }
     else {
         encoderFieldRadioBtnSoftware->setChecked(true);
@@ -86,13 +91,11 @@ ConfigurationDialog::ConfigurationDialog(QWidget *parent)
 
     encoderHBoxLayout = new QHBoxLayout(this);
     encoderHBoxLayout->addWidget(encoderFieldRadioBtnNVENC);
+    encoderHBoxLayout->addWidget(encoderFieldRadioBtnAMF);
     encoderHBoxLayout->addWidget( encoderFieldRadioBtnSoftware);
     encoderFieldGroupBox->setLayout(encoderHBoxLayout);
 
     configInputForm->addRow(ENCODER_LABEL, encoderFieldGroupBox);
-
-    amdComingSoonLabel = new QLabel(AMD_COMING_SOON_LABEL, this);
-    configInputForm->addRow(amdComingSoonLabel);
 
     /********System process priority****/
     syspriorityAboveNormalBtn = new QRadioButton(SYS_PRIORITY_ABOVE_NORMAL_LABEL, this);

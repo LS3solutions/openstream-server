@@ -68,13 +68,13 @@ private:
     /**********SW/HW encoder ************/
     QGroupBox *encoderFieldGroupBox;
     QRadioButton *encoderFieldRadioBtnNVENC;
+    QRadioButton *encoderFieldRadioBtnAMF;
     QRadioButton *encoderFieldRadioBtnSoftware;
     QHBoxLayout *encoderHBoxLayout;
     QString ENCODER_NVENC = QString("nvenc");
+    QString ENCODER_AMF = QString("amf");
     QString ENCODER_SW = QString("software");
     QString ENCODER_LABEL = QString("Encoder");
-    QLabel *amdComingSoonLabel;
-    QString AMD_COMING_SOON_LABEL = QString("AMD VCE support coming soon.");
 
     /********codec****/
     QRadioButton *swcodech264RadioBtn;
