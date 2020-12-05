@@ -1,4 +1,4 @@
-#include "headers/ConfigurationManager.h"
+#include "ConfigurationManager.h"
 
 ConfigurationManager::ConfigurationManager()
     : QObject()

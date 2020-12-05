@@ -30,21 +30,21 @@ list(APPEND OPENSTREAM_EXTERNAL_LIBRARIES
 
 add_executable(openstreamapp
   WIN32
-  sources/main.cpp
-  headers/auto_start.h
-  sources/auto_start.cpp
-  sources/auth_listener_worker.cpp
-  headers/auth_listener_worker.h
-  sources/auth_pin_handler.cpp
-  headers/auth_pin_handler.h
-  sources/ConfigurationDialog.cpp
-  headers/ConfigurationDialog.h
-  sources/ConfigurationManager.cpp
-  headers/ConfigurationManager.h
-  sources/launcher.cpp
-  headers/launcher.h
-  headers/set_priority_class.h
-  sources/set_priority_class.cpp
+  main.cpp
+  auto_start.h
+  auto_start.cpp
+  auth_listener_worker.cpp
+  auth_listener_worker.h
+  auth_pin_handler.cpp
+  auth_pin_handler.h
+  ConfigurationDialog.cpp
+  ConfigurationDialog.h
+  ConfigurationManager.cpp
+  ConfigurationManager.h
+  launcher.cpp
+  launcher.h
+  set_priority_class.h
+  set_priority_class.cpp
   openstreamapp.qrc
 )
 

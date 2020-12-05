@@ -1,4 +1,4 @@
-#include "headers/auth_pin_handler.h"
+#include "auth_pin_handler.h"
 
 AuthPinHandler::AuthPinHandler()
 {

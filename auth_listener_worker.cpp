@@ -1,4 +1,4 @@
-#include "headers/auth_listener_worker.h"
+#include "auth_listener_worker.h"
 
 AuthListenerWorker::AuthListenerWorker(QObject *parent) : QObject(parent) {}
 

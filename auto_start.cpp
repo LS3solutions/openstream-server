@@ -1,4 +1,4 @@
-#include "headers/auto_start.h"
+#include "auto_start.h"
 #include <shlobj.h>
 #include <stdexcept>
 #include "windows.h"

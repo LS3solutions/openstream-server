@@ -1,6 +1,6 @@
-#include "headers/ConfigurationDialog.h"
+#include "ConfigurationDialog.h"
 #include <QCoreApplication>
-#include "headers/set_priority_class.h"
+#include "set_priority_class.h"
 #include <QMessageBox>
 
 ConfigurationDialog::ConfigurationDialog(QWidget *parent)

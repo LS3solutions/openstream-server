@@ -18,16 +18,16 @@
 #include <QSharedMemory>
 #include <QDir>
 #include <QSaveFile>
-#include "headers/ConfigurationDialog.h"
+#include "ConfigurationDialog.h"
 #include <QTimer>
 #include <QtConcurrent/QtConcurrentRun>
 #include <QFuture>
 #include <QInputDialog>
 
 
-#include "headers/auth_listener_worker.h"
-#include "headers/auth_pin_handler.h"
-#include "headers/set_priority_class.h"
+#include "auth_listener_worker.h"
+#include "auth_pin_handler.h"
+#include "set_priority_class.h"
 
 class Launcher : public QWidget
 {

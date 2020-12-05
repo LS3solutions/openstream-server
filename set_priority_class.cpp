@@ -1,4 +1,4 @@
-#include "headers/set_priority_class.h"
+#include "set_priority_class.h"
 #include <QDebug>
 
 void set_host_process_priority_gui(int sys_priority) {

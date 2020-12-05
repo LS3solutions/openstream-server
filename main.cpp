@@ -1,12 +1,12 @@
 #include <QApplication>
 #include <QCoreApplication>
 #ifndef QT_NO_SYSTEMTRAYICON
-#include "headers/launcher.h"
+#include "launcher.h"
 #include <QMessageBox>
 #include <QGuiApplication>
 #include <QStyleHints>
 #include <QDesktopWidget>
-#include "headers/auto_start.h"
+#include "auto_start.h"
 
 int main(int argc, char *argv[])
 {

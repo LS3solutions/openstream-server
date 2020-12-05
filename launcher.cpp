@@ -1,4 +1,4 @@
-#include "headers/launcher.h"
+#include "launcher.h"
 
 Launcher::Launcher(QWidget *parent)
     : QWidget(parent)
