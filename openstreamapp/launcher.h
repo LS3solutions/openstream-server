@@ -66,6 +66,8 @@ private slots:
     void updateAppConsoleError();
     void appStoppedWatch();
     void stopHostBeforeClose();
+    void set_off_host_state_indicator();
+    void set_on_host_state_indicator();
 
     /**
      * @brief authListenerWorkerRegeneration is intended to be
@@ -86,10 +88,6 @@ private slots:
      * the authentication pin challenge
      */
     void inputAuthPinCapture();
-
-    void set_off_host_state_indicator();
-
-    void set_on_host_state_indicator();
 
 private:
     uint RUN = 0;

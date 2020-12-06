@@ -6,7 +6,7 @@
 ConfigurationDialog::ConfigurationDialog(QWidget *parent)
     : QDialog(parent)
 {
-    config = new ConfigurationManager();
+    config = new ConfigurationManager("/assets/sunshine.conf");
     entries_snapshot = QHash<QString, QString>();
 
     //TODO: refine this writing to disc

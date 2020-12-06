@@ -192,6 +192,7 @@ int main(int argc, char *argv[]) {
   std::thread httpThread { nvhttp::start, shutdown_event };
   stream::rtpThread(shutdown_event);
 
+
   httpThread.join();
 
   return 0;

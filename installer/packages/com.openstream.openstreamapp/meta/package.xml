@@ -5,6 +5,7 @@
     <Version>1.0.0-1</Version>
     <ReleaseDate>2020-09-19</ReleaseDate>
     <Default>true</Default>
+    <RequiresAdminRights>true</RequiresAdminRights>
     <Licenses>
             <License file="gpl3.txt" name="GNU General Public License v3.0"/>
     </Licenses>

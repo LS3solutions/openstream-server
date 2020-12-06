@@ -18,13 +18,17 @@ class ConfigurationManager : public QObject
 {
     Q_OBJECT
 public:
-    ConfigurationManager();
+    ConfigurationManager(QString encoder_conf_filename);
     void setEntry(QString entry, QString value);
+    void removeEntry(QString entry);
     void saveConfiguration();
     QString getKey(QString key);
+    void restoreDefaultConfiguration(QString filename);
+    void reloadInMemoryValues();
+
 private:
 
-    const QString CONFIG_FILE_PATH = QString(QCoreApplication::applicationDirPath() + "/assets/sunshine.conf");
+    QString CONFIG_FILE_PATH;
     const QString ASSETS_FOLDER_FILE_PATH = QString(QCoreApplication::applicationDirPath() + "/assets");
 
     /**

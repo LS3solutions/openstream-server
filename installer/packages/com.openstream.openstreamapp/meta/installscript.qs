@@ -20,6 +20,8 @@ Component.prototype.createOperations = function()
                                        "iconPath=@TargetDir@\\openstreamapp.exe",
                                        "iconId=0",
                                        "description=Start Openstream server");
+                component.addElevatedOperation("Execute", "{0,1602,1638}", "cmd", "/C", "@TargetDir@\\gamepad_support\\ViGEmBusSetup_x64.msi");
+                                      
             } catch (e) {
                 // Do Nothing
             }
@@ -27,5 +29,5 @@ Component.prototype.createOperations = function()
     } catch(e) {
         print(e);
     }
-
 }
+

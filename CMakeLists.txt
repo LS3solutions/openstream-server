@@ -30,21 +30,43 @@ list(APPEND OPENSTREAM_EXTERNAL_LIBRARIES
 
 add_executable(openstreamapp
   WIN32
-  main.cpp
-  auto_start.h
-  auto_start.cpp
-  auth_listener_worker.cpp
-  auth_listener_worker.h
-  auth_pin_handler.cpp
-  auth_pin_handler.h
-  ConfigurationDialog.cpp
-  ConfigurationDialog.h
-  ConfigurationManager.cpp
-  ConfigurationManager.h
-  launcher.cpp
-  launcher.h
-  set_priority_class.h
-  set_priority_class.cpp
+  openstreamapp/main.cpp
+  openstreamapp/auto_start.h
+  openstreamapp/auto_start.cpp
+  openstreamapp/auth_listener_worker.cpp
+  openstreamapp/auth_listener_worker.h
+  openstreamapp/auth_pin_handler.cpp
+  openstreamapp/auth_pin_handler.h
+  openstreamapp/ConfigurationDialog.cpp
+  openstreamapp/ConfigurationDialog.h
+  openstreamapp/ConfigurationManager.cpp
+  openstreamapp/ConfigurationManager.h
+  openstreamapp/launcher.cpp
+  openstreamapp/launcher.h
+  openstreamapp/set_priority_class.h
+  openstreamapp/set_priority_class.cpp
+  openstreamapp/openstreammainwindow.h
+  openstreamapp/openstreammainwindow.cpp
+  openstreamapp/openstreammainwindow.ui
+  openstreamapp/h265configurationdialog.h
+  openstreamapp/h265configurationdialog.cpp
+  openstreamapp/h265configurationdialog.ui
+  openstreamapp/h264cpuconfigurationdialog.h
+  openstreamapp/h264cpuconfigurationdialog.cpp
+  openstreamapp/h264cpuconfigurationdialog.ui
+  openstreamapp/h264nvencconfigurationdialog.h
+  openstreamapp/h264nvencconfigurationdialog.cpp
+  openstreamapp/h264nvencconfigurationdialog.ui
+  openstreamapp/h265nvencconfigurationdialog.h
+  openstreamapp/h265nvencconfigurationdialog.cpp
+  openstreamapp/h265nvencconfigurationdialog.ui
+  openstreamapp/h264amdamfconfigurationdialog.h
+  openstreamapp/h264amdamfconfigurationdialog.cpp
+  openstreamapp/h264amdamfconfigurationdialog.ui
+  openstreamapp/h265amdamfconfigurationdialog.h
+  openstreamapp/h265amdamfconfigurationdialog.cpp
+  openstreamapp/h265amdamfconfigurationdialog.ui
+  openstreamapp/VideoEncoderEnum.h
   openstreamapp.qrc
 )
 

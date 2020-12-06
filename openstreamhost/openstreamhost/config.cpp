@@ -87,12 +87,12 @@ int coder_from_view(const std::string_view &coder) {
 
 video_t video {
   0, // crf
-  28, // qp
+  0, // qp
 
   0, // hevc_mode
   1500, //vbv_maxrate
   3000, //vbv_bufsize
-  4,
+  4, //pools
   x265_default_params,
   x264_default_params,
   1, // min_threads
@@ -365,8 +365,7 @@ void apply_config(std::unordered_map<std::string, std::string> &&vars) {
   int_f(vars, "vbv_maxrate", video.vbv_maxrate);
   int_f(vars, "vbv_bufsize", video.vbv_bufsize);
   int_f(vars, "pools", video.pools);
-  video.x264_params = video.x264_params
-          + ":threads=" + std::to_string(video.min_threads);
+
   string_f(vars, "sw_preset", video.sw.preset);
   string_f(vars, "sw_tune", video.sw.tune);
   int_f(vars, "nv_preset", video.nv.preset, nv::preset_from_view);
@@ -541,28 +540,14 @@ int parse(int argc, char *argv[]) {
  */
 void update_x265_options() {
     video.x265_params = config::x265_default_params;
-    if(video.vbv_bufsize > 0) {
-        video.x265_params = video.x265_params + ":vbv-bufsize=" + std::to_string(video.vbv_bufsize);
-        //set vbv-maxrate.
-        //https://x265.readthedocs.io/en/master/cli.html?highlight=vbv-bufsize#cmdoption-vbv-maxrate
-        video.x265_params = video.x265_params + ":vbv-maxrate=" + std::to_string(video.vbv_maxrate);
-    }
-    else if(video.vbv_bufsize == 0) {
-        video.x265_params = video.x265_params + ":vbv-bufsize=" + std::to_string(video.vbv_bufsize);
-    }
+    video.x265_params = video.x265_params + ":vbv-bufsize=" + std::to_string(video.vbv_bufsize);
+    video.x265_params = video.x265_params + ":vbv-maxrate=" + std::to_string(video.vbv_maxrate);
 
     // Set pools and frame threads for multithreading control of cores.
     // https://trac.ffmpeg.org/ticket/3730?cversion=1
     video.x265_params = video.x265_params + ":pools=" + std::to_string(video.pools);
     video.x265_params = video.x265_params + ":frame-threads=" + std::to_string(video.min_threads);
-
-    //Set QP if crf disabled
-    if(video.crf > 0) {
-        video.x265_params = video.x265_params + ":crf=" + std::to_string(video.crf);
-    }
-    else {
-        video.x265_params = video.x265_params + ":qp=" + std::to_string(video.qp);
-    }
+    video.x265_params = video.x265_params + ":crf=" + std::to_string(video.crf);
 }
 
 /**
@@ -570,26 +555,13 @@ void update_x265_options() {
  * for x265 options to be passed to x265 encoder.
  */
 void update_x264_options() {
-    if(video.vbv_bufsize > 0) {
-        video.x264_params = video.x264_params + ":vbv-bufsize=" + std::to_string(video.vbv_bufsize);
-        //set vbv-maxrate.
-        //https://x265.readthedocs.io/en/master/cli.html?highlight=vbv-bufsize#cmdoption-vbv-maxrate
-        video.x264_params = video.x264_params + ":vbv-maxrate=" + std::to_string(video.vbv_maxrate);
-    }
-    else if(video.vbv_bufsize == 0) {
-        video.x264_params = video.x264_params + ":vbv-bufsize=" + std::to_string(video.vbv_bufsize);
-    }
-
+    video.x264_params = config::x264_default_params;
+    video.x264_params = video.x264_params + ":vbv-bufsize=" + std::to_string(video.vbv_bufsize);
+    video.x264_params = video.x264_params + ":vbv-maxrate=" + std::to_string(video.vbv_maxrate);
 
     //Specify threads for x264
     video.x264_params = video.x264_params + ":threads=" + std::to_string(video.min_threads);
 
-    //Set QP if crf disabled
-    if(video.crf > 0) {
-        video.x264_params = video.x264_params + ":crf=" + std::to_string(video.crf);
-    }
-    else {
-        video.x264_params = video.x264_params + ":qp=" + std::to_string(video.qp);
-    }
+    video.x264_params = video.x264_params + ":crf=" + std::to_string(video.crf);
 }
 }

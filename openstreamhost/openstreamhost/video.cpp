@@ -344,7 +344,7 @@ encoder_t software {
       { "preset"s, &config::video.sw.preset },
       { "tune"s, "zero-latency" }
     },
-    std::make_optional<encoder_t::option_t>("crf"s, &config::video.crf), std::make_optional<encoder_t::option_t>("qp"s, &config::video.qp),
+    std::make_optional<encoder_t::option_t>("crf"s, &config::video.crf), std::nullopt,
     "libx265"s
   },
   {
@@ -353,7 +353,7 @@ encoder_t software {
       { "preset"s, &config::video.sw.preset },
       { "tune"s, &config::video.sw.tune }
     },
-    std::make_optional<encoder_t::option_t>("crf"s, &config::video.crf), std::make_optional<encoder_t::option_t>("qp"s, &config::video.qp),
+    std::make_optional<encoder_t::option_t>("crf"s, &config::video.crf), std::nullopt,
     "libx264"s
   },
   true,
