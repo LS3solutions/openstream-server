@@ -206,6 +206,9 @@ void ConfigurationDialog::updateNewConfiguration()
     /*Checks for encoder opt*/
     if(encoderFieldRadioBtnNVENC->isChecked())
         config->setEntry("encoder", ENCODER_NVENC);
+    else if (encoderFieldRadioBtnAMF->isChecked()) {
+        config->setEntry("encoder", ENCODER_AMF);
+    }
     else
         config->setEntry("encoder", ENCODER_SW);
 
