@@ -290,6 +290,45 @@ encoder_t nvenc {
   nv_d3d_img_to_frame,
   nv_d3d_make_hwdevice_ctx
 };
+
+encoder_t amfenc {
+  "amf"sv,
+  { 1, 0, 1 },
+    AV_HWDEVICE_TYPE_NONE,
+    AV_PIX_FMT_NONE,
+    AV_PIX_FMT_YUV420P, AV_PIX_FMT_YUV420P,
+  {
+    {
+      { "rc"s, "vbr_latency"s },
+      { "header_insertion_mode"s, "idr"s },
+      { "usage"s, "ultralowlatency"s },
+      { "quality"s, "speed"s },
+      { "rc"s, "cqp"s },
+      { "qp_p"s, 20 },
+      { "qp_i"s, 20 },
+      { "level"s, "4.1"s }
+    },
+    std::nullopt,  std::make_optional<encoder_t::option_t>("qp"s, &config::video.qp),
+    "hevc_amf"s,
+  },
+  {
+    {
+      { "usage"s, "ultralowlatency"s },
+      { "quality"s, "speed"s },
+      { "rc"s, "cqp"s },
+      { "qp_p"s, 20 },
+      { "qp_i"s, 20 },
+      { "level"s, "4.1"s }
+    },
+    std::nullopt, std::make_optional<encoder_t::option_t>({"qp"s, &config::video.qp}),
+    "h264_amf"s
+  },
+  true,
+  false,
+
+  sw_img_to_frame,
+  nullptr
+};
 #endif
 
 encoder_t software {
@@ -330,6 +369,7 @@ encoder_t software {
 std::vector<encoder_t> encoders {
 #ifdef _WIN32
   nvenc,
+  amfenc,
 #endif
   software
 };
@@ -1271,7 +1311,6 @@ void nv_d3d_img_to_frame(const platf::img_t &img, frame_t &frame) {
 util::Either<buffer_t, int> nv_d3d_make_hwdevice_ctx(platf::hwdevice_t *hwdevice_ctx) {
   buffer_t ctx_buf { av_hwdevice_ctx_alloc(AV_HWDEVICE_TYPE_D3D11VA) };
   auto ctx = (AVD3D11VADeviceContext*)((AVHWDeviceContext*)ctx_buf->data)->hwctx;
-  
   std::fill_n((std::uint8_t*)ctx, sizeof(AVD3D11VADeviceContext), 0);
 
   auto device = (ID3D11Device*)hwdevice_ctx->data;
