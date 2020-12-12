@@ -299,11 +299,12 @@ encoder_t amfenc {
     AV_PIX_FMT_YUV420P, AV_PIX_FMT_YUV420P,
   {
     {
+      { "forced-idr"s, 1 },
+      { "gops_per_idr"s, 1 },
       { "rc"s, "vbr_latency"s },
       { "header_insertion_mode"s, "idr"s },
       { "usage"s, "ultralowlatency"s },
       { "quality"s, "speed"s },
-      { "rc"s, "cqp"s },
       { "qp_p"s, 20 },
       { "qp_i"s, 20 },
       { "level"s, "4.1"s }
@@ -579,22 +580,25 @@ std::optional<session_t> make_session(const encoder_t &encoder, const config_t &
   ctx->time_base = AVRational{1, config.framerate};
   ctx->framerate = AVRational{config.framerate, 1};
 
-  if(config.videoFormat == 0) {
-    ctx->profile = encoder.profile.h264_high;
-  }
-  else if(config.dynamicRange == 0) {
-    ctx->profile = encoder.profile.hevc_main;
-  }
-  else {
-    ctx->profile = encoder.profile.hevc_main_10;
-  }
+  if (encoder.name != "amf") {
+    if(config.videoFormat == 0) {
+      ctx->profile = encoder.profile.h264_high;
+    }
+    else if(config.dynamicRange == 0) {
+      ctx->profile = encoder.profile.hevc_main;
+    }
+    else {
+      ctx->profile = encoder.profile.hevc_main_10;
+    }
 
-  // B-frames delay decoder output, so never use them
-  ctx->max_b_frames = 0;
-
-  // Use an infinite GOP length since I-frames are generated on demand
-  ctx->gop_size = std::numeric_limits<int>::max();
-  ctx->keyint_min = ctx->gop_size;
+    // B-frames delay decoder output, so never use them
+    ctx->max_b_frames = 0;
+    // Use an infinite GOP length since I-frames are generated on demand
+    ctx->gop_size = std::numeric_limits<int>::max();
+  } else {
+    ctx->gop_size = 1;
+    ctx->keyint_min = ctx->gop_size;
+  }
 
   if(config.numRefFrames == 0) {
     ctx->refs = video_format[encoder_t::REF_FRAMES_AUTOSELECT] ? 0 : 16;
