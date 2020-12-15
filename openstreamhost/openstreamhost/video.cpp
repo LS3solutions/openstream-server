@@ -217,7 +217,7 @@ struct sync_session_ctx_t {
 
 struct sync_session_t {
   sync_session_ctx_t *ctx;
-  
+
   std::chrono::steady_clock::time_point next_frame;
   std::chrono::nanoseconds delay;
 
@@ -299,10 +299,10 @@ encoder_t amfenc {
     AV_PIX_FMT_YUV420P, AV_PIX_FMT_YUV420P,
   {
     {
-      { "forced-idr"s, 1 },
-      { "gops_per_idr"s, 1 },
-      { "rc"s, "vbr_latency"s },
       { "header_insertion_mode"s, "idr"s },
+      { "gops_per_idr"s, 1 },
+      { "profile_tier"s, "main"s },
+      { "rc"s, "cqp"s },
       { "usage"s, "ultralowlatency"s },
       { "quality"s, "speed"s },
       { "qp_p"s, 20 },
@@ -580,25 +580,20 @@ std::optional<session_t> make_session(const encoder_t &encoder, const config_t &
   ctx->time_base = AVRational{1, config.framerate};
   ctx->framerate = AVRational{config.framerate, 1};
 
-  if (encoder.name != "amf") {
-    if(config.videoFormat == 0) {
-      ctx->profile = encoder.profile.h264_high;
-    }
-    else if(config.dynamicRange == 0) {
-      ctx->profile = encoder.profile.hevc_main;
-    }
-    else {
-      ctx->profile = encoder.profile.hevc_main_10;
-    }
-
-    // B-frames delay decoder output, so never use them
-    ctx->max_b_frames = 0;
-    // Use an infinite GOP length since I-frames are generated on demand
-    ctx->gop_size = std::numeric_limits<int>::max();
-  } else {
-    ctx->gop_size = 1;
-    ctx->keyint_min = ctx->gop_size;
+  if(config.videoFormat == 0) {
+    ctx->profile = encoder.profile.h264_high;
   }
+  else if(config.dynamicRange == 0) {
+    ctx->profile = encoder.profile.hevc_main;
+  }
+  else {
+    ctx->profile = encoder.profile.hevc_main_10;
+  }
+
+  // B-frames delay decoder output, so never use them
+  ctx->max_b_frames = 0;
+  // Use an infinite GOP length since I-frames are generated on demand
+  ctx->gop_size = std::numeric_limits<int>::max();
 
   if(config.numRefFrames == 0) {
     ctx->refs = video_format[encoder_t::REF_FRAMES_AUTOSELECT] ? 0 : 16;
@@ -808,7 +803,7 @@ void encode_run(
         break;
       }
     }
-    
+
     if(encode(frame_nr++, session->ctx, session->frame, packets, channel_data)) {
       BOOST_LOG(error) << "Could not encode video packet"sv;
       log_flush();
@@ -904,16 +899,16 @@ encode_e encode_run_sync(std::vector<std::unique_ptr<sync_session_ctx_t>> &synce
         img_tmp = img.get();
         break;
     }
-    
+
     auto now = std::chrono::steady_clock::now();
-    
+
     next_frame = now + 1s;
     KITTY_WHILE_LOOP(auto pos = std::begin(synced_sessions), pos != std::end(synced_sessions), {
       auto ctx = pos->ctx;
       if(ctx->shutdown_event->peek()) {
         // Let waiting thread know it can delete shutdown_event
         ctx->join_event->raise(true);
-        
+
         pos = synced_sessions.erase(pos);
         synced_session_ctxs.erase(std::find_if(std::begin(synced_session_ctxs), std::end(synced_session_ctxs), [&ctx_p=ctx](auto &ctx) {
           return ctx.get() == ctx_p;
@@ -1097,7 +1092,7 @@ void capture(
     auto ref = capture_thread_sync.ref();
     ref->encode_session_ctx_queue.raise(sync_session_ctx_t {
       shutdown_event, &join_event, packets, idr_events, config, 1, 1, channel_data
-    }); 
+    });
 
     // Wait for join signal
     join_event.view();
@@ -1201,7 +1196,7 @@ bool validate_encoder(encoder_t &encoder) {
   return true;
 }
 
-int init() {   
+int init() {
   KITTY_WHILE_LOOP(auto pos = std::begin(encoders), pos != std::end(encoders), {
     if(
       (!config::video.encoder.empty() && pos->name != config::video.encoder)  ||
@@ -1293,7 +1288,7 @@ void nv_d3d_img_to_frame(const platf::img_t &img, frame_t &frame) {
   if(img.data == frame->data[0]) {
     return;
   }
-  
+
   // Need to have something refcounted
   if(!frame->buf[0]) {
     frame->buf[0] = av_buffer_allocz(sizeof(AVD3D11FrameDescriptor));
