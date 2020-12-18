@@ -300,6 +300,7 @@ encoder_t amfenc {
   {
     {
       { "header_insertion_mode"s, "idr"s },
+      { "gops_per_idr"s, 30 },
       { "rc"s, "cbr"s },
       { "usage"s, "ultralowlatency"s },
       { "quality"s, "speed"s },
