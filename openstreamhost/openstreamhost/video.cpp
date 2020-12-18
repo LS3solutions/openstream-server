@@ -300,14 +300,9 @@ encoder_t amfenc {
   {
     {
       { "header_insertion_mode"s, "idr"s },
-      { "gops_per_idr"s, 1 },
-      { "profile_tier"s, "main"s },
-      { "rc"s, "cqp"s },
+      { "rc"s, "cbr"s },
       { "usage"s, "ultralowlatency"s },
       { "quality"s, "speed"s },
-      { "qp_p"s, 20 },
-      { "qp_i"s, 20 },
-      { "level"s, "4.1"s }
     },
     std::nullopt,  std::make_optional<encoder_t::option_t>("qp"s, &config::video.qp),
     "hevc_amf"s,
