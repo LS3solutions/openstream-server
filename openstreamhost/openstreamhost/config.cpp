@@ -109,7 +109,12 @@ video_t video {
 
   {}, // encoder
   {}, // adapter_name
-  {}  // output_name
+  {},
+  {
+    "speed",
+    "cbr",
+    "20000"
+  }// output_name
 };
 
 audio_t audio {};
@@ -374,6 +379,10 @@ void apply_config(std::unordered_map<std::string, std::string> &&vars) {
   string_f(vars, "encoder", video.encoder);
   string_f(vars, "adapter_name", video.adapter_name);
   string_f(vars, "output_name", video.output_name);
+
+  string_f(vars, "amf_quality", video.amf.quality);
+  string_f(vars, "amf_rc", video.amf.rc);
+  string_f(vars, "amf_maxrate", video.amf.maxrate);
 
   string_f(vars, "pkey", nvhttp.pkey);
   string_f(vars, "cert", nvhttp.cert);

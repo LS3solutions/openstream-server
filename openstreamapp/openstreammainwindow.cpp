@@ -538,6 +538,12 @@ void OpenstreamMainWindow::readEncoderConfiguration() {
             else if (encoder_str == "h265NVENC") {
                 current_encoder = h265NVENC;
             }
+            else if(encoder_str == "h264AMDAMF") {
+                current_encoder = h264AMDAMF;
+            }
+            else if(encoder_str == "h265AMDAMF") {
+                current_encoder = h265AMDAMF;
+            }
             else {
                 current_encoder = h264CPU;
             }
@@ -708,4 +714,14 @@ void OpenstreamMainWindow::on_h265_AMD_select_button_clicked()
     removeIconsFromSelectionButtons();
     updateEncoderButtonsSelected();
     configuration_changed_apply(h265AMDAMF);
+}
+
+void OpenstreamMainWindow::on_h264_AMD_configure_button_clicked()
+{
+    h264AMDAMFConfigDialog->exec();
+}
+
+void OpenstreamMainWindow::on_h265_AMD_configure_button_clicked()
+{
+    h265AMDAMFConfigDialog->exec();
 }

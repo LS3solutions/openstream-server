@@ -66,6 +66,12 @@ public slots:
     void configuration_changed_apply(VideoEncoder);
 
 private slots:
+    void on_h265_AMD_configure_button_clicked();
+
+private slots:
+    void on_h264_AMD_configure_button_clicked();
+
+private slots:
     void on_h265_AMD_select_button_clicked();
 
 private slots:

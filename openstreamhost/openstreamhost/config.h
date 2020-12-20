@@ -45,6 +45,12 @@ struct video_t {
   std::string encoder;
   std::string adapter_name;
   std::string output_name;
+
+  struct {
+   std::string quality;
+   std::string rc;
+   std::string maxrate;
+  } amf;
 };
 
 struct audio_t {

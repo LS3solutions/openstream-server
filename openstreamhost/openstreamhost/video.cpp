@@ -301,9 +301,11 @@ encoder_t amfenc {
     {
       { "header_insertion_mode"s, "idr"s },
       { "gops_per_idr"s, 30 },
-      { "rc"s, "cbr"s },
+      { "rc"s, &config::video.amf.rc },
       { "usage"s, "ultralowlatency"s },
-      { "quality"s, "speed"s },
+      { "quality"s, &config::video.amf.quality },
+      { "b", &config::video.amf.maxrate },
+      { "maxrate", &config::video.amf.maxrate }
     },
     std::nullopt,  std::make_optional<encoder_t::option_t>("qp"s, &config::video.qp),
     "hevc_amf"s,
@@ -311,11 +313,11 @@ encoder_t amfenc {
   {
     {
       { "usage"s, "ultralowlatency"s },
-      { "quality"s, "speed"s },
-      { "rc"s, "cqp"s },
-      { "qp_p"s, 20 },
-      { "qp_i"s, 20 },
-      { "level"s, "4.1"s }
+      { "quality"s,  &config::video.amf.quality  },
+      { "rc"s,  &config::video.amf.rc  },
+      { "level"s, "4.1"s },
+      { "b", &config::video.amf.maxrate },
+      { "maxrate", &config::video.amf.maxrate }
     },
     std::nullopt, std::make_optional<encoder_t::option_t>({"qp"s, &config::video.qp}),
     "h264_amf"s

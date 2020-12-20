@@ -1007,7 +1007,7 @@ font-size: 14px;</string>
                <item>
                 <widget class="QPushButton" name="h265_AMD_configure_button">
                  <property name="enabled">
-                  <bool>false</bool>
+                  <bool>true</bool>
                  </property>
                  <property name="styleSheet">
                   <string notr="true">#h265_AMD_configure_button {
@@ -1127,7 +1127,7 @@ font-size: 14px;</string>
                <item>
                 <widget class="QPushButton" name="h264_AMD_configure_button">
                  <property name="enabled">
-                  <bool>false</bool>
+                  <bool>true</bool>
                  </property>
                  <property name="styleSheet">
                   <string notr="true">#h264_AMD_configure_button {
