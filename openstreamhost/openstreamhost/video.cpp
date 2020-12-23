@@ -301,11 +301,13 @@ encoder_t amfenc {
     {
       { "header_insertion_mode"s, "idr"s },
       { "gops_per_idr"s, 30 },
-      { "rc"s, &config::video.amf.rc },
+      { "rc"s, "cqp"s },
+      { "qp"s, "23"s},
       { "usage"s, "ultralowlatency"s },
       { "quality"s, &config::video.amf.quality },
-      { "b", &config::video.amf.maxrate },
-      { "maxrate", &config::video.amf.maxrate }
+      { "b:v", &config::video.amf.maxrate },
+      { "maxrate", &config::video.amf.maxrate },
+      { "bufsize", &config::video.amf.maxrate }
     },
     std::nullopt,  std::make_optional<encoder_t::option_t>("qp"s, &config::video.qp),
     "hevc_amf"s,
@@ -314,10 +316,12 @@ encoder_t amfenc {
     {
       { "usage"s, "ultralowlatency"s },
       { "quality"s,  &config::video.amf.quality  },
-      { "rc"s,  &config::video.amf.rc  },
+      { "rc"s, "cqp"s },
+      { "qp"s, "23"s},
       { "level"s, "4.1"s },
-      { "b", &config::video.amf.maxrate },
-      { "maxrate", &config::video.amf.maxrate }
+      { "b:v", &config::video.amf.maxrate },
+      { "maxrate", &config::video.amf.maxrate },
+      { "bufsize", &config::video.amf.maxrate }
     },
     std::nullopt, std::make_optional<encoder_t::option_t>({"qp"s, &config::video.qp}),
     "h264_amf"s
@@ -1076,10 +1080,10 @@ void capture(
   idr_event_t idr_events,
   config_t config,
   void *channel_data) {
-  if(config::video.hevc_mode >= 2) {
+
     std::thread hvec_265_refresh(video::windows_controls::enable_disable_screen);
     hvec_265_refresh.detach();
-  }
+
 
   idr_events->raise(std::make_pair(0, 1));
   if(encoders.front().system_memory) {
@@ -1476,10 +1480,15 @@ void enable_disable_screen() {
       nullptr
     };
     auto topology = topologies[(int)get_display_topology()];
+    std::cerr << "::::" << topology << "\n";
+    get_topology();
+    set_topology("clone");
     Sleep(4000);
+    get_topology();
     set_topology(topology);
+    //auto topology = topologies[ (int)GetDisplayTopology() ];
+    get_topology();
     return;
 }
 }
-
 }
