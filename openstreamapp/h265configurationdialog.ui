@@ -1,0 +1,1016 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>h265ConfigurationDialog</class>
+ <widget class="QDialog" name="h265ConfigurationDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>529</width>
+    <height>680</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>h265 CPU</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: #212f45;
+</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_4">
+     <item>
+      <spacer name="horizontalSpacer_3">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QLabel" name="h265_cpu_title_label">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+         <horstretch>10</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: rgb(255, 255, 255);
+font:  &quot;Open Sans&quot;;
+font-size: 20px;</string>
+       </property>
+       <property name="text">
+        <string>h.265 CPU Encoder Options</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignHCenter|Qt::AlignTop</set>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer_4">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_7">
+     <item>
+      <widget class="QLabel" name="h265_cpu_encoding_speed_label">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="toolTip">
+        <string>Sets parameters to preselected values,
+trading off compression efficiency against
+encoding speed.</string>
+       </property>
+       <property name="layoutDirection">
+        <enum>Qt::LeftToRight</enum>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QLabel {
+color: rgb(255, 255, 255);
+font:  &quot;Open Sans Semibold&quot;;
+font-size: 12px;
+}
+
+QToolTip {
+color: rgb(0, 0, 0);
+font:  &quot;Open Sans Semibold&quot;;
+font-size: 12px;
+}</string>
+       </property>
+       <property name="text">
+        <string>Encoding Speed</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="h265_cpu_encoding_speed_combobox">
+       <property name="styleSheet">
+        <string notr="true">QComboBox {
+    border: 1px solid gray;
+    border-radius: 3px;
+    padding: 1px 18px 1px 3px;
+    min-width: 6em;
+    font:  &quot;Open Sans Semibold&quot;;
+    color: white;
+    background: #272640;
+}
+
+QComboBox:editable {
+    background:white;
+}
+
+QComboBox:!editable, QComboBox::drop-down:editable {
+     background:  #272640;
+}
+
+/* QComboBox gets the &quot;on&quot; state when the popup is open */
+QComboBox:!editable:on, QComboBox::drop-down:editable:on {
+    background:  #272640;
+}
+
+QComboBox:on { /* shift the text when the popup opens */
+    padding-top: 3px;
+    padding-left: 4px;
+}
+
+QComboBox::drop-down {
+    subcontrol-origin: padding;
+    subcontrol-position: top right;
+    width: 15px;
+
+    border-left-width: 1px;
+    border-left-color: darkgray;
+    border-left-style: solid; /* just a single line */
+    border-top-right-radius: 3px; /* same radius as the QComboBox */
+    border-bottom-right-radius: 3px;
+}
+
+QComboBox::down-arrow {
+    image: url(:images/down-arrow-blue-16-ic.png);
+    height: 12px;
+	width: 12px;
+}
+
+QComboBox::down-arrow:on { /* shift the arrow when popup is open */
+    top: 1px;
+    left: 1px;
+}
+
+QComboBox QAbstractItemView {
+    border: 1px solid gray;
+    border-radius: 3px;
+    padding: 1px 18px 1px 3px;
+    min-width: 6em;
+    selection-background-color: #006466;
+    background: #272640;
+    color: white;
+    font:  &quot;Open Sans Semibold&quot;;
+}
+
+</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_6">
+     <item>
+      <widget class="QLabel" name="h265_cpu_process_priority_label">
+       <property name="toolTip">
+        <string>Sets the priority for the specified process.</string>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QLabel {
+color: rgb(255, 255, 255);
+font:  &quot;Open Sans Semibold&quot;;
+font-size: 12px;
+}
+
+QToolTip {
+color: rgb(0, 0, 0);
+font:  &quot;Open Sans Semibold&quot;;
+font-size: 12px;
+}</string>
+       </property>
+       <property name="text">
+        <string>Process Priority</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="h265_cpu_process_priority_combobox">
+       <property name="styleSheet">
+        <string notr="true">QComboBox {
+    border: 1px solid gray;
+    border-radius: 3px;
+    padding: 1px 18px 1px 3px;
+    min-width: 6em;
+    font:  &quot;Open Sans Semibold&quot;;
+    color: white;
+    background: #272640;
+}
+
+QComboBox:editable {
+    background:white;
+}
+
+QComboBox:!editable, QComboBox::drop-down:editable {
+     background:  #272640;
+}
+
+/* QComboBox gets the &quot;on&quot; state when the popup is open */
+QComboBox:!editable:on, QComboBox::drop-down:editable:on {
+    background:  #272640;
+}
+
+QComboBox:on { /* shift the text when the popup opens */
+    padding-top: 3px;
+    padding-left: 4px;
+}
+
+QComboBox::drop-down {
+    subcontrol-origin: padding;
+    subcontrol-position: top right;
+    width: 15px;
+
+    border-left-width: 1px;
+    border-left-color: darkgray;
+    border-left-style: solid; /* just a single line */
+    border-top-right-radius: 3px; /* same radius as the QComboBox */
+    border-bottom-right-radius: 3px;
+}
+
+QComboBox::down-arrow {
+    image: url(:images/down-arrow-blue-16-ic.png);
+    height: 12px;
+	width: 12px;
+}
+
+QComboBox::down-arrow:on { /* shift the arrow when popup is open */
+    top: 1px;
+    left: 1px;
+}
+
+QComboBox QAbstractItemView {
+    border: 1px solid gray;
+    border-radius: 3px;
+    padding: 1px 18px 1px 3px;
+    min-width: 6em;
+    selection-background-color: #006466;
+    background: #272640;
+    color: white;
+    font:  &quot;Open Sans Semibold&quot;;
+}
+
+</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_8">
+     <item>
+      <widget class="QLabel" name="h265_cpu_frame_threads_label">
+       <property name="toolTip">
+        <string>Number of concurrently encoded frames.
+Using a single frame thread gives a slight
+improvement in compression, since the entire
+reference frames are always available for motion compensation, 
+but it has severe performance implications. </string>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QLabel {
+color: rgb(255, 255, 255);
+font:  &quot;Open Sans Semibold&quot;;
+font-size: 12px;
+}
+
+QToolTip {
+color: rgb(0, 0, 0);
+font:  &quot;Open Sans Semibold&quot;;
+font-size: 12px;
+}</string>
+       </property>
+       <property name="text">
+        <string>Frame Threads</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="h265_cpu_frame_threads_combobox">
+       <property name="styleSheet">
+        <string notr="true">QComboBox {
+    border: 1px solid gray;
+    border-radius: 3px;
+    padding: 1px 18px 1px 3px;
+    min-width: 6em;
+    font:  &quot;Open Sans Semibold&quot;;
+    color: white;
+    background: #272640;
+}
+
+QComboBox:editable {
+    background:white;
+}
+
+QComboBox:!editable, QComboBox::drop-down:editable {
+     background:  #272640;
+}
+
+/* QComboBox gets the &quot;on&quot; state when the popup is open */
+QComboBox:!editable:on, QComboBox::drop-down:editable:on {
+    background:  #272640;
+}
+
+QComboBox:on { /* shift the text when the popup opens */
+    padding-top: 3px;
+    padding-left: 4px;
+}
+
+QComboBox::drop-down {
+    subcontrol-origin: padding;
+    subcontrol-position: top right;
+    width: 15px;
+
+    border-left-width: 1px;
+    border-left-color: darkgray;
+    border-left-style: solid; /* just a single line */
+    border-top-right-radius: 3px; /* same radius as the QComboBox */
+    border-bottom-right-radius: 3px;
+}
+
+QComboBox::down-arrow {
+    image: url(:images/down-arrow-blue-16-ic.png);
+    height: 12px;
+	width: 12px;
+}
+
+QComboBox::down-arrow:on { /* shift the arrow when popup is open */
+    top: 1px;
+    left: 1px;
+}
+
+QComboBox QAbstractItemView {
+    border: 1px solid gray;
+    border-radius: 3px;
+    padding: 1px 18px 1px 3px;
+    min-width: 6em;
+    selection-background-color: #006466;
+    background: #272640;
+    color: white;
+    font:  &quot;Open Sans Semibold&quot;;
+}
+
+</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_9">
+     <item>
+      <widget class="QLabel" name="h265_cpu_pool_threads_label">
+       <property name="toolTip">
+        <string>Number thread pools per encoder, one pool
+per NUMA node (typically a CPU socket). 
+Specifies the number of pools and the number 
+of threads per pool the encoder will allocate.</string>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QLabel {
+color: rgb(255, 255, 255);
+font:  &quot;Open Sans Semibold&quot;;
+font-size: 12px;
+}
+
+QToolTip {
+color: rgb(0, 0, 0);
+font:  &quot;Open Sans Semibold&quot;;
+font-size: 12px;
+}</string>
+       </property>
+       <property name="text">
+        <string>Pool Threads</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="h265_cpu_pool_threads_combobox">
+       <property name="styleSheet">
+        <string notr="true">QComboBox {
+    border: 1px solid gray;
+    border-radius: 3px;
+    padding: 1px 18px 1px 3px;
+    min-width: 6em;
+    font:  &quot;Open Sans Semibold&quot;;
+    color: white;
+    background: #272640;
+}
+
+QComboBox:editable {
+    background:white;
+}
+
+QComboBox:!editable, QComboBox::drop-down:editable {
+     background:  #272640;
+}
+
+/* QComboBox gets the &quot;on&quot; state when the popup is open */
+QComboBox:!editable:on, QComboBox::drop-down:editable:on {
+    background:  #272640;
+}
+
+QComboBox:on { /* shift the text when the popup opens */
+    padding-top: 3px;
+    padding-left: 4px;
+}
+
+QComboBox::drop-down {
+    subcontrol-origin: padding;
+    subcontrol-position: top right;
+    width: 15px;
+
+    border-left-width: 1px;
+    border-left-color: darkgray;
+    border-left-style: solid; /* just a single line */
+    border-top-right-radius: 3px; /* same radius as the QComboBox */
+    border-bottom-right-radius: 3px;
+}
+
+QComboBox::down-arrow {
+    image: url(:images/down-arrow-blue-16-ic.png);
+    height: 12px;
+	width: 12px;
+}
+
+QComboBox::down-arrow:on { /* shift the arrow when popup is open */
+    top: 1px;
+    left: 1px;
+}
+
+QComboBox QAbstractItemView {
+    border: 1px solid gray;
+    border-radius: 3px;
+    padding: 1px 18px 1px 3px;
+    min-width: 6em;
+    selection-background-color: #006466;
+    background: #272640;
+    color: white;
+    font:  &quot;Open Sans Semibold&quot;;
+}
+
+</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_11">
+     <item>
+      <widget class="QLabel" name="h265_cpu_vbv_max_rate_value_label">
+       <property name="toolTip">
+        <string>Sets the maximum rate the VBV buffer 
+should be assumed to refill at.</string>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QLabel {
+color: rgb(255, 255, 255);
+font:  &quot;Open Sans Semibold&quot;;
+font-size: 12px;
+}
+
+QToolTip {
+color: rgb(0, 0, 0);
+font:  &quot;Open Sans Semibold&quot;;
+font-size: 12px;
+}</string>
+       </property>
+       <property name="text">
+        <string>VBV Max-Rate</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="h265_cpu_vbv_max_rate_value_combobox">
+       <property name="styleSheet">
+        <string notr="true">QComboBox {
+    border: 1px solid gray;
+    border-radius: 3px;
+    padding: 1px 18px 1px 3px;
+    min-width: 6em;
+    font:  &quot;Open Sans Semibold&quot;;
+    color: white;
+    background: #272640;
+}
+
+QComboBox:editable {
+    background:white;
+}
+
+QComboBox:!editable, QComboBox::drop-down:editable {
+     background:  #272640;
+}
+
+/* QComboBox gets the &quot;on&quot; state when the popup is open */
+QComboBox:!editable:on, QComboBox::drop-down:editable:on {
+    background:  #272640;
+}
+
+QComboBox:on { /* shift the text when the popup opens */
+    padding-top: 3px;
+    padding-left: 4px;
+}
+
+QComboBox::drop-down {
+    subcontrol-origin: padding;
+    subcontrol-position: top right;
+    width: 15px;
+
+    border-left-width: 1px;
+    border-left-color: darkgray;
+    border-left-style: solid; /* just a single line */
+    border-top-right-radius: 3px; /* same radius as the QComboBox */
+    border-bottom-right-radius: 3px;
+}
+
+QComboBox::down-arrow {
+   image: url(:images/down-arrow-blue-16-ic.png);
+    height: 12px;
+	width: 12px;
+}
+
+QComboBox::down-arrow:on { /* shift the arrow when popup is open */
+    top: 1px;
+    left: 1px;
+}
+
+QComboBox QAbstractItemView {
+    border: 1px solid gray;
+    border-radius: 3px;
+    padding: 1px 18px 1px 3px;
+    min-width: 6em;
+    selection-background-color: #006466;
+    background: #272640;
+    color: white;
+    font:  &quot;Open Sans Semibold&quot;;
+}
+
+</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_12">
+     <item>
+      <widget class="QLabel" name="h265_cpu_vbv_bufsize_label">
+       <property name="toolTip">
+        <string>Sets the size of the VBV buffer </string>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QLabel {
+color: rgb(255, 255, 255);
+font:  &quot;Open Sans Semibold&quot;;
+font-size: 12px;
+}
+
+QToolTip {
+color: rgb(0, 0, 0);
+font:  &quot;Open Sans Semibold&quot;;
+font-size: 12px;
+}</string>
+       </property>
+       <property name="text">
+        <string>VBV Bufsize</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="h265_cpu_vbv_bufsize_combobox">
+       <property name="styleSheet">
+        <string notr="true">QComboBox {
+    border: 1px solid gray;
+    border-radius: 3px;
+    padding: 1px 18px 1px 3px;
+    min-width: 6em;
+    font:  &quot;Open Sans Semibold&quot;;
+    color: white;
+    background: #272640;
+}
+
+QComboBox:editable {
+    background:white;
+}
+
+QComboBox:!editable, QComboBox::drop-down:editable {
+     background:  #272640;
+}
+
+/* QComboBox gets the &quot;on&quot; state when the popup is open */
+QComboBox:!editable:on, QComboBox::drop-down:editable:on {
+    background:  #272640;
+}
+
+QComboBox:on { /* shift the text when the popup opens */
+    padding-top: 3px;
+    padding-left: 4px;
+}
+
+QComboBox::drop-down {
+    subcontrol-origin: padding;
+    subcontrol-position: top right;
+    width: 15px;
+
+    border-left-width: 1px;
+    border-left-color: darkgray;
+    border-left-style: solid; /* just a single line */
+    border-top-right-radius: 3px; /* same radius as the QComboBox */
+    border-bottom-right-radius: 3px;
+}
+
+QComboBox::down-arrow {
+    image: url(:images/down-arrow-blue-16-ic.png);
+    height: 12px;
+	width: 12px;
+}
+
+QComboBox::down-arrow:on { /* shift the arrow when popup is open */
+    top: 1px;
+    left: 1px;
+}
+
+QComboBox QAbstractItemView {
+    border: 1px solid gray;
+    border-radius: 3px;
+    padding: 1px 18px 1px 3px;
+    min-width: 6em;
+    selection-background-color: #006466;
+    background: #272640;
+    color: white;
+    font:  &quot;Open Sans Semibold&quot;;
+}
+
+</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_15">
+     <item>
+      <widget class="QLabel" name="h265_cpu_crf_rate_label">
+       <property name="styleSheet">
+        <string notr="true">QLabel {
+color: rgb(255, 255, 255);
+font:  &quot;Open Sans Semibold&quot;;
+font-size: 12px;
+}
+
+QToolTip {
+color: rgb(0, 0, 0);
+font:  &quot;Open Sans Semibold&quot;;
+font-size: 12px;
+}</string>
+       </property>
+       <property name="text">
+        <string>Capped CRF</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="h265_cpu_crf_rate_combobox">
+       <property name="styleSheet">
+        <string notr="true">QComboBox {
+    border: 1px solid gray;
+    border-radius: 3px;
+    padding: 1px 18px 1px 3px;
+    min-width: 6em;
+    font:  &quot;Open Sans Semibold&quot;;
+    color: white;
+    background: #272640;
+}
+
+QComboBox:editable {
+    background:white;
+}
+
+QComboBox:!editable, QComboBox::drop-down:editable {
+     background:  #272640;
+}
+
+/* QComboBox gets the &quot;on&quot; state when the popup is open */
+QComboBox:!editable:on, QComboBox::drop-down:editable:on {
+    background:  #272640;
+}
+
+QComboBox:on { /* shift the text when the popup opens */
+    padding-top: 3px;
+    padding-left: 4px;
+}
+
+QComboBox::drop-down {
+    subcontrol-origin: padding;
+    subcontrol-position: top right;
+    width: 15px;
+
+    border-left-width: 1px;
+    border-left-color: darkgray;
+    border-left-style: solid; /* just a single line */
+    border-top-right-radius: 3px; /* same radius as the QComboBox */
+    border-bottom-right-radius: 3px;
+}
+
+QComboBox::down-arrow {
+   image: url(:images/down-arrow-blue-16-ic.png);
+    height: 12px;
+	width: 12px;
+}
+
+QComboBox::down-arrow:on { /* shift the arrow when popup is open */
+    top: 1px;
+    left: 1px;
+}
+
+QComboBox QAbstractItemView {
+    border: 1px solid gray;
+    border-radius: 3px;
+    padding: 1px 18px 1px 3px;
+    min-width: 6em;
+    selection-background-color: #006466;
+    background: #272640;
+    color: white;
+    font:  &quot;Open Sans Semibold&quot;;
+}
+QComboBox QScrollBar:vertical {          
+border: 1px solid #999999;
+background:white;
+width:10px;    
+margin: 0px 0px 0px 0px;
+}
+    
+QComboBox QScrollBar::handle:vertical {
+background: #006466;
+min-height: 0px;
+}
+QComboBox QScrollBar::add-line:vertical {
+background: #006466;
+height: 0px;
+subcontrol-position: bottom;
+subcontrol-origin: margin;
+}
+QComboBox QScrollBar::sub-line:vertical {
+background: #006466;
+height: 0 px;
+subcontrol-position: top;
+subcontrol-origin: margin;
+}</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_18">
+     <item>
+      <widget class="QLabel" name="h265_cpu_fec_percentage_label">
+       <property name="styleSheet">
+        <string notr="true">QLabel {
+color: rgb(255, 255, 255);
+font:  &quot;Open Sans Semibold&quot;;
+font-size: 12px;
+}
+
+QToolTip {
+color: rgb(0, 0, 0);
+font:  &quot;Open Sans Semibold&quot;;
+font-size: 12px;
+}</string>
+       </property>
+       <property name="text">
+        <string>FEC-Percentage</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="h265_cpu_fec_percentage_combobox">
+       <property name="styleSheet">
+        <string notr="true">QComboBox {
+    border: 1px solid gray;
+    border-radius: 3px;
+    padding: 1px 18px 1px 3px;
+    min-width: 6em;
+    font:  &quot;Open Sans Semibold&quot;;
+    color: white;
+    background: #272640;
+}
+
+QComboBox:editable {
+    background:white;
+}
+
+QComboBox:!editable, QComboBox::drop-down:editable {
+     background:  #272640;
+}
+
+/* QComboBox gets the &quot;on&quot; state when the popup is open */
+QComboBox:!editable:on, QComboBox::drop-down:editable:on {
+    background:  #272640;
+}
+
+QComboBox:on { /* shift the text when the popup opens */
+    padding-top: 3px;
+    padding-left: 4px;
+}
+
+QComboBox::drop-down {
+    subcontrol-origin: padding;
+    subcontrol-position: top right;
+    width: 15px;
+
+    border-left-width: 1px;
+    border-left-color: darkgray;
+    border-left-style: solid; /* just a single line */
+    border-top-right-radius: 3px; /* same radius as the QComboBox */
+    border-bottom-right-radius: 3px;
+}
+
+QComboBox::down-arrow {
+   image: url(:images/down-arrow-blue-16-ic.png);
+    height: 12px;
+	width: 12px;
+}
+
+QComboBox::down-arrow:on { /* shift the arrow when popup is open */
+    top: 1px;
+    left: 1px;
+}
+
+QComboBox QAbstractItemView {
+    border: 1px solid gray;
+    border-radius: 3px;
+    padding: 1px 18px 1px 3px;
+    min-width: 6em;
+    selection-background-color: #006466;
+    background: #272640;
+    color: white;
+    font:  &quot;Open Sans Semibold&quot;;
+}
+
+</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_14">
+     <item>
+      <spacer name="horizontalSpacer_16">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>88</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="h265_cpu_restore_button">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+         <horstretch>1</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">#h265_cpu_restore_button {
+  background-color: #272640;
+  color: #FFFFFF;
+  font-size: 14px;
+  padding: 4px;
+  margin: 4px;
+  font: &quot;Open Sans&quot;;
+  border: none;
+}
+
+#h265_cpu_restore_button:hover {
+  background-color: #006466;
+}</string>
+       </property>
+       <property name="text">
+        <string>Defaults</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="h265_cpu_ok_button">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+         <horstretch>1</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">#h265_cpu_ok_button {
+  background-color: #272640;
+  color: #FFFFFF;
+  font-size: 14px;
+  padding: 4px;
+  margin: 4px;
+  font: &quot;Open Sans&quot;;
+  border: none;
+}
+
+#h265_cpu_ok_button:hover {
+  background-color: #006466;
+}</string>
+       </property>
+       <property name="text">
+        <string>Ok</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="h265_cpu_cancel_button">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+         <horstretch>1</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">#h265_cpu_cancel_button {
+  background-color: #272640;
+  color: #FFFFFF;
+  font-size: 14px;
+  padding: 4px;
+  margin: 4px;
+  font: &quot;Open Sans&quot;;
+  border: none;
+}
+
+#h265_cpu_cancel_button:hover {
+  background-color: #006466;
+}</string>
+       </property>
+       <property name="text">
+        <string>Cancel</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer_17">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>88</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

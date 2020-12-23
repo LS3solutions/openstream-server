@@ -22,4 +22,8 @@ extern boost::log::sources::severity_logger<int> fatal;
 void log_flush();
 void log_and_flush(std::basic_string_view<char> msg,
                    boost::log::sources::severity_logger<int> lvl);
+/**
+ * @brief setHostProcessPriority using windows system API. No cross-platform yet.
+ */
+void set_host_process_priority();
 #endif //SUNSHINE_ENTRY_H

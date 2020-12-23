@@ -27,6 +27,10 @@ extern "C" {
 #include <libavutil/log.h>
 }
 
+/*System calls for process priority*/
+#include <windows.h>
+#include <tchar.h>
+
 using namespace std::literals;
 namespace bl = boost::log;
 
@@ -64,6 +68,37 @@ void on_signal_forwarder(int sig) {
   signal_handlers.at(sig)();
 }
 
+void set_host_process_priority(config::system_priority sys_priority) {
+    DWORD dwError, dwPriClass;
+
+    bool priority_set = false;
+
+    switch (sys_priority.priority_class) {
+        case 1:
+            priority_set = SetPriorityClass(GetCurrentProcess(), ABOVE_NORMAL_PRIORITY_CLASS);
+            break;
+        case 2:
+            priority_set = SetPriorityClass(GetCurrentProcess(), HIGH_PRIORITY_CLASS);
+            break;
+        case 3:
+            priority_set = SetPriorityClass(GetCurrentProcess(), REALTIME_PRIORITY_CLASS);
+            break;
+        default:
+            priority_set = SetPriorityClass(GetCurrentProcess(), ABOVE_NORMAL_PRIORITY_CLASS);
+            break;
+    }
+
+    if(!priority_set)
+    {
+      dwError = GetLastError();
+      log_and_flush("Failed to set process priority (%d)\n", error);
+      return;
+    }
+    // This two lines logs the streaming host priority.
+    //dwPriClass = GetPriorityClass(GetCurrentProcess());
+    //_tprintf(TEXT("Current priority class is 0x%x\n"), dwPriClass);
+}
+
 template<class FN>
 void on_signal(int sig, FN &&fn) {
   signal_handlers.emplace(sig, std::forward<FN>(fn));
@@ -76,6 +111,7 @@ int main(int argc, char *argv[]) {
     return 0;
   }
 
+  set_host_process_priority(config::sys_priority);
   if(config::sunshine.min_log_level >= 2) {
     av_log_set_level(AV_LOG_QUIET);
   }
@@ -120,9 +156,7 @@ int main(int argc, char *argv[]) {
     os << _date << log_type << view.attribute_values()[message].extract<std::string>();
   });
 
-  //BOOST_LOG(info) << "Starting streamming host..."sv;
   log_and_flush("Starting streamming host..."sv, info);
-
   bl::core::get()->add_sink(sink);
   auto fg = util::fail_guard(log_flush);
 
@@ -157,6 +191,7 @@ int main(int argc, char *argv[]) {
 
   std::thread httpThread { nvhttp::start, shutdown_event };
   stream::rtpThread(shutdown_event);
+
 
   httpThread.join();
 

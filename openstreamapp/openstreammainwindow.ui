@@ -1,0 +1,1233 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>OpenstreamMainWindow</class>
+ <widget class="QMainWindow" name="OpenstreamMainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QMainWindow {
+background-color: #272640;
+}
+
+QInputDialog {
+background-color: #272640;
+font: &quot;Open Sans Semibold&quot;;
+color: #ffffff;
+}
+
+QInputDialog QPushButton {
+background-color: #272640;
+font: &quot;Open Sans&quot;;
+color: #ffffff;
+}
+
+QInputDialog QPushButton:hover {
+ background-color: #006466;
+}
+
+QInputDialog QLabel {
+font: &quot;Open Sans Light&quot;;
+color: #ffffff;
+}
+
+</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QHBoxLayout" name="horizontalLayout">
+    <item>
+     <widget class="QWidget" name="sidebar_widget" native="true">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+        <horstretch>2</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">#sidebar_widget {
+background-color: #272640;
+border-color: rgb(204, 197, 185);
+}</string>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout">
+       <item>
+        <widget class="QLabel" name="sidebar_title_label">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+           <horstretch>10</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">color: rgb(255, 255, 255);
+font: &quot;Open Sans Semibold&quot;;
+font-size: 26px;</string>
+         </property>
+         <property name="text">
+          <string>Openstream</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="verticalSpacer_3">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Minimum</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <widget class="QPushButton" name="start_button">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+           <horstretch>1</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">#start_button {
+  background-color: #272640;
+  color: #FFFFFF;
+  text-align: left;
+  font-size: 18px;
+  padding: 4px;
+  margin: 4px;
+  font: &quot;Open Sans Light&quot;;
+  border: none;
+}
+
+#start_button:hover {
+  background-color: #006466;
+}</string>
+         </property>
+         <property name="text">
+          <string>Start</string>
+         </property>
+         <property name="icon">
+          <iconset resource="../openstreamapp.qrc">
+           <normaloff>:/images/on-ic.png</normaloff>:/images/on-ic.png</iconset>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="stop_button">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+           <horstretch>1</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">#stop_button {
+  background-color: #272640;
+  color: #FFFFFF;
+  text-align: left;
+  font-size: 18px;
+  padding: 4px;
+  margin: 4px;
+  font: &quot;Open Sans&quot;;
+  border: none;
+}
+
+#stop_button:hover {
+  background-color: #006466;
+}</string>
+         </property>
+         <property name="text">
+          <string>Stop</string>
+         </property>
+         <property name="icon">
+          <iconset resource="../openstreamapp.qrc">
+           <normaloff>:/images/off-ic.png</normaloff>:/images/off-ic.png</iconset>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="configure_button">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+           <horstretch>1</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">#configure_button {
+  background-color: #272640;
+  color: #FFFFFF;
+  text-align: left;
+  font-size: 18px;
+  padding: 4px;
+  margin: 4px;
+  font: &quot;Open Sans&quot;;
+  border: none;
+}
+
+#configure_button:hover {
+  background-color: #006466;
+}</string>
+         </property>
+         <property name="text">
+          <string>Configure</string>
+         </property>
+         <property name="icon">
+          <iconset resource="../openstreamapp.qrc">
+           <normaloff>:/images/configure-ic.png</normaloff>:/images/configure-ic.png</iconset>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="verticalSpacer_2">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Expanding</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>296</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item>
+     <widget class="QStackedWidget" name="main_area_widget">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+        <horstretch>7</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: #212f45;</string>
+      </property>
+      <property name="currentIndex">
+       <number>1</number>
+      </property>
+      <widget class="QWidget" name="page">
+       <layout class="QVBoxLayout" name="verticalLayout_2">
+        <item>
+         <spacer name="verticalSpacer">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>40</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_3">
+          <item>
+           <widget class="QLabel" name="label_2">
+            <property name="text">
+             <string/>
+            </property>
+            <property name="pixmap">
+             <pixmap resource="../openstreamapp.qrc">:/images/terminal-ic.png</pixmap>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="console_output_label">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Minimum">
+              <horstretch>10</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">color: rgb(255, 255, 255);
+font: &quot;Open Sans&quot;;
+font-size: 18px;</string>
+            </property>
+            <property name="text">
+             <string>Console output</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="horizontalSpacer">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>338</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <widget class="QTextEdit" name="main_area_console_output">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+            <horstretch>0</horstretch>
+            <verstretch>1</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QTextEdit {
+background-color: rgb(241, 250, 238);
+color: rgb(0, 0, 0);
+font: &quot;Open Sans&quot;;
+font-weight: semi-bold;
+font-size: 13px;
+selection-background-color: lightblue;
+}
+QScrollBar:vertical {          
+border: 1px solid #999999;
+background:white;
+width:10px;    
+margin: 0px 0px 0px 0px;
+}
+    
+QScrollBar::handle:vertical {
+background: #006466;
+min-height: 0px;
+}
+QScrollBar::add-line:vertical {
+background: #006466;
+height: 0px;
+subcontrol-position: bottom;
+subcontrol-origin: margin;
+}
+QScrollBar::sub-line:vertical {
+background: #006466;
+height: 0 px;
+subcontrol-position: top;
+subcontrol-origin: margin;
+}
+QMenu {
+color: #ffffff;
+}
+</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_2">
+          <item>
+           <widget class="QLabel" name="main_area_status_label">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">color: rgb(255, 255, 255);
+font: 8pt &quot;Open Sans&quot;;
+font-size: 14px;</string>
+            </property>
+            <property name="text">
+             <string>Server Up</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="verticalSpacer_4">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <spacer name="horizontalSpacer_2">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="page_2">
+       <layout class="QVBoxLayout" name="verticalLayout_3">
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_4">
+          <item>
+           <spacer name="horizontalSpacer_3">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QLabel" name="config_panel_title_label">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+              <horstretch>10</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">color: rgb(255, 255, 255);
+font:  &quot;Open Sans&quot;;
+font-size: 20px;</string>
+            </property>
+            <property name="text">
+             <string>Select the right encoder for the job</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignHCenter|Qt::AlignTop</set>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="horizontalSpacer_4">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QGridLayout" name="gridLayout">
+          <item row="0" column="2">
+           <widget class="QFrame" name="frame_3">
+            <property name="frameShape">
+             <enum>QFrame::StyledPanel</enum>
+            </property>
+            <property name="frameShadow">
+             <enum>QFrame::Raised</enum>
+            </property>
+            <layout class="QVBoxLayout" name="verticalLayout_6">
+             <item>
+              <widget class="QLabel" name="sidebar_title_label_5">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                 <horstretch>10</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">color: rgb(255, 255, 255);
+font: 8pt &quot;Open Sans Extrabold&quot;;
+font-size: 14px;</string>
+               </property>
+               <property name="text">
+                <string>h.264 NVIDIA NVENC</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignHCenter|Qt::AlignTop</set>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="sidebar_title_label_11">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+                 <horstretch>10</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">color: rgb(255, 255, 255);
+font: 8pt &quot;Open Sans Bold&quot;;
+font-size: 14px;</string>
+               </property>
+               <property name="text">
+                <string>-up-to 4K resolution
+-up-to 120 fps
+-lower latency
+-requires high bandwidth
+-requires NVIDIA GPU</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_8">
+               <item>
+                <widget class="QPushButton" name="h264_NVENC_select_button">
+                 <property name="font">
+                  <font>
+                   <pointsize>-1</pointsize>
+                   <weight>50</weight>
+                   <italic>false</italic>
+                   <bold>false</bold>
+                  </font>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">#h264_NVENC_select_button {
+  background-color: #272640;
+  color: #FFFFFF;
+  font-size: 14px;
+  padding: 4px;
+  margin: 4px;
+  font: &quot;Open Sans&quot;;
+  border: none;
+}
+
+#h264_NVENC_select_button:hover {
+  background-color: #006466;
+}</string>
+                 </property>
+                 <property name="text">
+                  <string>Select</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="h264_NVENC_configure_button">
+                 <property name="styleSheet">
+                  <string notr="true">#h264_NVENC_configure_button {
+  background-color: #272640;
+  color: #FFFFFF;
+  font-size: 14px;
+  padding: 4px;
+  margin: 4px;
+  font: &quot;Open Sans&quot;;
+  border: none;
+}
+
+#h264_NVENC_configure_button:hover {
+  background-color: #006466;
+}</string>
+                 </property>
+                 <property name="text">
+                  <string>Configure</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item row="0" column="0">
+           <widget class="QFrame" name="frame">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>1</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="frameShape">
+             <enum>QFrame::StyledPanel</enum>
+            </property>
+            <property name="frameShadow">
+             <enum>QFrame::Raised</enum>
+            </property>
+            <layout class="QVBoxLayout" name="verticalLayout_4">
+             <item>
+              <widget class="QLabel" name="sidebar_title_label_3">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                 <horstretch>10</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">color: rgb(255, 255, 255);
+font: 8pt &quot;Open Sans Extrabold&quot;;
+font-size: 14px;</string>
+               </property>
+               <property name="text">
+                <string>h.264 CPU Encoder</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignHCenter|Qt::AlignTop</set>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="sidebar_title_label_9">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+                 <horstretch>10</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">color: rgb(255, 255, 255);
+font: 8pt &quot;Open Sans Bold&quot;;
+font-size: 14px;</string>
+               </property>
+               <property name="text">
+                <string>-up-to 1080p resolution
+-up-to 60 fps
+-lower latency
+-requires high bandwidth
+-requires mid-range CPU</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_5">
+               <item>
+                <widget class="QPushButton" name="h264_CPU_select_button">
+                 <property name="font">
+                  <font>
+                   <pointsize>-1</pointsize>
+                   <weight>50</weight>
+                   <italic>false</italic>
+                   <bold>false</bold>
+                  </font>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">#h264_CPU_select_button {
+  background-color: #272640;
+  color: #FFFFFF;
+  font-size: 14px;
+  padding: 4px;
+  margin: 4px;
+  font: &quot;Open Sans&quot;;
+  border: none;
+}
+
+#h264_CPU_select_button:hover {
+  background-color: #006466;
+}</string>
+                 </property>
+                 <property name="text">
+                  <string>Select</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="h264_CPU_configuration_button">
+                 <property name="styleSheet">
+                  <string notr="true">#h264_CPU_configuration_button {
+  background-color: #272640;
+  color: #FFFFFF;
+  font-size: 14px;
+  padding: 4px;
+  margin: 4px;
+  font: &quot;Open Sans&quot;;
+  border: none;
+}
+
+#h264_CPU_configuration_button:hover {
+  background-color: #006466;
+}</string>
+                 </property>
+                 <property name="text">
+                  <string>Configure</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QFrame" name="frame_2">
+            <property name="frameShape">
+             <enum>QFrame::StyledPanel</enum>
+            </property>
+            <property name="frameShadow">
+             <enum>QFrame::Raised</enum>
+            </property>
+            <layout class="QVBoxLayout" name="verticalLayout_5">
+             <item>
+              <widget class="QLabel" name="sidebar_title_label_4">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                 <horstretch>10</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">color: rgb(255, 255, 255);
+font: 8pt &quot;Open Sans Extrabold&quot;;
+font-size: 14px;</string>
+               </property>
+               <property name="text">
+                <string>h.265 CPU Encoder</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignHCenter|Qt::AlignTop</set>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="sidebar_title_label_10">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+                 <horstretch>10</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">color: rgb(255, 255, 255);
+font: 8pt &quot;Open Sans Bold&quot;;
+font-size: 14px;</string>
+               </property>
+               <property name="text">
+                <string>-up-to 1080p resolution
+-up-to 60 fps
+-higher latency
+-requires lower bandwidth
+-requires high-end CPU</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_7">
+               <item>
+                <widget class="QPushButton" name="h265_CPU_select_button">
+                 <property name="font">
+                  <font>
+                   <pointsize>-1</pointsize>
+                   <weight>50</weight>
+                   <italic>false</italic>
+                   <bold>false</bold>
+                  </font>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">#h265_CPU_select_button {
+  background-color: #272640;
+  color: #FFFFFF;
+  font-size: 14px;
+  padding: 4px;
+  margin: 4px;
+  font: &quot;Open Sans&quot;;
+  border: none;
+}
+
+#h265_CPU_select_button:hover {
+  background-color: #006466;
+}</string>
+                 </property>
+                 <property name="text">
+                  <string>Select</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="h265_CPU_configure_button">
+                 <property name="styleSheet">
+                  <string notr="true">#h265_CPU_configure_button {
+  background-color: #272640;
+  color: #FFFFFF;
+  font-size: 14px;
+  padding: 4px;
+  margin: 4px;
+  font: &quot;Open Sans&quot;;
+  border: none;
+}
+
+#h265_CPU_configure_button:hover {
+  background-color: #006466;
+}</string>
+                 </property>
+                 <property name="text">
+                  <string>Configure</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+            </layout>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QGridLayout" name="gridLayout_2">
+          <item row="0" column="0">
+           <widget class="QFrame" name="frame_4">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>1</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="frameShape">
+             <enum>QFrame::StyledPanel</enum>
+            </property>
+            <property name="frameShadow">
+             <enum>QFrame::Raised</enum>
+            </property>
+            <layout class="QVBoxLayout" name="verticalLayout_7">
+             <item>
+              <widget class="QLabel" name="sidebar_title_label_6">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                 <horstretch>10</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">color: rgb(255, 255, 255);
+font: 8pt &quot;Open Sans Extrabold&quot;;
+font-size: 14px;</string>
+               </property>
+               <property name="text">
+                <string>h.265 NVIDIA NVENC</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignHCenter|Qt::AlignTop</set>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="sidebar_title_label_12">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+                 <horstretch>10</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">color: rgb(255, 255, 255);
+font: 8pt &quot;Open Sans Bold&quot;;
+font-size: 14px;</string>
+               </property>
+               <property name="text">
+                <string>-up-to 4K resolution
+-up-to 120 fps
+-higher latency
+-requires lower bandwidth
+-requires NVIDIA GPU</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_9">
+               <item>
+                <widget class="QPushButton" name="h265_NVENC_select_button">
+                 <property name="font">
+                  <font>
+                   <pointsize>-1</pointsize>
+                   <weight>50</weight>
+                   <italic>false</italic>
+                   <bold>false</bold>
+                  </font>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">#h265_NVENC_select_button {
+  background-color: #272640;
+  color: #FFFFFF;
+  font-size: 14px;
+  padding: 4px;
+  margin: 4px;
+  font: &quot;Open Sans&quot;;
+  border: none;
+}
+
+#h265_NVENC_select_button:hover {
+  background-color: #006466;
+}</string>
+                 </property>
+                 <property name="text">
+                  <string>Select</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="h265_NVENC_configure_button">
+                 <property name="styleSheet">
+                  <string notr="true">#h265_NVENC_configure_button {
+  background-color: #272640;
+  color: #FFFFFF;
+  font-size: 14px;
+  padding: 4px;
+  margin: 4px;
+  font: &quot;Open Sans&quot;;
+  border: none;
+}
+
+#h265_NVENC_configure_button:hover {
+  background-color: #006466;
+}</string>
+                 </property>
+                 <property name="text">
+                  <string>Configure</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item row="0" column="2">
+           <widget class="QFrame" name="frame_6">
+            <property name="frameShape">
+             <enum>QFrame::StyledPanel</enum>
+            </property>
+            <property name="frameShadow">
+             <enum>QFrame::Raised</enum>
+            </property>
+            <layout class="QVBoxLayout" name="verticalLayout_9">
+             <item>
+              <widget class="QLabel" name="sidebar_title_label_8">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                 <horstretch>10</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">color: rgb(255, 255, 255);
+font: 8pt &quot;Open Sans Extrabold&quot;;
+font-size: 14px;</string>
+               </property>
+               <property name="text">
+                <string>h.265 AMD VCE/AMF</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignHCenter|Qt::AlignTop</set>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="sidebar_title_label_14">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+                 <horstretch>10</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">color: rgb(255, 255, 255);
+font: 8pt &quot;Open Sans Bold&quot;;
+font-size: 14px;</string>
+               </property>
+               <property name="text">
+                <string>-up-to 4K resolution
+-up-to 120 fps
+-higher latency
+-requires lower bandwidth
+-requires AMD GPU</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_11">
+               <item>
+                <widget class="QPushButton" name="h265_AMD_select_button">
+                 <property name="enabled">
+                  <bool>true</bool>
+                 </property>
+                 <property name="font">
+                  <font>
+                   <pointsize>-1</pointsize>
+                   <weight>50</weight>
+                   <italic>false</italic>
+                   <bold>false</bold>
+                  </font>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">#h265_AMD_select_button {
+  background-color: #272640;
+  color: #FFFFFF;
+  font-size: 14px;
+  padding: 4px;
+  margin: 4px;
+  font: &quot;Open Sans&quot;;
+  border: none;
+}
+
+#h265_AMD_select_button:hover {
+  background-color: #006466;
+}</string>
+                 </property>
+                 <property name="text">
+                  <string>Select</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="h265_AMD_configure_button">
+                 <property name="enabled">
+                  <bool>true</bool>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">#h265_AMD_configure_button {
+  background-color: #272640;
+  color: #FFFFFF;
+  font-size: 14px;
+  padding: 4px;
+  margin: 4px;
+  font: &quot;Open Sans&quot;;
+  border: none;
+}
+
+#h265_AMD_configure_button:hover {
+  background-color: #006466;
+}</string>
+                 </property>
+                 <property name="text">
+                  <string>Configure</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QFrame" name="frame_5">
+            <property name="frameShape">
+             <enum>QFrame::StyledPanel</enum>
+            </property>
+            <property name="frameShadow">
+             <enum>QFrame::Raised</enum>
+            </property>
+            <layout class="QVBoxLayout" name="verticalLayout_8">
+             <item>
+              <widget class="QLabel" name="sidebar_title_label_7">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                 <horstretch>10</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">color: rgb(255, 255, 255);
+font: 8pt &quot;Open Sans Extrabold&quot;;
+font-size: 14px;</string>
+               </property>
+               <property name="text">
+                <string>h.264 AMD VCE/AMF</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignHCenter|Qt::AlignTop</set>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="sidebar_title_label_13">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+                 <horstretch>10</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">color: rgb(255, 255, 255);
+font: 8pt &quot;Open Sans Bold&quot;;
+font-size: 14px;</string>
+               </property>
+               <property name="text">
+                <string>-up-to 4K resolution
+-up-to 120 fps
+-lower latency
+-requires high bandwidth
+-requires AMD GPU</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_10">
+               <item>
+                <widget class="QPushButton" name="h264_AMD_select_button">
+                 <property name="enabled">
+                  <bool>true</bool>
+                 </property>
+                 <property name="font">
+                  <font>
+                   <pointsize>-1</pointsize>
+                   <weight>50</weight>
+                   <italic>false</italic>
+                   <bold>false</bold>
+                  </font>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">#h264_AMD_select_button {
+  background-color: #272640;
+  color: #FFFFFF;
+  font-size: 14px;
+  padding: 4px;
+  margin: 4px;
+  font: &quot;Open Sans&quot;;
+  border: none;
+}
+
+#h264_AMD_select_button:hover {
+  background-color: #006466;
+}</string>
+                 </property>
+                 <property name="text">
+                  <string>Select</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="h264_AMD_configure_button">
+                 <property name="enabled">
+                  <bool>true</bool>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">#h264_AMD_configure_button {
+  background-color: #272640;
+  color: #FFFFFF;
+  font-size: 14px;
+  padding: 4px;
+  margin: 4px;
+  font: &quot;Open Sans&quot;;
+  border: none;
+}
+
+#h264_AMD_configure_button:hover {
+  background-color: #006466;
+}</string>
+                 </property>
+                 <property name="text">
+                  <string>Configure</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+            </layout>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_12">
+          <item>
+           <spacer name="horizontalSpacer_5">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>128</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QPushButton" name="go_back_config_button">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+              <horstretch>1</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">#go_back_config_button {
+  background-color: #272640;
+  color: #FFFFFF;
+  font-size: 14px;
+  padding: 4px;
+  margin: 4px;
+  font: &quot;Open Sans&quot;;
+  border: none;
+}
+
+#go_back_config_button:hover {
+  background-color: #006466;
+}</string>
+            </property>
+            <property name="text">
+             <string>Go Back</string>
+            </property>
+            <property name="icon">
+             <iconset resource="../openstreamapp.qrc">
+              <normaloff>:/images/go-back-arrow.png</normaloff>:/images/go-back-arrow.png</iconset>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="horizontalSpacer_6">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>128</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <resources>
+  <include location="../openstreamapp.qrc"/>
+ </resources>
+ <connections/>
+</ui>

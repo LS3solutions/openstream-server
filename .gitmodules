@@ -7,6 +7,3 @@
 [submodule "openstreamhost/ViGEmClient"]
 	path = openstreamhost/ViGEmClient
 	url = https://github.com/ViGEm/ViGEmClient
-[submodule "openstreamhost/pre-compiled"]
-	path = openstreamhost/pre-compiled
-	url = https://bitbucket.org/Loki-47-6F-64/pre-compiled.git

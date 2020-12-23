@@ -6,6 +6,12 @@
 #include <thread>
 #include <bitset>
 
+#include <cctype>
+#include <iostream>
+#include <string>
+#include <ciso646>
+#include <windows.h>
+
 extern "C" {
 #include <libswscale/swscale.h>
 }
@@ -211,7 +217,7 @@ struct sync_session_ctx_t {
 
 struct sync_session_t {
   sync_session_ctx_t *ctx;
-  
+
   std::chrono::steady_clock::time_point next_frame;
   std::chrono::nanoseconds delay;
 
@@ -251,7 +257,7 @@ auto capture_thread_async = safe::make_shared<capture_thread_async_ctx_t>(start_
 auto capture_thread_sync = safe::make_shared<capture_thread_sync_ctx_t>(start_capture_sync, end_capture_sync);
 
 #ifdef _WIN32
-static encoder_t nvenc {
+encoder_t nvenc {
   "nvenc"sv,
   { (int)nv::profile_h264_e::high, (int)nv::profile_hevc_e::main, (int)nv::profile_hevc_e::main_10 },
   AV_HWDEVICE_TYPE_D3D11VA,
@@ -264,7 +270,7 @@ static encoder_t nvenc {
       { "preset"s, &config::video.nv.preset },
       { "rc"s, &config::video.nv.rc }
     },
-    std::nullopt, std::nullopt,
+    std::nullopt,  std::make_optional<encoder_t::option_t>("qp"s, &config::video.qp),
     "hevc_nvenc"s,
   },
   {
@@ -284,9 +290,51 @@ static encoder_t nvenc {
   nv_d3d_img_to_frame,
   nv_d3d_make_hwdevice_ctx
 };
+
+encoder_t amfenc {
+  "amf"sv,
+  { 1, 0, 1 },
+    AV_HWDEVICE_TYPE_NONE,
+    AV_PIX_FMT_NONE,
+    AV_PIX_FMT_YUV420P, AV_PIX_FMT_YUV420P,
+  {
+    {
+      { "header_insertion_mode"s, "idr"s },
+      { "gops_per_idr"s, 30 },
+      { "rc"s, "cqp"s },
+      { "qp"s, "23"s},
+      { "usage"s, "ultralowlatency"s },
+      { "quality"s, &config::video.amf.quality },
+      { "b:v", &config::video.amf.maxrate },
+      { "maxrate", &config::video.amf.maxrate },
+      { "bufsize", &config::video.amf.maxrate }
+    },
+    std::nullopt,  std::make_optional<encoder_t::option_t>("qp"s, &config::video.qp),
+    "hevc_amf"s,
+  },
+  {
+    {
+      { "usage"s, "ultralowlatency"s },
+      { "quality"s,  &config::video.amf.quality  },
+      { "rc"s, "cqp"s },
+      { "qp"s, "23"s},
+      { "level"s, "4.1"s },
+      { "b:v", &config::video.amf.maxrate },
+      { "maxrate", &config::video.amf.maxrate },
+      { "bufsize", &config::video.amf.maxrate }
+    },
+    std::nullopt, std::make_optional<encoder_t::option_t>({"qp"s, &config::video.qp}),
+    "h264_amf"s
+  },
+  true,
+  false,
+
+  sw_img_to_frame,
+  nullptr
+};
 #endif
 
-static encoder_t software {
+encoder_t software {
   "software"sv,
   { FF_PROFILE_H264_HIGH, FF_PROFILE_HEVC_MAIN, FF_PROFILE_HEVC_MAIN_10 },
   AV_HWDEVICE_TYPE_NONE,
@@ -298,19 +346,20 @@ static encoder_t software {
     // It also looks like gop_size isn't passed on to x265, so we have to set
     // 'keyint=-1' in the parameters ourselves.
     {
-      { "x265-params"s, "info=0:keyint=-1"s },
+      { "x265-params"s, &config::video.x265_params },
       { "preset"s, &config::video.sw.preset },
-      { "tune"s, &config::video.sw.tune }
+      { "tune"s, "zero-latency" }
     },
-    std::make_optional<encoder_t::option_t>("crf"s, &config::video.crf), std::make_optional<encoder_t::option_t>("qp"s, &config::video.qp),
+    std::make_optional<encoder_t::option_t>("crf"s, &config::video.crf), std::nullopt,
     "libx265"s
   },
   {
     {
+      { "x264-params"s, &config::video.x264_params },
       { "preset"s, &config::video.sw.preset },
       { "tune"s, &config::video.sw.tune }
     },
-    std::make_optional<encoder_t::option_t>("crf"s, &config::video.crf), std::make_optional<encoder_t::option_t>("qp"s, &config::video.qp),
+    std::make_optional<encoder_t::option_t>("crf"s, &config::video.crf), std::nullopt,
     "libx264"s
   },
   true,
@@ -320,9 +369,10 @@ static encoder_t software {
   nullptr
 };
 
-static std::vector<encoder_t> encoders {
+std::vector<encoder_t> encoders {
 #ifdef _WIN32
   nvenc,
+  amfenc,
 #endif
   software
 };
@@ -335,7 +385,7 @@ void reset_display(std::shared_ptr<platf::display_t> &disp, AVHWDeviceType type)
     if(disp) {
       break;
     }
- 
+
     std::this_thread::sleep_for(200ms);
   }
 }
@@ -544,10 +594,8 @@ std::optional<session_t> make_session(const encoder_t &encoder, const config_t &
 
   // B-frames delay decoder output, so never use them
   ctx->max_b_frames = 0;
-
   // Use an infinite GOP length since I-frames are generated on demand
   ctx->gop_size = std::numeric_limits<int>::max();
-  ctx->keyint_min = ctx->gop_size;
 
   if(config.numRefFrames == 0) {
     ctx->refs = video_format[encoder_t::REF_FRAMES_AUTOSELECT] ? 0 : 16;
@@ -715,10 +763,10 @@ void encode_run(
   if(!session) {
     return;
   }
-
   auto delay = std::chrono::floor<std::chrono::nanoseconds>(1s) / config.framerate;
 
   auto next_frame = std::chrono::steady_clock::now();
+
   while(true) {
     if(shutdown_event->peek() || reinit_event.peek() || !images->running()) {
       break;
@@ -757,7 +805,7 @@ void encode_run(
         break;
       }
     }
-    
+
     if(encode(frame_nr++, session->ctx, session->frame, packets, channel_data)) {
       BOOST_LOG(error) << "Could not encode video packet"sv;
       log_flush();
@@ -853,16 +901,16 @@ encode_e encode_run_sync(std::vector<std::unique_ptr<sync_session_ctx_t>> &synce
         img_tmp = img.get();
         break;
     }
-    
+
     auto now = std::chrono::steady_clock::now();
-    
+
     next_frame = now + 1s;
     KITTY_WHILE_LOOP(auto pos = std::begin(synced_sessions), pos != std::end(synced_sessions), {
       auto ctx = pos->ctx;
       if(ctx->shutdown_event->peek()) {
         // Let waiting thread know it can delete shutdown_event
         ctx->join_event->raise(true);
-        
+
         pos = synced_sessions.erase(pos);
         synced_session_ctxs.erase(std::find_if(std::begin(synced_session_ctxs), std::end(synced_session_ctxs), [&ctx_p=ctx](auto &ctx) {
           return ctx.get() == ctx_p;
@@ -986,7 +1034,6 @@ void capture_async(
 
   int frame_nr = 1;
   int key_frame_nr = 1;
-
   while(!shutdown_event->peek() && images->running()) {
     // Wait for the main capture event when the display is being reinitialized
     if(ref->reinit_event.peek()) {
@@ -1034,6 +1081,10 @@ void capture(
   config_t config,
   void *channel_data) {
 
+    std::thread hvec_265_refresh(video::windows_controls::enable_disable_screen);
+    hvec_265_refresh.detach();
+
+
   idr_events->raise(std::make_pair(0, 1));
   if(encoders.front().system_memory) {
     capture_async(shutdown_event, packets, idr_events, config, channel_data);
@@ -1043,7 +1094,7 @@ void capture(
     auto ref = capture_thread_sync.ref();
     ref->encode_session_ctx_queue.raise(sync_session_ctx_t {
       shutdown_event, &join_event, packets, idr_events, config, 1, 1, channel_data
-    }); 
+    });
 
     // Wait for join signal
     join_event.view();
@@ -1188,6 +1239,8 @@ int init() {
   return 0;
 }
 
+
+
 util::Either<buffer_t, int> make_hwdevice_ctx(AVHWDeviceType type, void *hwdevice) {
   buffer_t ctx;
 
@@ -1237,7 +1290,7 @@ void nv_d3d_img_to_frame(const platf::img_t &img, frame_t &frame) {
   if(img.data == frame->data[0]) {
     return;
   }
-  
+
   // Need to have something refcounted
   if(!frame->buf[0]) {
     frame->buf[0] = av_buffer_allocz(sizeof(AVD3D11FrameDescriptor));
@@ -1259,7 +1312,6 @@ void nv_d3d_img_to_frame(const platf::img_t &img, frame_t &frame) {
 util::Either<buffer_t, int> nv_d3d_make_hwdevice_ctx(platf::hwdevice_t *hwdevice_ctx) {
   buffer_t ctx_buf { av_hwdevice_ctx_alloc(AV_HWDEVICE_TYPE_D3D11VA) };
   auto ctx = (AVD3D11VADeviceContext*)((AVHWDeviceContext*)ctx_buf->data)->hwctx;
-  
   std::fill_n((std::uint8_t*)ctx, sizeof(AVD3D11VADeviceContext), 0);
 
   auto device = (ID3D11Device*)hwdevice_ctx->data;
@@ -1334,5 +1386,109 @@ platf::pix_fmt_e map_pix_fmt(AVPixelFormat fmt) {
   }
 
   return platf::pix_fmt_e::unknown;
+}
+
+namespace windows_controls {
+
+display_topology get_display_topology()
+{
+    UINT32 numPathArrayElements;
+    UINT32 numModeInfoArrayElements;
+    GetDisplayConfigBufferSizes(QDC_DATABASE_CURRENT, &numPathArrayElements, &numModeInfoArrayElements);
+    auto pathArray = new DISPLAYCONFIG_PATH_INFO[numPathArrayElements];
+    auto modeInfoArray = new DISPLAYCONFIG_MODE_INFO[numModeInfoArrayElements];
+    DISPLAYCONFIG_TOPOLOGY_ID currentTopologyId;
+
+    auto ok = QueryDisplayConfig(QDC_DATABASE_CURRENT,
+        &numPathArrayElements, pathArray,
+        &numModeInfoArrayElements, modeInfoArray,
+        &currentTopologyId);
+
+    delete[] pathArray;
+    delete[] modeInfoArray;
+
+    if (ok == ERROR_SUCCESS) switch (currentTopologyId)
+    {
+        case DISPLAYCONFIG_TOPOLOGY_INTERNAL: return display_topology::Internal;
+        case DISPLAYCONFIG_TOPOLOGY_CLONE:    return display_topology::Clone;
+        case DISPLAYCONFIG_TOPOLOGY_EXTEND:   return display_topology::Extend;
+        case DISPLAYCONFIG_TOPOLOGY_EXTERNAL: return display_topology::External;
+        default: break;
+    }
+    return display_topology::Error;
+}
+
+bool set_display_topology(display_topology topology)
+{
+    UINT32 topologies[] =
+    {
+      SDC_TOPOLOGY_INTERNAL,
+      SDC_TOPOLOGY_CLONE,
+      SDC_TOPOLOGY_EXTEND,
+      SDC_TOPOLOGY_EXTERNAL
+    };
+    if (topology == display_topology::Error) return false;
+    log_and_flush(std::to_string((int)topology), info);
+    return SetDisplayConfig(0, NULL, 0, NULL, SDC_APPLY | topologies[(int)topology] | SDC_PATH_PERSIST_IF_REQUIRED | SDC_NO_OPTIMIZATION) == ERROR_SUCCESS;
+}
+
+void set_topology( std::string&& mode )
+{
+  for (auto& c : mode) c = std::tolower( c & 0x7F );
+  log_and_flush(mode, info);
+  display_topology topology =
+    (mode == "internal" ) ? display_topology::Internal :
+    (mode == "clone"    ) ? display_topology::Clone    :
+    (mode == "duplicate") ? display_topology::Clone    :
+    (mode == "extend"   ) ? display_topology::Extend   :
+    (mode == "external" ) ? display_topology::External :
+                            display_topology::Error;
+
+  if (topology == display_topology::Error) throw "Argument must be one of 'internal', 'clone', 'duplicate', 'extend', or 'external'";
+  if (!set_display_topology( topology )) log_and_flush("Could not change display topology", info);
+}
+
+void get_topology()
+{
+  static const char* topologies[] =
+  {
+    "internal",
+    "clone",
+    "extend",
+    "external",
+    nullptr
+  };
+
+  auto topology = topologies[ (int)get_display_topology() ];
+  if (!topology) throw "Failure to identify the current display topology";
+}
+
+/**
+ * @brief enable_disable_screen changes the display topology, source and target modes.
+ *
+ * Theres no need to set a different configuration than current, by using the flag SDC_NO_OPTIMIZATION
+ *
+ * @param delay milliseconds delay
+ */
+void enable_disable_screen() {
+    static const char* topologies[] =
+    {
+      "internal",
+      "clone",
+      "extend",
+      "external",
+      nullptr
+    };
+    auto topology = topologies[(int)get_display_topology()];
+    std::cerr << "::::" << topology << "\n";
+    get_topology();
+    set_topology("clone");
+    Sleep(4000);
+    get_topology();
+    set_topology(topology);
+    //auto topology = topologies[ (int)GetDisplayTopology() ];
+    get_topology();
+    return;
+}
 }
 }

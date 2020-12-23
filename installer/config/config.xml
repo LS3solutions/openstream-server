@@ -6,4 +6,7 @@
     <Publisher>Open Stream</Publisher>
     <StartMenuDir>Open Stream</StartMenuDir>
     <TargetDir>@HomeDir@/OpenStream/</TargetDir>
+    <WizardStyle>Modern</WizardStyle>
+    <Watermark>wizard-watermark.bmp</Watermark>
+    <RemoveTargetDir>false</RemoveTargetDir>
 </Installer>

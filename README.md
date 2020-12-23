@@ -23,3 +23,4 @@ Open Stream is a fork open Sunshine Server. Creating open source solution for Ga
 #### Build the project using QtCreator: 
 - Open the project using the `CMake` support and selecting the `CMakeList` file in root folder.
 - Select building kit `MinGW-w64 64bit (MSYS2)`
+- Build the application to produce the executable files. These executable files will be required for packaging a new release installer. Go to `installer` folder to find the installer building instructions.

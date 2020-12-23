@@ -1,44 +1,8 @@
-# Trexbit 2020 m4rkoup@gmail.com
-
 cmake_minimum_required(VERSION 2.8)
 
 project(OpenStreamHost)
 
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR})
-
-# On MSYS2, building a stand-alone binary that links with ffmpeg is not possible,
-# Therefore, ffmpeg, libx264 and libx265 must be build from source
-if(WIN32)
-        option(OPENSTREAM_STANDALONE "Compile stand-alone binary of Openstream" ON)
-        if(OPENSTREAM_STANDALONE)
-		set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -static")
-	
-                if(NOT DEFINED OPENSTREAM_PREPARED_BINARIES)
-                        set(OPENSTREAM_PREPARED_BINARIES "${CMAKE_CURRENT_SOURCE_DIR}/pre-compiled/windows")
-		endif()
-		list(PREPEND PLATFORM_LIBRARIES
-			C:/msys64/mingw64/lib/gcc/x86_64-w64-mingw32/${CMAKE_CXX_COMPILER_VERSION}/libstdc++.a
-			C:/msys64/mingw64/x86_64-w64-mingw32/lib/libwinpthread.a
-			)
-
-		set(FFMPEG_INCLUDE_DIRS
-                        ${OPENSTREAM_PREPARED_BINARIES}/include)
-		set(FFMPEG_LIBRARIES
-                        ${OPENSTREAM_PREPARED_BINARIES}/lib/libavcodec.a
-                        ${OPENSTREAM_PREPARED_BINARIES}/lib/libavdevice.a
-                        ${OPENSTREAM_PREPARED_BINARIES}/lib/libavfilter.a
-                        ${OPENSTREAM_PREPARED_BINARIES}/lib/libavformat.a
-                        ${OPENSTREAM_PREPARED_BINARIES}/lib/libavutil.a
-                        ${OPENSTREAM_PREPARED_BINARIES}/lib/libpostproc.a
-                        ${OPENSTREAM_PREPARED_BINARIES}/lib/libswresample.a
-                        ${OPENSTREAM_PREPARED_BINARIES}/lib/libswscale.a
-                        ${OPENSTREAM_PREPARED_BINARIES}/lib/libx264.a
-                        ${OPENSTREAM_PREPARED_BINARIES}/lib/libx265.a
-			z lzma bcrypt C:/msys64/mingw64/lib/libiconv.a)
-	endif()
-else()
-        set(OPENSTREAM_STANDALONE OFF)
-endif()
 
 add_subdirectory(Simple-Web-Server)
 add_subdirectory(moonlight-common-c/enet)
@@ -46,9 +10,21 @@ add_subdirectory(moonlight-common-c/enet)
 find_package(Threads REQUIRED)
 find_package(OpenSSL REQUIRED)
 
-if(NOT OPENSTREAM_STANDALONE)
-	find_package(FFmpeg REQUIRED)
-endif()
+########### FFMPEG #################
+# We link against our build of FFmpeg with nvenc support enabled compilation
+set(SUNSHINE_PREPARED_BINARIES "${CMAKE_CURRENT_SOURCE_DIR}/pre-compiled-ffmpeg/windows")
+set(FFMPEG_INCLUDE_DIRS
+                        ${SUNSHINE_PREPARED_BINARIES}/include)
+set(FFMPEG_LIBRARIES
+        ${SUNSHINE_PREPARED_BINARIES}/lib/libavcodec.dll.a
+        ${SUNSHINE_PREPARED_BINARIES}/lib/libavdevice.dll.a
+        ${SUNSHINE_PREPARED_BINARIES}/lib/libavfilter.dll.a
+        ${SUNSHINE_PREPARED_BINARIES}/lib/libavformat.dll.a
+        ${SUNSHINE_PREPARED_BINARIES}/lib/libavutil.dll.a
+        ${SUNSHINE_PREPARED_BINARIES}/lib/libpostproc.dll.a
+        ${SUNSHINE_PREPARED_BINARIES}/lib/libswresample.dll.a
+        ${SUNSHINE_PREPARED_BINARIES}/lib/libswscale.dll.a)
+########### /FFMPEG ################
 
 list(APPEND OPENSTREAM_COMPILE_OPTIONS -fPIC -Wall -Wno-missing-braces -Wno-maybe-uninitialized -Wno-sign-compare)
 
@@ -181,12 +157,6 @@ if(NOT OPENSTREAM_ASSETS_DIR)
 	set(OPENSTREAM_ASSETS_DIR "${CMAKE_CURRENT_SOURCE_DIR}/assets")
 endif()
 
-if(OPENSTREAM_STANDALONE)
-	set(OPENSSL_LIBRARIES
-		C:/msys64/mingw64/lib/libssl.a
-		C:/msys64/mingw64/lib/libcrypto.a)
-endif()
-
 list(APPEND OPENSTREAM_EXTERNAL_LIBRARIES
 		${CMAKE_THREAD_LIBS_INIT}
 		stdc++fs
@@ -204,3 +174,48 @@ target_compile_definitions(openstreamhost PUBLIC ${OPENSTREAM_DEFINITIONS})
 set_target_properties(openstreamhost PROPERTIES CXX_STANDARD 17)
 
 target_compile_options(openstreamhost PRIVATE ${OPENSTREAM_COMPILE_OPTIONS})
+
+# This copy the shared libs to the output dir when building.
+# TODO: Research how to improve this. CMake **might** provide a more
+#   idiomatic and safe way of doing this.
+ADD_CUSTOM_COMMAND (TARGET openstreamhost POST_BUILD
+        # COPY .dll file from Msys2 system packages.
+        COMMAND ${CMAKE_COMMAND} -E copy C:/msys64/mingw64/bin/libaom.dll ${CMAKE_BINARY_DIR}/openstreamhost
+        COMMAND ${CMAKE_COMMAND} -E copy C:/msys64/mingw64/bin/libcelt0-2.dll ${CMAKE_BINARY_DIR}/openstreamhost
+        COMMAND ${CMAKE_COMMAND} -E copy C:/msys64/mingw64/bin/libcrypto-1_1-x64.dll ${CMAKE_BINARY_DIR}/openstreamhost
+        COMMAND ${CMAKE_COMMAND} -E copy C:/msys64/mingw64/bin/libdav1d.dll ${CMAKE_BINARY_DIR}/openstreamhost
+        COMMAND ${CMAKE_COMMAND} -E copy C:/msys64/mingw64/bin/libgcc_s_seh-1.dll ${CMAKE_BINARY_DIR}/openstreamhost
+        COMMAND ${CMAKE_COMMAND} -E copy C:/msys64/mingw64/bin/libgsm.dll ${CMAKE_BINARY_DIR}/openstreamhost
+        COMMAND ${CMAKE_COMMAND} -E copy C:/msys64/mingw64/bin/libiconv-2.dll ${CMAKE_BINARY_DIR}/openstreamhost
+        COMMAND ${CMAKE_COMMAND} -E copy C:/msys64/mingw64/bin/liblzma-5.dll ${CMAKE_BINARY_DIR}/openstreamhost
+        COMMAND ${CMAKE_COMMAND} -E copy C:/msys64/mingw64/bin/libmfx-1.dll ${CMAKE_BINARY_DIR}/openstreamhost
+        COMMAND ${CMAKE_COMMAND} -E copy C:/msys64/mingw64/bin/libmp3lame-0.dll ${CMAKE_BINARY_DIR}/openstreamhost
+        COMMAND ${CMAKE_COMMAND} -E copy C:/msys64/mingw64/bin/libogg-0.dll ${CMAKE_BINARY_DIR}/openstreamhost
+        COMMAND ${CMAKE_COMMAND} -E copy C:/msys64/mingw64/bin/libopencore-amrnb-0.dll ${CMAKE_BINARY_DIR}/openstreamhost
+        COMMAND ${CMAKE_COMMAND} -E copy C:/msys64/mingw64/bin/libopencore-amrwb-0.dll ${CMAKE_BINARY_DIR}/openstreamhost
+        COMMAND ${CMAKE_COMMAND} -E copy C:/msys64/mingw64/bin/libopenjp2-7.dll ${CMAKE_BINARY_DIR}/openstreamhost
+        COMMAND ${CMAKE_COMMAND} -E copy C:/msys64/mingw64/bin/libopus-0.dll ${CMAKE_BINARY_DIR}/openstreamhost
+        COMMAND ${CMAKE_COMMAND} -E copy C:/msys64/mingw64/bin/libspeex-1.dll ${CMAKE_BINARY_DIR}/openstreamhost
+        COMMAND ${CMAKE_COMMAND} -E copy C:/msys64/mingw64/bin/libssl-1_1-x64.dll ${CMAKE_BINARY_DIR}/openstreamhost
+        COMMAND ${CMAKE_COMMAND} -E copy C:/msys64/mingw64/bin/libstdc++-6.dll ${CMAKE_BINARY_DIR}/openstreamhost
+        COMMAND ${CMAKE_COMMAND} -E copy C:/msys64/mingw64/bin/libtheoradec-1.dll ${CMAKE_BINARY_DIR}/openstreamhost
+        COMMAND ${CMAKE_COMMAND} -E copy C:/msys64/mingw64/bin/libtheoraenc-1.dll ${CMAKE_BINARY_DIR}/openstreamhost
+        COMMAND ${CMAKE_COMMAND} -E copy C:/msys64/mingw64/bin/libvorbis-0.dll ${CMAKE_BINARY_DIR}/openstreamhost
+        COMMAND ${CMAKE_COMMAND} -E copy C:/msys64/mingw64/bin/libvorbis-0.dll ${CMAKE_BINARY_DIR}/openstreamhost
+        COMMAND ${CMAKE_COMMAND} -E copy C:/msys64/mingw64/bin/libvorbisenc-2.dll ${CMAKE_BINARY_DIR}/openstreamhost
+        COMMAND ${CMAKE_COMMAND} -E copy C:/msys64/mingw64/bin/libvpx-1.dll ${CMAKE_BINARY_DIR}/openstreamhost
+        COMMAND ${CMAKE_COMMAND} -E copy C:/msys64/mingw64/bin/libvulkan-1.dll ${CMAKE_BINARY_DIR}/openstreamhost
+        COMMAND ${CMAKE_COMMAND} -E copy C:/msys64/mingw64/bin/libwavpack-1.dll ${CMAKE_BINARY_DIR}/openstreamhost
+        COMMAND ${CMAKE_COMMAND} -E copy C:/msys64/mingw64/bin/libwebp-7.dll ${CMAKE_BINARY_DIR}/openstreamhost
+        COMMAND ${CMAKE_COMMAND} -E copy C:/msys64/mingw64/bin/libwebpmux-3.dll ${CMAKE_BINARY_DIR}/openstreamhost
+        COMMAND ${CMAKE_COMMAND} -E copy C:/msys64/mingw64/bin/libwinpthread-1.dll ${CMAKE_BINARY_DIR}/openstreamhost
+        COMMAND ${CMAKE_COMMAND} -E copy C:/msys64/mingw64/bin/libx264-159.dll ${CMAKE_BINARY_DIR}/openstreamhost
+        COMMAND ${CMAKE_COMMAND} -E copy C:/msys64/mingw64/bin/libx265.dll ${CMAKE_BINARY_DIR}/openstreamhost
+        COMMAND ${CMAKE_COMMAND} -E copy C:/msys64/mingw64/bin/xvidcore.dll ${CMAKE_BINARY_DIR}/openstreamhost
+        COMMAND ${CMAKE_COMMAND} -E copy C:/msys64/mingw64/bin/zlib1.dll ${CMAKE_BINARY_DIR}/openstreamhost
+### COPY PRE-COMPILED FFMPEG
+        COMMAND ${CMAKE_COMMAND} -E copy ${SUNSHINE_PREPARED_BINARIES}/bin/avcodec-58.dll ${CMAKE_BINARY_DIR}/openstreamhost
+        COMMAND ${CMAKE_COMMAND} -E copy ${SUNSHINE_PREPARED_BINARIES}/bin/avutil-56.dll ${CMAKE_BINARY_DIR}/openstreamhost
+        COMMAND ${CMAKE_COMMAND} -E copy ${SUNSHINE_PREPARED_BINARIES}/bin/swresample-3.dll ${CMAKE_BINARY_DIR}/openstreamhost
+        COMMAND ${CMAKE_COMMAND} -E copy ${SUNSHINE_PREPARED_BINARIES}/bin/swscale-5.dll ${CMAKE_BINARY_DIR}/openstreamhost
+COMMENT "Copying host (sunshine) binaries" VERBATIM)

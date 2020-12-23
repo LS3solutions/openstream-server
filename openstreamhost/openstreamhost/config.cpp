@@ -87,10 +87,14 @@ int coder_from_view(const std::string_view &coder) {
 
 video_t video {
   0, // crf
-  28, // qp
+  0, // qp
 
   0, // hevc_mode
-
+  1500, //vbv_maxrate
+  3000, //vbv_bufsize
+  4, //pools
+  x265_default_params,
+  x264_default_params,
   1, // min_threads
   {
     "superfast"s, // preset
@@ -105,7 +109,12 @@ video_t video {
 
   {}, // encoder
   {}, // adapter_name
-  {}  // output_name
+  {},
+  {
+    "speed",
+    "cbr",
+    "20000"
+  }// output_name
 };
 
 audio_t audio {};
@@ -137,6 +146,10 @@ input_t input {
 sunshine_t sunshine {
   2, // min_log_level
   0 // flags
+};
+
+system_priority sys_priority {
+    1
 };
 
 bool whitespace(char ch) {
@@ -354,6 +367,10 @@ void apply_config(std::unordered_map<std::string, std::string> &&vars) {
   int_between_f(vars, "hevc_mode", video.hevc_mode, {
     0, 3
   });
+  int_f(vars, "vbv_maxrate", video.vbv_maxrate);
+  int_f(vars, "vbv_bufsize", video.vbv_bufsize);
+  int_f(vars, "pools", video.pools);
+
   string_f(vars, "sw_preset", video.sw.preset);
   string_f(vars, "sw_tune", video.sw.tune);
   int_f(vars, "nv_preset", video.nv.preset, nv::preset_from_view);
@@ -363,6 +380,10 @@ void apply_config(std::unordered_map<std::string, std::string> &&vars) {
   string_f(vars, "adapter_name", video.adapter_name);
   string_f(vars, "output_name", video.output_name);
 
+  string_f(vars, "amf_quality", video.amf.quality);
+  string_f(vars, "amf_rc", video.amf.rc);
+  string_f(vars, "amf_maxrate", video.amf.maxrate);
+
   string_f(vars, "pkey", nvhttp.pkey);
   string_f(vars, "cert", nvhttp.cert);
   string_f(vars, "sunshine_name", nvhttp.sunshine_name);
@@ -371,9 +392,14 @@ void apply_config(std::unordered_map<std::string, std::string> &&vars) {
 
   string_f(vars, "audio_sink", audio.sink);
 
+  int_f(vars, "system_priority", sys_priority.priority_class);
+
   string_restricted_f(vars, "origin_pin_allowed", nvhttp.origin_pin_allowed, {
     "pc"sv, "lan"sv, "wan"sv
   });
+
+  update_x265_options();
+  update_x264_options();
 
   int to = -1;
   int_between_f(vars, "ping_timeout", to, {
@@ -515,5 +541,36 @@ int parse(int argc, char *argv[]) {
   apply_config(std::move(vars));
 
   return 0;
+}
+
+/**
+ * @brief update_x265_options updates configuration
+ * for x265 options to be passed to x265 encoder.
+ */
+void update_x265_options() {
+    video.x265_params = config::x265_default_params;
+    video.x265_params = video.x265_params + ":vbv-bufsize=" + std::to_string(video.vbv_bufsize);
+    video.x265_params = video.x265_params + ":vbv-maxrate=" + std::to_string(video.vbv_maxrate);
+
+    // Set pools and frame threads for multithreading control of cores.
+    // https://trac.ffmpeg.org/ticket/3730?cversion=1
+    video.x265_params = video.x265_params + ":pools=" + std::to_string(video.pools);
+    video.x265_params = video.x265_params + ":frame-threads=" + std::to_string(video.min_threads);
+    video.x265_params = video.x265_params + ":crf=" + std::to_string(video.crf);
+}
+
+/**
+ * @brief update_x264_options updates configuration
+ * for x265 options to be passed to x265 encoder.
+ */
+void update_x264_options() {
+    video.x264_params = config::x264_default_params;
+    video.x264_params = video.x264_params + ":vbv-bufsize=" + std::to_string(video.vbv_bufsize);
+    video.x264_params = video.x264_params + ":vbv-maxrate=" + std::to_string(video.vbv_maxrate);
+
+    //Specify threads for x264
+    video.x264_params = video.x264_params + ":threads=" + std::to_string(video.min_threads);
+
+    video.x264_params = video.x264_params + ":crf=" + std::to_string(video.crf);
 }
 }

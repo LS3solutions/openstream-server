@@ -6,5 +6,37 @@
         <file>assets/box.png</file>
         <file>assets/sunshine.conf</file>
         <file>images/joystick_on.png</file>
+        <file>fonts/LICENSE.txt</file>
+        <file>fonts/OpenSans-Bold.ttf</file>
+        <file>fonts/OpenSans-BoldItalic.ttf</file>
+        <file>fonts/OpenSans-ExtraBold.ttf</file>
+        <file>fonts/OpenSans-ExtraBoldItalic.ttf</file>
+        <file>fonts/OpenSans-Italic.ttf</file>
+        <file>fonts/OpenSans-Light.ttf</file>
+        <file>fonts/OpenSans-LightItalic.ttf</file>
+        <file>fonts/OpenSans-Regular.ttf</file>
+        <file>fonts/OpenSans-SemiBold.ttf</file>
+        <file>fonts/OpenSans-SemiBoldItalic.ttf</file>
+        <file>images/check-ic.png</file>
+        <file>images/configure-ic.png</file>
+        <file>images/down-arrow-blue-16-ic.png</file>
+        <file>images/down-arrow-circular-ic-16.png</file>
+        <file>images/down-arrow-ic-16.png</file>
+        <file>images/down-arrow-ic.png</file>
+        <file>images/down-arrow-light-ic.png</file>
+        <file>images/off-ic.png</file>
+        <file>images/off.jpg</file>
+        <file>images/on-ic.png</file>
+        <file>images/on.jpg</file>
+        <file>images/terminal-ic.png</file>
+        <file>images/uncheck-ic.png</file>
+        <file>assets/h265CPU.conf</file>
+        <file>assets/encoder.conf</file>
+        <file>assets/h264CPU.conf</file>
+        <file>images/go-back-arrow.png</file>
+        <file>assets/h264NVENC.conf</file>
+        <file>assets/h265NVENC.conf</file>
+        <file>assets/h264AMDAMF.conf</file>
+        <file>assets/h265AMDAMF.conf</file>
     </qresource>
 </RCC>
