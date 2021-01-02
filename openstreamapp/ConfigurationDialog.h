@@ -94,8 +94,6 @@ private:
     QString POOLS_LABEL = QString("Pools");
 
     /*******Encoder params****************/
-    QLineEdit *x265vbvMaxRateFieldLineEdit;
-    QString x265vbvMaxRate_LABEL = QString("vbv_maxrate");
     QLineEdit *x265vbvBufsizeFieldLineEdit;
     QString x265vbvBufsize_LABEL = QString("vbv_bufsize");
     QLineEdit *crfLineEdit;

@@ -90,7 +90,6 @@ video_t video {
   0, // qp
 
   0, // hevc_mode
-  1500, //vbv_maxrate
   3000, //vbv_bufsize
   4, //pools
   x265_default_params,
@@ -367,7 +366,6 @@ void apply_config(std::unordered_map<std::string, std::string> &&vars) {
   int_between_f(vars, "hevc_mode", video.hevc_mode, {
     0, 3
   });
-  int_f(vars, "vbv_maxrate", video.vbv_maxrate);
   int_f(vars, "vbv_bufsize", video.vbv_bufsize);
   int_f(vars, "pools", video.pools);
 
@@ -550,7 +548,6 @@ int parse(int argc, char *argv[]) {
 void update_x265_options() {
     video.x265_params = config::x265_default_params;
     video.x265_params = video.x265_params + ":vbv-bufsize=" + std::to_string(video.vbv_bufsize);
-    video.x265_params = video.x265_params + ":vbv-maxrate=" + std::to_string(video.vbv_maxrate);
 
     // Set pools and frame threads for multithreading control of cores.
     // https://trac.ffmpeg.org/ticket/3730?cversion=1
@@ -566,7 +563,6 @@ void update_x265_options() {
 void update_x264_options() {
     video.x264_params = config::x264_default_params;
     video.x264_params = video.x264_params + ":vbv-bufsize=" + std::to_string(video.vbv_bufsize);
-    video.x264_params = video.x264_params + ":vbv-maxrate=" + std::to_string(video.vbv_maxrate);
 
     //Specify threads for x264
     video.x264_params = video.x264_params + ":threads=" + std::to_string(video.min_threads);
