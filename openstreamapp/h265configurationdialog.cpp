@@ -58,9 +58,6 @@ h265ConfigurationDialog::h265ConfigurationDialog(QWidget *parent) :
     /*Pool threads*/
     ui->h265_cpu_pool_threads_combobox->addItems(this->POOL_THREADS_OPT_LIST);
 
-    /*VBV max rate*/
-    ui->h265_cpu_vbv_max_rate_value_combobox->addItems(VBV_MAX_RATE_LABEL_OPT_LIST);
-
     /*VBV_BUFSIZE*/
     ui->h265_cpu_vbv_bufsize_combobox->addItems(VBV_BUFSIZE_LABEL_OPT_LIST);
 
@@ -224,25 +221,6 @@ void h265ConfigurationDialog::setLoadedValues() {
         entries_snapshot.insert("vbv_bufsize",  VBV_BUFSIZE_15);
     }
 
-    /*vbv-maxrate*/
-    if(config->getKey("vbv_maxrate") == VBV_MAX_RATE_10) {
-        ui->h265_cpu_vbv_max_rate_value_combobox->setCurrentIndex(0);
-        entries_snapshot.insert("vbv_maxrate", VBV_MAX_RATE_10);
-    }
-    else if(config->getKey("vbv_maxrate") == VBV_MAX_RATE_20) {
-        ui->h265_cpu_vbv_max_rate_value_combobox->setCurrentIndex(1);
-        entries_snapshot.insert("vbv_maxrate", VBV_MAX_RATE_20);
-    }
-    else if(config->getKey("vbv_maxrate") == VBV_MAX_RATE_30) {
-        ui->h265_cpu_vbv_max_rate_value_combobox->setCurrentIndex(2);
-        entries_snapshot.insert("vbv_maxrate", VBV_MAX_RATE_30);
-
-    }
-    else if(config->getKey("vbv_maxrate") == VBV_MAX_RATE_40) {
-        ui->h265_cpu_vbv_max_rate_value_combobox->setCurrentIndex(3);
-        entries_snapshot.insert("vbv_maxrate", VBV_MAX_RATE_40);
-    }
-
     /*FEC*/
     if(config->getKey("fec_percentage") == FEC_10) {
         ui->h265_cpu_fec_percentage_combobox->setCurrentIndex(0);
@@ -313,21 +291,6 @@ void h265ConfigurationDialog::on_h265_cpu_ok_button_clicked()
     /*Pool threads*/
     QString selected_pool_threads = ui->h265_cpu_pool_threads_combobox->currentText();
     config->setEntry("pools", selected_pool_threads);
-
-    /*VBV maxrate value*/
-    QString selected_vbv_maxrate_label = ui->h265_cpu_vbv_max_rate_value_combobox->currentText();
-    if(selected_vbv_maxrate_label == VBV_MAX_RATE_10_LABEL) {
-        config->setEntry("vbv_maxrate", VBV_MAX_RATE_10);
-    }
-    else if(selected_vbv_maxrate_label == VBV_MAX_RATE_20_LABEL) {
-        config->setEntry("vbv_maxrate", VBV_MAX_RATE_20);
-    }
-    else if(selected_vbv_maxrate_label == VBV_MAX_RATE_30_LABEL) {
-        config->setEntry("vbv_maxrate", VBV_MAX_RATE_30);
-    }
-    else if(selected_vbv_maxrate_label == VBV_MAX_RATE_40_LABEL) {
-        config->setEntry("vbv_maxrate", VBV_MAX_RATE_40);
-    }
     /*VBV bufsize*/
     QString selected_vbv_bufsize_label = ui->h265_cpu_vbv_bufsize_combobox->currentText();
     if(selected_vbv_bufsize_label == VBV_BUFSIZE_1_LABEL) {
@@ -354,7 +317,6 @@ void h265ConfigurationDialog::on_h265_cpu_ok_button_clicked()
         entries_snapshot.value("system_priority") != config->getKey("system_priority") ||
         entries_snapshot.value("min_threads") != config->getKey("min_threads") ||
         entries_snapshot.value("pools") != config->getKey("pools") ||
-        entries_snapshot.value("vbv_maxrate") != config->getKey("vbv_maxrate") ||
         entries_snapshot.value("vbv_bufsize") != config->getKey("vbv_bufsize") ||
         entries_snapshot.value("crf") != config->getKey("crf") ||
         entries_snapshot.value("fec_percentage") != config->getKey("fec_percentage")
@@ -363,7 +325,6 @@ void h265ConfigurationDialog::on_h265_cpu_ok_button_clicked()
             entries_snapshot.insert("system_priority", config->getKey("system_priority"));
             entries_snapshot.insert("min_threads", config->getKey("min_threads"));
             entries_snapshot.insert("pools", config->getKey("pools"));
-            entries_snapshot.insert("vbv_maxrate", config->getKey("vbv_maxrate"));
             entries_snapshot.insert("vbv_bufsize", config->getKey("vbv_bufsize"));
             entries_snapshot.insert("fec_percentage", config->getKey("fec_percentage"));
             entries_snapshot.insert("crf", config->getKey("crf"));

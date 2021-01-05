@@ -9,7 +9,7 @@
 namespace config {
 
 //https://forum.videohelp.com/threads/372625-ffmpeg-does-not-apply-parameters-with-libx265
-static const std::string x265_default_params = "info=0:keyint=-1:pmode=1:bitrate=0";
+static const std::string x265_default_params = "info=0:keyint=-1:pmode=1";
 static const std::string x264_default_params = "log-level=info";
 
 struct video_t {
@@ -18,7 +18,6 @@ struct video_t {
   int qp; // higher == more compression and less quality, ignored if crf != 0
 
   int hevc_mode;
-  int vbv_maxrate;
   int vbv_bufsize;
   // in x265 you control the thread limit with --pools config option and
   // with --frame-threads option. https://trac.ffmpeg.org/ticket/3730?cversion=1

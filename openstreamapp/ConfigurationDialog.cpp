@@ -137,11 +137,6 @@ ConfigurationDialog::ConfigurationDialog(QWidget *parent)
     configInputForm->addRow(POOLS_LABEL, poolsFieldLineEdit);
 
     /*******Encoder params****************/
-    x265vbvMaxRateFieldLineEdit = new QLineEdit(this);
-    x265vbvMaxRateFieldLineEdit->setText(config->getKey(QString("vbv_maxrate")));
-    entries_snapshot.insert("vbv_maxrate", config->getKey(QString("vbv_maxrate")));
-    configInputForm->addRow(x265vbvMaxRate_LABEL, x265vbvMaxRateFieldLineEdit);
-
     x265vbvBufsizeFieldLineEdit = new QLineEdit(this);
     x265vbvBufsizeFieldLineEdit->setText(config->getKey(QString("vbv_bufsize")));
     entries_snapshot.insert("vbv_bufsize", config->getKey(QString("vbv_bufsize")));
@@ -234,8 +229,6 @@ void ConfigurationDialog::updateNewConfiguration()
 
 
     /***************ENCODEr params***************/
-    QString x265vbvMaxRate = x265vbvMaxRateFieldLineEdit->text();
-    config->setEntry("vbv_maxrate", x265vbvMaxRate);
     QString x265vbvBufsize = x265vbvBufsizeFieldLineEdit->text();
     config->setEntry("vbv_bufsize", x265vbvBufsize);
     QString crf = crfLineEdit->text();
@@ -258,7 +251,6 @@ void ConfigurationDialog::updateNewConfiguration()
         || entries_snapshot.value("hevc_mode") != config->getKey("hevc_mode")
         || entries_snapshot.value("min_threads") != config->getKey("min_threads")
         || entries_snapshot.value("system_priority") != config->getKey("system_priority")
-        || entries_snapshot.value("vbv_maxrate") != config->getKey("vbv_maxrate")
         || entries_snapshot.value("vbv_bufsize") != config->getKey("vbv_bufsize")
         || entries_snapshot.value("crf") != config->getKey("crf")
         || entries_snapshot.value("pools") != config->getKey("pools")
@@ -270,7 +262,6 @@ void ConfigurationDialog::updateNewConfiguration()
         entries_snapshot.insert("hevc_mode", config->getKey("hevc_mode"));
         entries_snapshot.insert("min_threads",config->getKey("min_threads"));
         entries_snapshot.insert("system_priority", config->getKey("system_priority"));
-        entries_snapshot.insert("vbv_maxrate", config->getKey("vbv_maxrate"));
         entries_snapshot.insert("vbv_bufsize", config->getKey("vbv_bufsize"));
         entries_snapshot.insert("crf", config->getKey("crf"));
         entries_snapshot.insert("pools", config->getKey("pools"));

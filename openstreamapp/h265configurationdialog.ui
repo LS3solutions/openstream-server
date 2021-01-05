@@ -477,54 +477,6 @@ QComboBox QAbstractItemView {
     font:  &quot;Open Sans Semibold&quot;;
 }
 
-</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_11">
-     <item>
-      <widget class="QLabel" name="h265_cpu_vbv_max_rate_value_label">
-       <property name="toolTip">
-        <string>Sets the maximum rate the VBV buffer 
-should be assumed to refill at.</string>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">QLabel {
-color: rgb(255, 255, 255);
-font:  &quot;Open Sans Semibold&quot;;
-font-size: 12px;
-}
-
-QToolTip {
-color: rgb(0, 0, 0);
-font:  &quot;Open Sans Semibold&quot;;
-font-size: 12px;
-}</string>
-       </property>
-       <property name="text">
-        <string>VBV Max-Rate</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QComboBox" name="h265_cpu_vbv_max_rate_value_combobox">
-       <property name="styleSheet">
-        <string notr="true">QComboBox {
-    border: 1px solid gray;
-    border-radius: 3px;
-    padding: 1px 18px 1px 3px;
-    min-width: 6em;
-    font:  &quot;Open Sans Semibold&quot;;
-    color: white;
-    background: #272640;
-}
-
 QComboBox:editable {
     background:white;
 }
