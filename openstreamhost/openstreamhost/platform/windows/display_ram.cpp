@@ -191,6 +191,7 @@ capture_e display_ram_t::snapshot(::platf::img_t *img_base, std::chrono::millise
     if (FAILED(status)) {
       BOOST_LOG(error) << "Failed to get new pointer shape [0x"sv << util::hex(status).to_string_view() << ']';
       log_flush();
+	  dup.release_frame();
       return capture_e::error;
     }
   }
@@ -211,6 +212,7 @@ capture_e display_ram_t::snapshot(::platf::img_t *img_base, std::chrono::millise
       if (FAILED(status)) {
         BOOST_LOG(error) << "Couldn't query interface [0x"sv << util::hex(status).to_string_view() << ']';
         log_flush();
+		dup.release_frame();
         return capture_e::error;
       }
 
@@ -227,9 +229,14 @@ capture_e display_ram_t::snapshot(::platf::img_t *img_base, std::chrono::millise
     if (FAILED(status)) {
       BOOST_LOG(error) << "Failed to map texture [0x"sv << util::hex(status).to_string_view() << ']';
       log_flush();
+	  dup.release_frame();
       return capture_e::error;
     }
   }
+  
+  std::copy_n((std::uint8_t*)img_info.pData, height * img_info.RowPitch, (std::uint8_t*)img->data);
+  dup.release_frame();
+  device_ctx->Unmap(texture.get(), 0);
 
   const bool mouse_update = 
     (frame_info.LastMouseUpdateTime.QuadPart || frame_info.PointerShapeBufferSize > 0) &&
@@ -240,8 +247,6 @@ capture_e display_ram_t::snapshot(::platf::img_t *img_base, std::chrono::millise
   if(!update_flag) {
     return capture_e::timeout;
   }
-
-  std::copy_n((std::uint8_t*)img_info.pData, height * img_info.RowPitch, (std::uint8_t*)img->data);
 
   if(cursor_visible && cursor.visible) {
     blend_cursor(cursor, *img);

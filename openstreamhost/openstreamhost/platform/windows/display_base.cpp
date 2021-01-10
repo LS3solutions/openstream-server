@@ -4,6 +4,7 @@
 
 #include <codecvt>
 
+#include <initguid.h>
 #include "openstreamhost/config.h"
 #include "openstreamhost/main.h"
 #include "openstreamhost/platform/common.h"
@@ -76,10 +77,12 @@ duplication_t::~duplication_t() {
 }
 
 int display_base_t::init() {
-/* Uncomment when use of IDXGIOutput5 is implemented
+// Uncomment when use of IDXGIOutput5 is implemented
+  std::once_flag windows_cpp_once_flag;
+
   std::call_once(windows_cpp_once_flag, []() {
     DECLARE_HANDLE(DPI_AWARENESS_CONTEXT);
-    const auto DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2 = ((DPI_AWARENESS_CONTEXT)-4);
+    //const auto DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2 = ((DPI_AWARENESS_CONTEXT)-4);
 
     typedef BOOL (*User32_SetProcessDpiAwarenessContext)(DPI_AWARENESS_CONTEXT value);
 
@@ -91,7 +94,7 @@ int display_base_t::init() {
 
     FreeLibrary(user32);
   });
-*/
+
   dxgi::factory1_t::pointer   factory_p {};
   dxgi::adapter_t::pointer    adapter_p {};
   dxgi::output_t::pointer     output_p {};
@@ -241,20 +244,28 @@ int display_base_t::init() {
   //FIXME: Duplicate output on RX580 in combination with DOOM (2016) --> BSOD
   //TODO: Use IDXGIOutput5 for improved performance
   {
-    dxgi::output1_t::pointer output1_p {};
-    status = output->QueryInterface(IID_IDXGIOutput1, (void**)&output1_p);
-    dxgi::output1_t output1 {output1_p };
+    dxgi::output5_t::pointer output5_p {};
+    status = output->QueryInterface(IID_IDXGIOutput5, (void**)&output5_p);
+    dxgi::output5_t output5 {output5_p };
 
     if(FAILED(status)) {
-      BOOST_LOG(error) << "Failed to query IDXGIOutput1 from the output"sv;
+      BOOST_LOG(error) << "Failed to query IDXGIOutput5 from the output"sv;
       log_flush();
       return -1;
     }
 
+    const DXGI_FORMAT DesktopFormats[] = {
+//        DXGI_FORMAT_R8G8B8A8_UNORM,
+        DXGI_FORMAT_B8G8R8A8_UNORM,
+        DXGI_FORMAT_R16G16B16A16_FLOAT,
+        DXGI_FORMAT_R10G10B10A2_UNORM,
+    };
+    const unsigned DesktopFormatsCounts = sizeof(DesktopFormats) / sizeof(DesktopFormats[0]);
+
     // We try this twice, in case we still get an error on reinitialization
     for(int x = 0; x < 2; ++x) {
       dxgi::dup_t::pointer dup_p {};
-      status = output1->DuplicateOutput((IUnknown*)device.get(), &dup_p);
+      status = output5->DuplicateOutput1((IUnknown*)device.get(), 0, DesktopFormatsCounts, DesktopFormats, &dup_p);
       if(SUCCEEDED(status)) {
         dup.reset(dup_p);
         break;

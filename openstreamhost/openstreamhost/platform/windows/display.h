@@ -29,7 +29,7 @@ using device_t      = util::safe_ptr<ID3D11Device, Release<ID3D11Device>>;
 using device_ctx_t  = util::safe_ptr<ID3D11DeviceContext, Release<ID3D11DeviceContext>>;
 using adapter_t     = util::safe_ptr<IDXGIAdapter1, Release<IDXGIAdapter1>>;
 using output_t      = util::safe_ptr<IDXGIOutput, Release<IDXGIOutput>>;
-using output1_t     = util::safe_ptr<IDXGIOutput1, Release<IDXGIOutput1>>;
+using output5_t     = util::safe_ptr<IDXGIOutput5, Release<IDXGIOutput5>>;
 using dup_t         = util::safe_ptr<IDXGIOutputDuplication, Release<IDXGIOutputDuplication>>;
 using texture2d_t   = util::safe_ptr<ID3D11Texture2D, Release<ID3D11Texture2D>>;
 using resource_t    = util::safe_ptr<IDXGIResource, Release<IDXGIResource>>;
@@ -78,6 +78,7 @@ public:
   factory1_t factory;
   adapter_t adapter;
   output_t output;
+  output5_t output5;
   device_t device;
   device_ctx_t device_ctx;
   duplication_t dup;
