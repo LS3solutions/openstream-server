@@ -130,6 +130,9 @@ font-size: 26px;</string>
        </item>
        <item>
         <widget class="QPushButton" name="stop_button">
+		 <property name="enabled">
+          <bool>true</bool>
+         </property>
          <property name="sizePolicy">
           <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
            <horstretch>1</horstretch>

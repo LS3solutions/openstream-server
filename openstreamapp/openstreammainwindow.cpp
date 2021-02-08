@@ -261,6 +261,8 @@ void OpenstreamMainWindow::stopSunshine() {
         proc->kill();
         proc->disconnect();
         this->set_off_host_state_indicator();
+		ui->start_button->setEnabled(true);
+        ui->stop_button->setEnabled(false);
         proc->deleteLater();
         proc = nullptr;
         //Allocate new process
@@ -305,6 +307,8 @@ void OpenstreamMainWindow::appStart() {
         qDebug() << "DEFAULT ENCODER FILE SETTINGS" << Qt::endl;
         proc->start(app_dir + "/openstreamhost/openstreamhost.exe", QStringList() << app_dir + "/assets/sunshine.conf");
     }
+	ui->start_button->setEnabled(false);
+    ui->stop_button->setEnabled(true);
     qDebug() << "Application started" << Qt::endl;
 }
 
