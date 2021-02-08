@@ -1,18 +1,48 @@
-### Open-App Windows installer 
+# Open-App Windows installer 
 
-#### Requirements
-- All the requirements from Open-Stream app in the root folder.
-- Qt Installer framework in Msys2 platform:  `mingw-w64-qt-installer-framework`.
+## Requirements
+- All the requirements to build Open-Stream app.
+- Qt Installer framework in Msys2 platform. Package name `mingw-w64-qt-installer-framework`.
 
-#### Build installer
-- Go to `./packages/com.openstream.openstreamapp/data`
-- Copy the `openstreamapp.exe` file obtained when you build the project (copy into `./packages/com.openstream.openstreamapp/data`).
-- Copy the `openstreamhost.exe` obtained when you build the project. Copy it in the folder `./packages/com.openstream.openstreamapp/dataopenstreamhost`.
-- Copy the `AutoLoginTaskSchedulerProject.exe` for the auto logging functionality. Copy it in the folder `./packages/com.openstream.openstreamapp/utils` (Source and instructions on how to compile this file can be found in `AutoLoginTaskSchedulerProject` in openstream-server base folder). 
-- Execute `windeployqt` for `openstreamapp.exe`.
-- Extract `data.rar` there. (Contains the `dlls` required by the app to run. They can be statically added later on, but for now they are required).
-- Inside of `openstreamhost` extract the `dlls.rar` to extract the dll's required by the host at runtime. 
-- Add the manifest file `openstream.exe.manifest.xml` to the `openstreamapp.exe` using the Windows SDK tool `mt.exe`. 
-- Open `MSYS2 MinGW 64` console, and cd to `.` (`installer` folder).
-- Run command: `/mingw64/bin/binarycreator.exe -c config/config.xml -p packages [Installer Name]`
-- Wait for the command to finish.
+## Build installer
+
+### Folders structure 
+
+For building the installer, you're going to use the `config` folder and the `package` folder. 
+
+- Copy the openstream app builded files and shared `.dll` into `installer\packages\com.openstream.openstreamapp\data`. 
+
+### Manifest file
+
+Manifest file allows for execution with highest privileges on Windows. 
+
+- Add the `installer\manifest.xml` manifest file to the `openstreamapp.exe`. 
+
+That can be done with using `mt.exe` from the Windows SDK tool. The command executed from within `data` folder looks like: 
+
+- `mt.exe -manifest ..\..\..\manifest.xml -outputresource:openstreamapp.exe;#1`
+
+### AutoStart functionality
+
+- Create a folder `utils` in `installer\packages\com.openstream.openstreamapp\data`
+- Copy `AutoLoginTaskSchedulerProject.exe` in `installer\packages\com.openstream.openstreamapp\data\utils` 
+
+AutoStart functionality is encapsulated within an external `.exe` application. Source and instructions on how to compile this file can be found in `AutoLoginTaskSchedulerProject` in openstream-server base folder. 
+
+There's a donwload ready file: https://github.com/m4rkoup/openstream-server/releases/tag/vFeb2021
+
+### Gamepad support
+
+- Create a folder `gamepad_support` in `installer\packages\com.openstream.openstreamapp\data`
+- Copy the `ViGEmBusSetup_x64.msi`
+
+Donwload the `ViGEmBusSetup_x64.msi` file from: https://github.com/ViGEm/ViGEmBus/releases
+
+### Build the installer
+
+After previous sections are completed, you can build the installer with one command using Qt installer framework: 
+
+- go to `/openstream-server/installer`
+- execute ` /mingw64/bin/binarycreator.exe -c config/config.xml -p packages [your installer name]`
+
+This should produce the installer file in `/openstream-server/installer`.
