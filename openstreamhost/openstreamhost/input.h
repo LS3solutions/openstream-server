@@ -14,6 +14,7 @@ void print(void *input);
 void passthrough(std::shared_ptr<input_t> &input, std::vector<std::uint8_t> &&input_data);
 
 void init();
+void reset();
 
 std::shared_ptr<input_t> alloc();
 }
