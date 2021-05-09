@@ -293,7 +293,7 @@ encoder_t nvenc {
 
 encoder_t amfenc {
   "amf"sv,
-  { 1, 0, 1 },
+  { FF_PROFILE_H264_HIGH, FF_PROFILE_HEVC_MAIN },
     AV_HWDEVICE_TYPE_NONE,
     AV_PIX_FMT_NONE,
     AV_PIX_FMT_YUV420P, AV_PIX_FMT_YUV420P,
@@ -301,13 +301,9 @@ encoder_t amfenc {
     {
       { "header_insertion_mode"s, "idr"s },
       { "gops_per_idr"s, 30 },
-      { "rc"s, "cqp"s },
-      { "qp"s, "23"s},
       { "usage"s, "ultralowlatency"s },
       { "quality"s, &config::video.amf.quality },
-      { "b:v", &config::video.amf.maxrate },
-      { "maxrate", &config::video.amf.maxrate },
-      { "bufsize", &config::video.amf.maxrate }
+      { "rc", &config::video.amf.rc },
     },
     std::nullopt,  std::make_optional<encoder_t::option_t>("qp"s, &config::video.qp),
     "hevc_amf"s,
@@ -315,13 +311,8 @@ encoder_t amfenc {
   {
     {
       { "usage"s, "ultralowlatency"s },
-      { "quality"s,  &config::video.amf.quality  },
-      { "rc"s, "cqp"s },
-      { "qp"s, "23"s},
-      { "level"s, "4.1"s },
-      { "b:v", &config::video.amf.maxrate },
-      { "maxrate", &config::video.amf.maxrate },
-      { "bufsize", &config::video.amf.maxrate }
+      { "quality"s, &config::video.amf.quality },
+      { "rc", &config::video.amf.rc },
     },
     std::nullopt, std::make_optional<encoder_t::option_t>({"qp"s, &config::video.qp}),
     "h264_amf"s
