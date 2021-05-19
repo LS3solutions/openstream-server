@@ -293,17 +293,18 @@ encoder_t nvenc {
 
 encoder_t amfenc {
   "amf"sv,
-  { FF_PROFILE_H264_HIGH, FF_PROFILE_HEVC_MAIN },
+  { FF_PROFILE_H264_HIGH, FF_PROFILE_HEVC_MAIN, FF_PROFILE_HEVC_MAIN_10 },
     AV_HWDEVICE_TYPE_NONE,
     AV_PIX_FMT_NONE,
     AV_PIX_FMT_YUV420P, AV_PIX_FMT_YUV420P,
   {
     {
-      { "header_insertion_mode"s, "idr"s },
-      { "gops_per_idr"s, 30 },
-      { "usage"s, "ultralowlatency"s },
-      { "quality"s, &config::video.amf.quality },
-      { "rc", &config::video.amf.rc },
+        { "header_insertion_mode"s, "idr"s },
+        { "rc"s, "vbr_peak"s },
+        { "usage"s, "ultralowlatency"s },
+        { "quality"s, "speed"s },
+        { "max_qp_i", "35"s },
+        { "max_qp_p", "35"s }
     },
     std::nullopt,  std::make_optional<encoder_t::option_t>("qp"s, &config::video.qp),
     "hevc_amf"s,

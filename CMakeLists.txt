@@ -82,9 +82,9 @@ ADD_CUSTOM_COMMAND (TARGET openstreamapp POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy C:/msys64/mingw64/bin/libgraphite2.dll ${CMAKE_BINARY_DIR}
         COMMAND ${CMAKE_COMMAND} -E copy C:/msys64/mingw64/bin/libharfbuzz-0.dll ${CMAKE_BINARY_DIR}
         COMMAND ${CMAKE_COMMAND} -E copy C:/msys64/mingw64/bin/libiconv-2.dll ${CMAKE_BINARY_DIR}
-        COMMAND ${CMAKE_COMMAND} -E copy C:/msys64/mingw64/bin/libicudt67.dll ${CMAKE_BINARY_DIR}
-        COMMAND ${CMAKE_COMMAND} -E copy C:/msys64/mingw64/bin/libicuin67.dll ${CMAKE_BINARY_DIR}
-        COMMAND ${CMAKE_COMMAND} -E copy C:/msys64/mingw64/bin/libicuuc67.dll ${CMAKE_BINARY_DIR}
+        COMMAND ${CMAKE_COMMAND} -E copy C:/msys64/mingw64/bin/libicudt68.dll ${CMAKE_BINARY_DIR}
+        COMMAND ${CMAKE_COMMAND} -E copy C:/msys64/mingw64/bin/libicuin68.dll ${CMAKE_BINARY_DIR}
+        COMMAND ${CMAKE_COMMAND} -E copy C:/msys64/mingw64/bin/libicuuc68.dll ${CMAKE_BINARY_DIR}
         COMMAND ${CMAKE_COMMAND} -E copy C:/msys64/mingw64/bin/libintl-8.dll ${CMAKE_BINARY_DIR}
         COMMAND ${CMAKE_COMMAND} -E copy C:/msys64/mingw64/bin/libpcre-1.dll ${CMAKE_BINARY_DIR}
         COMMAND ${CMAKE_COMMAND} -E copy C:/msys64/mingw64/bin/libpcre2-16-0.dll ${CMAKE_BINARY_DIR}

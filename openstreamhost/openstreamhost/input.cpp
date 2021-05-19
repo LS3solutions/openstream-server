@@ -86,7 +86,7 @@ struct input_t {
 
 using namespace std::literals;
 
-void print(PNV_MOUSE_MOVE_PACKET packet) {
+void print(PNV_REL_MOUSE_MOVE_PACKET packet) {
   BOOST_LOG(debug)
     << "--begin mouse move packet--"sv << std::endl
     << "deltaX ["sv << util::endian::big(packet->deltaX) << ']' << std::endl
@@ -143,8 +143,8 @@ void print(void *input) {
   int input_type = util::endian::big(*(int*)input);
 
   switch(input_type) {
-    case PACKET_TYPE_MOUSE_MOVE:
-      print((PNV_MOUSE_MOVE_PACKET)input);
+    case PACKET_TYPE_REL_MOUSE_MOVE:
+      print((PNV_REL_MOUSE_MOVE_PACKET)input);
       break;
     case PACKET_TYPE_MOUSE_BUTTON:
       print((PNV_MOUSE_BUTTON_PACKET)input);
@@ -167,7 +167,7 @@ void print(void *input) {
   }
 }
 
-void passthrough(platf::input_t &input, PNV_MOUSE_MOVE_PACKET packet) {
+void passthrough(platf::input_t &input, PNV_REL_MOUSE_MOVE_PACKET packet) {
   display_cursor = true;
 
   platf::move_mouse(input, util::endian::big(packet->deltaX), util::endian::big(packet->deltaY));
@@ -379,8 +379,8 @@ void passthrough_helper(std::shared_ptr<input_t> input, std::vector<std::uint8_t
   int input_type = util::endian::big(*(int*)payload);
 
   switch(input_type) {
-    case PACKET_TYPE_MOUSE_MOVE:
-      passthrough(platf_input, (PNV_MOUSE_MOVE_PACKET)payload);
+    case PACKET_TYPE_REL_MOUSE_MOVE:
+      passthrough(platf_input, (PNV_REL_MOUSE_MOVE_PACKET)payload);
       break;
     case PACKET_TYPE_MOUSE_BUTTON:
       passthrough(input, (PNV_MOUSE_BUTTON_PACKET)payload);

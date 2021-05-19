@@ -214,8 +214,8 @@ ADD_CUSTOM_COMMAND (TARGET openstreamhost POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy C:/msys64/mingw64/bin/xvidcore.dll ${CMAKE_BINARY_DIR}/openstreamhost
         COMMAND ${CMAKE_COMMAND} -E copy C:/msys64/mingw64/bin/zlib1.dll ${CMAKE_BINARY_DIR}/openstreamhost
 ### COPY PRE-COMPILED FFMPEG
-        COMMAND ${CMAKE_COMMAND} -E copy ${SUNSHINE_PREPARED_BINARIES}/bin/avcodec-58.dll ${CMAKE_BINARY_DIR}/openstreamhost
-        COMMAND ${CMAKE_COMMAND} -E copy ${SUNSHINE_PREPARED_BINARIES}/bin/avutil-56.dll ${CMAKE_BINARY_DIR}/openstreamhost
-        COMMAND ${CMAKE_COMMAND} -E copy ${SUNSHINE_PREPARED_BINARIES}/bin/swresample-3.dll ${CMAKE_BINARY_DIR}/openstreamhost
-        COMMAND ${CMAKE_COMMAND} -E copy ${SUNSHINE_PREPARED_BINARIES}/bin/swscale-5.dll ${CMAKE_BINARY_DIR}/openstreamhost
+        COMMAND ${CMAKE_COMMAND} -E copy ${SUNSHINE_PREPARED_BINARIES}/bin/avcodec-59.dll ${CMAKE_BINARY_DIR}/openstreamhost
+        COMMAND ${CMAKE_COMMAND} -E copy ${SUNSHINE_PREPARED_BINARIES}/bin/avutil-57.dll ${CMAKE_BINARY_DIR}/openstreamhost
+        COMMAND ${CMAKE_COMMAND} -E copy ${SUNSHINE_PREPARED_BINARIES}/bin/swresample-4.dll ${CMAKE_BINARY_DIR}/openstreamhost
+        COMMAND ${CMAKE_COMMAND} -E copy ${SUNSHINE_PREPARED_BINARIES}/bin/swscale-6.dll ${CMAKE_BINARY_DIR}/openstreamhost
 COMMENT "Copying host (sunshine) binaries" VERBATIM)
